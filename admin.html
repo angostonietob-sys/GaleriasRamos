@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerías Ramos - Panel Admin</title>
+    <style>
+        :root {
+            --bg-color: #f4eee1;
+            --card-bg: #e6dfcc;
+            --brand-red: #c82323;
+            --text-dark: #1a1a1a;
+            --border-color: #d8d0bd;
+            --btn-green: #2e7d32;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* ----- PANTALLA DE LOGIN ----- */
+        .contenedor-login {
+            max-width: 420px;
+            margin: 5rem auto;
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .contenedor-login h2 {
+            font-size: 1.4rem;
+            color: var(--brand-red);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .contenedor-login p {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ----- PANEL ADMIN ----- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 2rem auto;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--brand-red);
+        }
+
+        .acciones-header {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-cambiar-pass, .btn-logout {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-cambiar-pass { background-color: #0288d1; color: white; }
+        .btn-logout { background-color: var(--brand-red); color: white; }
+
+        .contenedor-admin {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+
+        .card-formulario, .card-tabla {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .campo {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .campo label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .campo input, .campo select {
+            width: 100%;
+            padding: 0.65rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .btn-guardar {
+            background-color: var(--btn-green);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 4px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        /* Tabla con scroll independiente */
+        .contenedor-tabla {
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        th { 
+            background-color: #d8d0bd; 
+            font-weight: 800;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* MODAL CAMBIO CONTRASEÑA */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-contenido {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            width: 350px;
+            border: 1px solid var(--border-color);
+        }
+
+        .error-msg {
+            color: var(--brand-red);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== PANTALLA LOGIN ==================== -->
+    <div id="seccion-login" class="contenedor-login">
+        <h2>Acceso Administración</h2>
+        <p>Galerías Ramos — Gestión de Catálogo</p>
+        
+        <form id="form-login" onsubmit="iniciarSesion(event)">
+            <div class="campo">
+                <label>Correo Electrónico:</label>
+                <input type="email" id="login-email" value="Melquiadesramos94@gmail.com" required>
+            </div>
+            <div class="campo">
+                <label>Contraseña:</label>
+                <input type="password" id="login-pass" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-guardar">ENTRAR AL PANEL</button>
+            <p id="error-login" class="error-msg">Correo o contraseña incorrectos.</p>
+        </form>
+    </div>
+
+    <!-- ==================== PANEL ADMIN ==================== -->
+    <div id="seccion-admin" style="display: none;">
+        <header>
+            <h1>PANEL DE CONTROL — GALERÍAS RAMOS</h1>
+            <div class="acciones-header">
+                <button class="btn-cambiar-pass" onclick="abrirModalPass()">Cambiar Contraseña</button>
+                <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <div class="contenedor-admin">
+            <!-- Formulario para agregar / editar -->
+            <div class="card-formulario">
+                <h2>Añadir / Editar Obra</h2>
+                <form id="form-cuadro" onsubmit="guardarObra(event)">
+                    <input type="hidden" id="edit-id" value="">
+                    <div class="campo">
+                        <label>Número / Título de Obra:</label>
+                        <input type="text" id="input-titulo" placeholder="Ej: Obra N.º 35" required>
+                    </div>
+                    <div class="campo">
+                        <label>Técnica:</label>
+                        <input type="text" id="input-tecnica" value="mixta sobre tela" required>
+                    </div>
+                    <div class="campo">
+                        <label>Medidas:</label>
+                        <input type="text" id="input-medidas" value="a consultar" required>
+                    </div>
+                    <div class="campo">
+                        <label>Precio:</label>
+                        <input type="text" id="input-precio" placeholder="Ej: 1000 € o -" required>
+                    </div>
+                    <div class="campo">
+                        <label>Estado:</label>
+                        <select id="input-estado">
+                            <option value="DISPONIBLE">DISPONIBLE</option>
+                            <option value="NO DISPONIBLE">NO DISPONIBLE</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label>Nombre de la Imagen:</label>
+                        <input type="text" id="input-imagen" placeholder="Ej: obra mera (35).jpeg" required>
+                    </div>
+                    <button type="submit" class="btn-guardar" id="btn-guardar-texto">GUARDAR OBRA</button>
+                </form>
+            </div>
+
+            <!-- Tabla de gestión con las 88 obras -->
+            <div class="card-tabla">
+                <h2>Inventario de Obras (88 Cuadros)</h2>
+                <div class="contenedor-tabla">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Obra</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-body">
+                            <!-- Las 88 obras se generan aquí automáticamente con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL CAMBIAR CONTRASEÑA ==================== -->
+    <div id="modal-pass" class="modal">
+        <div class="modal-contenido">
+            <h3 style="margin-bottom: 1rem; color: var(--brand-red);">Cambiar Contraseña</h3>
+            <form onsubmit="guardarNuevaPass(event)">
+                <div class="campo">
+                    <label>Nueva Contraseña:</label>
+                    <input type="password" id="nueva-pass" required minlength="4">
+                </div>
+                <button type="submit" class="btn-guardar" style="margin-bottom: 0.5rem;">GUARDAR NUEVA CONTRASEÑA</button>
+                <button type="button" onclick="cerrarModalPass()" style="width:100%; padding:0.6rem; background:#666; color:white; border:none; border-radius:4px; cursor:pointer;">CANCELAR</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuración inicial de contraseña
+        if (!localStorage.getItem('admin_pass')) {
+            localStorage.setItem('admin_pass', 'ramos2026');
+        }
+
+        const CORREO_VALIDO = "melquiadesramos94@gmail.com";
+
+        // Cargar las 88 obras dinámicamente
+        function cargarObras() {
+            let obras = JSON.parse(localStorage.getItem('obras_galeria'));
+            
+            // Si es la primera ejecución, creamos la lista completa del 1 al 88
+            if (!obras || obras.length === 0) {
+                obras = [];
+                for (let i = 1; i <= 88; i++) {
+                    const es35 = (i === 35);
+                    obras.push({
+                        id: i,
+                        titulo: `Obra N.º ${i}`,
+                        tecnica: "mixta sobre tela",
+                        medidas: "a consultar",
+                        precio: es35 ? "-" : "1000 €",
+                        estado: es35 ? "NO DISPONIBLE" : "DISPONIBLE",
+                        imagen: `obra mera (${i}).jpeg`
+                    });
+                }
+                localStorage.setItem('obras_galeria', JSON.stringify(obras));
+            }
+
+            renderizarTabla(obras);
+        }
+
+        // Renderizado de las filas en la tabla
+        function renderizarTabla(obras) {
+            const tbody = document.getElementById('tabla-body');
+            tbody.innerHTML = '';
+
+            obras.forEach(obra => {
+                const tr = document.createElement('tr');
+                const esDisponible = obra.estado === 'DISPONIBLE';
+                const colorEstado = esDisponible ? 'green' : 'red';
+
+                tr.innerHTML = `
+                    <td><strong>${obra.titulo}</strong></td>
+                    <td>${obra.precio}</td>
+                    <td><span style="color: ${colorEstado}; font-weight: bold;">${obra.estado}</span></td>
+                    <td>${obra.imagen}</td>
+                    <td>
+                        <button onclick="prepararEdicion(${obra.id})" style="padding:0.3rem 0.6rem; background:#0288d1; color:white; border:none; border-radius:4px; cursor:pointer; margin-right:4px;">Editar</button>
+                        <button onclick="borrarObra(${obra.id})" style="padding:0.3rem 0.6rem; background:#c82323; color:white; border:none; border-radius:4px; cursor:pointer;">Borrar</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Iniciar Sesión
+        function iniciarSesion(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email').value.trim().toLowerCase();
+            const passInput = document.getElementById('login-pass').value;
+            const passGuardada = localStorage.getItem('admin_pass');
+
+            if (emailInput === CORREO_VALIDO && passInput === passGuardada) {
+                document.getElementById('seccion-login').style.display = 'none';
+                document.getElementById('seccion-admin').style.display = 'block';
+                document.getElementById('error-login').style.display = 'none';
+                cargarObras();
+            } else {
+                document.getElementById('error-login').style.display = 'block';
+            }
+        }
+
+        function cerrarSesion() {
+            document.getElementById('seccion-login').style.display = 'block';
+            document.getElementById('seccion-admin').style.display = 'none';
+            document.getElementById('login-pass').value = '';
+        }
+
+        // Cambiar Contraseña
+        function abrirModalPass() { document.getElementById('modal-pass').style.display = 'flex'; }
+        function cerrarModalPass() { document.getElementById('modal-pass').style.display = 'none'; }
+
+        function guardarNuevaPass(e) {
+            e.preventDefault();
+            const nueva = document.getElementById('nueva-pass').value;
+            localStorage.setItem('admin_pass', nueva);
+            alert('¡Contraseña cambiada con éxito!');
+            cerrarModalPass();
+            document.getElementById('nueva-pass').value = '';
+        }
+
+        // Borrar Obra
+        function borrarObra(id) {
+            if (confirm(`¿Seguro que quieres eliminar la Obra N.º ${id}?`)) {
+                let obras = JSON.parse(localStorage.getItem('obras_galeria'));
+                obras = obras.filter(o => o.id !== id);
+                localStorage.setItem('obras_galeria', JSON.stringify(obras));
+                renderizarTabla(obras);
+            }
+        }
+
+        // Cargar datos en el formulario para editar
+        function prepararEdicion(id) {
+            let obras = JSON.parse(localStorage.getItem('obras_galeria'));
+            const obra = obras.find(o => o.id === id);
+            if (obra) {
+                document.getElementById('edit-id').value = obra.id;
+                document.getElementById('input-titulo').value = obra.titulo;
+                document.getElementById('input-tecnica').value = obra.tecnica;
+                document.getElementById('input-medidas').value = obra.medidas;
+                document.getElementById('input-precio').value = obra.precio;
+                document.getElementById('input-estado').value = obra.estado;
+                document.getElementById('input-imagen').value = obra.imagen;
+                document.getElementById('btn-guardar-texto').innerText = "ACTUALIZAR OBRA N.º " + obra.id;
+            }
+        }
+
+        // Guardar o Actualizar
+        function guardarObra(e) {
+            e.preventDefault();
+            let obras = JSON.parse(localStorage.getItem('obras_galeria')) || [];
+            const editId = document.getElementById('edit-id').value;
+
+            const nuevaObra = {
+                id: editId ? parseInt(editId) : Date.now(),
+                titulo: document.getElementById('input-titulo').value,
+                tecnica: document.getElementById('input-tecnica').value,
+                medidas: document.getElementById('input-medidas').value,
+                precio: document.getElementById('input-precio').value,
+                estado: document.getElementById('input-estado').value,
+                imagen: document.getElementById('input-imagen').value
+            };
+
+            if (editId) {
+                const index = obras.findIndex(o => o.id === parseInt(editId));
+                if (index !== -1) obras[index] = nuevaObra;
+            } else {
+                obras.push(nuevaObra);
+            }
+
+            localStorage.setItem('obras_galeria', JSON.stringify(obras));
+            renderizarTabla(obras);
+
+            // Resetear formulario
+            document.getElementById('form-cuadro').reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('btn-guardar-texto').innerText = "GUARDAR OBRA";
+            alert('¡Obra guardada correctamente!');
+        }
+    </script>
+</body>
+</html>

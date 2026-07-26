@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerías Ramos - Contacto</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f5eedc; 
+            color: #282828; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+        }
+
+        /* HEADER / NAVEGACIÓN */
+        header {
+            background-color: #e6dfc3;
+            border-bottom: 3px solid #cc241d;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-texto {
+            font-size: 24px;
+            font-weight: 900;
+            color: #282828;
+            letter-spacing: 2px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #282828;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        nav a.active, nav a:hover {
+            background-color: #cc241d;
+            color: #ffffff;
+        }
+
+        /* SECCIÓN PRINCIPAL DE CONTACTO */
+        .contacto-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        .tarjeta-contacto {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 650px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #bdae93;
+        }
+
+        .tarjeta-header {
+            background-color: #cc241d;
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .tarjeta-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .tarjeta-header p {
+            margin: 10px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .tarjeta-body {
+            padding: 40px;
+            background-color: #e6dfc3;
+        }
+
+        .instrucciones {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #282828;
+            margin-bottom: 35px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border-left: 5px solid #cc241d;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .icon-circle {
+            background-color: #cc241d;
+            color: #ffffff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .info-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 14px;
+            color: #7c6f64;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .info-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #282828;
+            text-decoration: none;
+        }
+
+        .info-value:hover {
+            color: #cc241d;
+        }
+
+        /* FOOTER OSCURO */
+        footer {
+            background-color: #282828;
+            color: #ebdbb2;
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 14px;
+            line-height: 1.8;
+            border-top: 3px solid #cc241d;
+        }
+
+        footer p { margin: 3px 0; }
+        
+        .footer-creditos {
+            color: #fabd2f;
+            font-weight: bold;
+            margin-top: 8px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA DE NAVEGACIÓN -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-texto">GALERÍAS RAMOS</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">INICIO</a></li>
+                <li><a href="cuadros.html">CUADROS</a></li>
+                <li><a href="galeria3d.html">GALERÍA 3D</a></li>
+                <li><a href="contacto.html" class="active">CONTACTO</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- SECCIÓN PRINCIPAL -->
+    <div class="contacto-container">
+        <div class="tarjeta-contacto">
+            <div class="tarjeta-header">
+                <h1>Melquiades Ramos</h1>
+                <p>Artista y Galerista</p>
+            </div>
+            <div class="tarjeta-body">
+                <p class="instrucciones">Para adquirir cualquier cuadro, póngase en contacto conmigo a través de las siguientes opciones:</p>
+                
+                <div class="info-item">
+                    <div class="icon-circle">@</div>
+                    <div class="info-content">
+                        <span class="info-label">Este es mi i-mail</span>
+                        <a href="mailto:Melquiadesramos94@g.mail.com" class="info-value">Melquiadesramos94@g.mail.com</a>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="icon-circle">T</div>
+                    <div class="info-content">
+                        <span class="info-label">Teléfono</span>
+                        <a href="tel:643406667" class="info-value">643 406 667</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p><strong>Galerías Ramos</strong> — Todos los derechos reservados &copy; 2026</p>
+        <p>Contacto: Melquiadesramos94@gmail.com | Tel: 643 406 667</p>
+        <p class="footer-creditos">Página web diseñada y creada por Borja Angosto Nieto con tecnología VSC</p>
+    </footer>
+
+</body>
+</html>
