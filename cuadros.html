@@ -153,7 +153,7 @@
             height: 220px;
             overflow: hidden;
             background-color: #d8d0bd;
-            cursor: pointer; /* Indicar que es clickeable */
+            cursor: pointer;
         }
 
         .contenedor-img img {
@@ -165,7 +165,7 @@
         }
 
         .contenedor-img:hover img {
-            transform: scale(1.05); /* Pequeño feedback al pasar el ratón */
+            transform: scale(1.05);
         }
 
         .info-cuadro {
@@ -347,7 +347,7 @@
         <div class="contenedor-paginacion" id="paginacion"></div>
     </main>
 
-    <!-- MODAL PARA AMPLIAR LA OBRA (ESTILO GALERÍA 3D) -->
+    <!-- MODAL PARA AMPLIAR LA OBRA -->
     <div id="modalVisor" class="modal-visor" onclick="cerrarVisorModal()">
         <span class="btn-cerrar-modal" onclick="cerrarVisorModal()">&times;</span>
         <div class="modal-contenido" onclick="event.stopPropagation()">
@@ -360,21 +360,36 @@
         let obrasGlobales = [];
         let obrasFiltradas = [];
         let paginaActual = 1;
-        const obrasPorPagina = 12; // Número de cuadros por página
+        const obrasPorPagina = 12;
 
         function cargarCatalogo() {
             let obrasGuardadas = JSON.parse(localStorage.getItem('obras_galeria'));
 
             if (!obrasGuardadas || obrasGuardadas.length === 0) {
                 obrasGuardadas = [];
+
+                // Obras con precios especiales exactos
+                const a3000 = [19, 43, 86];
+                const a2000 = [1, 4, 5, 18, 21, 23, 26, 28, 34, 57, 84, 85];
+
                 for (let i = 1; i <= 88; i++) {
                     const es35 = (i === 35);
+                    let precioReal = "1000 €";
+
+                    if (es35) {
+                        precioReal = "-";
+                    } else if (a3000.includes(i)) {
+                        precioReal = "3000 €";
+                    } else if (a2000.includes(i)) {
+                        precioReal = "2000 €";
+                    }
+
                     obrasGuardadas.push({
                         id: i,
                         titulo: `Obra N.º ${i}`,
                         tecnica: "mixta sobre tela",
                         medidas: "a consultar",
-                        precio: es35 ? "-" : (i % 2 === 0 ? "2000 €" : "1000 €"),
+                        precio: precioReal,
                         estado: es35 ? "NO DISPONIBLE" : "DISPONIBLE",
                         imagen: `obra mera (${i}).jpeg`
                     });
@@ -425,8 +440,6 @@
             });
 
             renderizarPaginacion();
-            
-            // Subir el scroll arriba suavemente al cambiar de página
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -437,7 +450,6 @@
             const totalPaginas = Math.ceil(obrasFiltradas.length / obrasPorPagina);
             if (totalPaginas <= 1) return;
 
-            // Botón Anterior
             const btnAnt = document.createElement('button');
             btnAnt.className = 'btn-pag';
             btnAnt.innerText = '« Anterior';
@@ -445,7 +457,6 @@
             btnAnt.onclick = () => renderizarPagina(paginaActual - 1);
             contenedorPag.appendChild(btnAnt);
 
-            // Números de páginas
             for (let i = 1; i <= totalPaginas; i++) {
                 const btnNum = document.createElement('button');
                 btnNum.className = `btn-pag ${i === paginaActual ? 'activa' : ''}`;
@@ -454,7 +465,6 @@
                 contenedorPag.appendChild(btnNum);
             }
 
-            // Botón Siguiente
             const btnSig = document.createElement('button');
             btnSig.className = 'btn-pag';
             btnSig.innerText = 'Siguiente »';
@@ -484,7 +494,6 @@
             window.location.href = `contacto.html?obra=${encodeURIComponent(titulo)}`;
         }
 
-        /* FUNCIONES DEL VISOR MODAL (ESTILO GALERÍA 3D) */
         function abrirVisorModal(rutaImagen, titulo) {
             const modal = document.getElementById('modalVisor');
             const img = document.getElementById('imgModal');
@@ -499,7 +508,6 @@
             document.getElementById('modalVisor').style.display = 'none';
         }
 
-        // Cierre con la tecla ESC
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 cerrarVisorModal();
