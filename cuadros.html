@@ -3,140 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galerías Ramos - Catálogo de Obras</title>
+    <title>Catálogo de Obras | Galerías Ramos</title>
     <style>
         :root {
-            --bg-color: #f4eee1;
-            --card-bg: #e6dfcc;
-            --brand-red: #c82323;
-            --text-dark: #1a1a1a;
-            --border-color: #d8d0bd;
+            --color-primario: #1a1a1a;
+            --color-secundario: #4a4a4a;
+            --color-fondo: #f9f9f9;
+            --color-blanco: #ffffff;
+            --color-borde: #e0e0e0;
+            --color-destacado: #2c3e50;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-dark);
+            font-family: var(--fuente-principal);
+            background-color: var(--color-fondo);
+            color: var(--color-primario);
+            line-height: 1.6;
         }
 
-        /* HEADER & NAVEGACIÓN */
         header {
-            background-color: var(--bg-color);
-            border-bottom: 2px solid var(--brand-red);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background-color: var(--color-blanco);
+            border-bottom: 1px solid var(--color-borde);
+            padding: 1.5rem 2rem;
+            text-align: center;
         }
 
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: var(--text-dark);
+        header h1 {
+            font-size: 2rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-            align-items: center;
+        nav {
+            margin-top: 1rem;
         }
 
         nav a {
+            color: var(--color-secundario);
             text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: color 0.2s;
+            margin: 0 15px;
+            font-weight: 500;
         }
 
-        nav a:hover, nav a.active {
-            color: var(--brand-red);
+        nav a:hover {
+            color: var(--color-primario);
         }
 
-        nav a.active-pill {
-            background-color: var(--brand-red);
-            color: white;
-            padding: 0.4rem 0.9rem;
-            border-radius: 20px;
-        }
-
-        /* CONTENIDO PRINCIPAL */
-        main {
-            max-width: 1300px;
+        .contenedor {
+            max-width: 1200px;
             margin: 2rem auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
         }
 
-        .titulo-seccion {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .titulo-seccion h1 {
-            font-size: 2.2rem;
-            color: var(--brand-red);
-            text-transform: uppercase;
-        }
-
-        .titulo-seccion p {
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* BOTONES DE FILTRO DE PRECIOS */
-        .contenedor-filtros-botones {
+        .filtros-container {
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
+            gap: 10px;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
         .btn-filtro {
-            background-color: var(--card-bg);
-            border: 2px solid var(--brand-red);
-            color: var(--brand-red);
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
-            font-weight: 800;
-            font-size: 0.9rem;
+            background-color: var(--color-blanco);
+            border: 1px solid var(--color-borde);
+            padding: 8px 16px;
             cursor: pointer;
+            border-radius: 4px;
+            font-weight: 500;
             transition: all 0.2s ease;
         }
 
         .btn-filtro:hover, .btn-filtro.activo {
-            background-color: var(--brand-red);
-            color: white;
+            background-color: var(--color-destacado);
+            color: var(--color-blanco);
+            border-color: var(--color-destacado);
         }
 
-        /* GRID DE CUADROS */
         .grid-cuadros {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            min-height: 400px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
         }
 
         .card-cuadro {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            background: var(--color-blanco);
+            border: 1px solid var(--color-borde);
+            border-radius: 6px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -145,27 +104,26 @@
 
         .card-cuadro:hover {
             transform: translateY(-4px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
         }
 
         .contenedor-img {
             width: 100%;
             height: 220px;
-            overflow: hidden;
-            background-color: #d8d0bd;
+            background-color: #eee;
             cursor: pointer;
+            overflow: hidden;
         }
 
         .contenedor-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
             transition: transform 0.3s ease;
         }
 
         .contenedor-img:hover img {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .info-cuadro {
@@ -177,183 +135,142 @@
 
         .info-cuadro h3 {
             font-size: 1.1rem;
-            margin-bottom: 0.6rem;
-            color: var(--text-dark);
+            margin-bottom: 0.5rem;
         }
 
         .info-cuadro p {
-            font-size: 0.85rem;
-            color: #444;
+            font-size: 0.9rem;
+            color: var(--color-secundario);
             margin-bottom: 0.3rem;
         }
 
         .precio-cuadro {
             font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--brand-red);
-            margin: 1rem 0;
+            font-weight: bold;
+            color: var(--color-destacado);
+            margin: 0.8rem 0;
         }
 
         .btn-comprar {
-            background-color: var(--brand-red);
-            color: white;
-            border: none;
-            padding: 0.7rem;
-            width: 100%;
-            border-radius: 4px;
-            font-weight: 800;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.8rem;
             margin-top: auto;
-            transition: background-color 0.2s;
+            width: 100%;
+            padding: 10px;
+            background-color: var(--color-primario);
+            color: var(--color-blanco);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
         }
 
         .btn-comprar:hover {
-            background-color: #a01a1a;
+            background-color: #333;
         }
 
         .btn-comprar:disabled {
-            background-color: #888888 !important;
+            background-color: #ccc;
             cursor: not-allowed;
         }
 
-        /* PAGINACIÓN */
-        .contenedor-paginacion {
+        .paginacion {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 0.5rem;
-            margin: 2.5rem 0 1rem;
-            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 3rem;
         }
 
         .btn-pag {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-dark);
-            padding: 0.5rem 0.9rem;
-            border-radius: 4px;
-            font-weight: 700;
+            padding: 8px 12px;
+            border: 1px solid var(--color-borde);
+            background-color: var(--color-blanco);
             cursor: pointer;
-            transition: all 0.2s;
+            border-radius: 4px;
         }
 
-        .btn-pag:hover, .btn-pag.activa {
-            background-color: var(--brand-red);
-            color: white;
-            border-color: var(--brand-red);
+        .btn-pag.activa {
+            background-color: var(--color-destacado);
+            color: var(--color-blanco);
+            border-color: var(--color-destacado);
         }
 
         .btn-pag:disabled {
-            opacity: 0.4;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* MODAL / VISOR FLOTANTE TIPO GALERÍA 3D */
-        .modal-visor {
+        /* Visor Modal */
+        .modal {
             display: none;
             position: fixed;
+            z-index: 1000;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.88);
-            z-index: 99999;
+            background-color: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            padding: 20px;
         }
 
         .modal-contenido {
-            position: relative;
             max-width: 90%;
             max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .modal-contenido img {
-            max-width: 100%;
-            max-height: 75vh;
-            object-fit: contain;
-            border: 2px solid #ffffff;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
             border-radius: 4px;
         }
 
         .modal-titulo {
-            color: #ffffff;
-            font-size: 1.4rem;
-            font-weight: 800;
+            color: #fff;
             margin-top: 15px;
-            text-align: center;
-            letter-spacing: 0.5px;
+            font-size: 1.1rem;
         }
 
-        .btn-cerrar-modal {
+        .cerrar-modal {
             position: absolute;
             top: 20px;
             right: 30px;
-            color: #ffffff;
-            font-size: 40px;
+            color: #fff;
+            font-size: 35px;
             font-weight: bold;
             cursor: pointer;
-            user-select: none;
-            transition: color 0.2s;
-            z-index: 100000;
-        }
-
-        .btn-cerrar-modal:hover {
-            color: var(--brand-red);
         }
     </style>
 </head>
 <body>
 
-    <!-- NAV / HEADER -->
     <header>
-        <div class="logo">GALERÍAS RAMOS</div>
+        <h1>Galerías Ramos</h1>
         <nav>
-            <ul>
-                <li><a href="index.html">INICIO</a></li>
-                <li><a href="galeria3d.html">GALERÍA 3D</a></li>
-                <li><a href="cuadros.html" class="active-pill">CUADROS</a></li>
-                <li><a href="contacto.html">CONTACTO</a></li>
-            </ul>
+            <a href="index.html">Inicio</a>
+            <a href="cuadros.html">Catálogo</a>
+            <a href="contacto.html">Contacto</a>
         </nav>
     </header>
 
-    <main>
-        <div class="titulo-seccion">
-            <h1 id="titulo-catalogo">CATÁLOGO DE OBRAS</h1>
-            <p>Colección de obras originales de Melquiades Ramos.</p>
+    <div class="contenedor">
+        <div class="filtros-container">
+            <button class="btn-filtro activo" onclick="filtrarPorPrecio('todos', this)">Todas las obras</button>
+            <button class="btn-filtro" onclick="filtrarPorPrecio('1000', this)">1000 €</button>
+            <button class="btn-filtro" onclick="filtrarPorPrecio('2000', this)">2000 €</button>
+            <button class="btn-filtro" onclick="filtrarPorPrecio('3000', this)">3000 €</button>
         </div>
 
-        <!-- FILTROS POR PRECIO -->
-        <div class="contenedor-filtros-botones">
-            <button class="btn-filtro activo" onclick="filtrarPorPrecio('todos', this)">TODAS LAS OBRAS</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio(1000, this)">1000 €</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio(2000, this)">2000 €</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio(3000, this)">3000 €</button>
+        <div id="grid-cuadros" class="grid-cuadros">
+            <!-- Los cuadros se generan dinámicamente -->
         </div>
 
-        <!-- CONTENEDOR DE CUADROS -->
-        <div class="grid-cuadros" id="grid-cuadros"></div>
-
-        <!-- CONTENEDOR DE PAGINACIÓN -->
-        <div class="contenedor-paginacion" id="paginacion"></div>
-    </main>
-
-    <!-- MODAL PARA AMPLIAR LA OBRA -->
-    <div id="modalVisor" class="modal-visor" onclick="cerrarVisorModal()">
-        <span class="btn-cerrar-modal" onclick="cerrarVisorModal()">&times;</span>
-        <div class="modal-contenido" onclick="event.stopPropagation()">
-            <img id="imgModal" src="" alt="Obra Ampliada">
-            <div id="tituloModal" class="modal-titulo"></div>
+        <div id="paginacion" class="paginacion">
+            <!-- La paginación se genera dinámicamente -->
         </div>
+    </div>
+
+    <!-- Visor Modal para ampliar imagen -->
+    <div id="modalVisor" class="modal" onclick="cerrarVisorModal()">
+        <span class="cerrar-modal">&times;</span>
+        <img id="imgModal" class="modal-contenido" src="" alt="Ampliación de obra">
+        <div id="tituloModal" class="modal-titulo"></div>
     </div>
 
     <script>
@@ -363,41 +280,39 @@
         const obrasPorPagina = 12;
 
         function cargarCatalogo() {
-            let obrasGuardadas = JSON.parse(localStorage.getItem('obras_galeria'));
+            // BORRAMOS CUALQUIER MEMORIA PREVIA PARA PREVENIR ERRORES
+            localStorage.clear();
 
-            if (!obrasGuardadas || obrasGuardadas.length === 0) {
-                obrasGuardadas = [];
+            let obras = [];
 
-                // Obras con precios especiales exactos
-                const a3000 = [19, 43, 86];
-                const a2000 = [1, 4, 5, 18, 21, 23, 26, 28, 34, 57, 84, 85];
+            // Listas exactas de precios asignadas por id de obra
+            const a3000 = [19, 43, 86];
+            const a2000 = [1, 4, 5, 18, 21, 23, 26, 28, 34, 57, 84, 85];
 
-                for (let i = 1; i <= 88; i++) {
-                    const es35 = (i === 35);
-                    let precioReal = "1000 €";
+            for (let i = 1; i <= 88; i++) {
+                const es35 = (i === 35);
+                let precioReal = "1000 €";
 
-                    if (es35) {
-                        precioReal = "-";
-                    } else if (a3000.includes(i)) {
-                        precioReal = "3000 €";
-                    } else if (a2000.includes(i)) {
-                        precioReal = "2000 €";
-                    }
-
-                    obrasGuardadas.push({
-                        id: i,
-                        titulo: `Obra N.º ${i}`,
-                        tecnica: "mixta sobre tela",
-                        medidas: "a consultar",
-                        precio: precioReal,
-                        estado: es35 ? "NO DISPONIBLE" : "DISPONIBLE",
-                        imagen: `obra mera (${i}).jpeg`
-                    });
+                if (es35) {
+                    precioReal = "-";
+                } else if (a3000.includes(i)) {
+                    precioReal = "3000 €";
+                } else if (a2000.includes(i)) {
+                    precioReal = "2000 €";
                 }
-                localStorage.setItem('obras_galeria', JSON.stringify(obrasGuardadas));
+
+                obras.push({
+                    id: i,
+                    titulo: `Obra N.º ${i}`,
+                    tecnica: "mixta sobre tela",
+                    medidas: "a consultar",
+                    precio: precioReal,
+                    estado: es35 ? "NO DISPONIBLE" : "DISPONIBLE",
+                    imagen: `obra mera (${i}).jpeg`
+                });
             }
 
-            obrasGlobales = obrasGuardadas;
+            obrasGlobales = obras;
             obrasFiltradas = [...obrasGlobales];
             renderizarPagina(1);
         }
