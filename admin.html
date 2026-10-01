@@ -261,8 +261,7 @@
         <header>
             <h1>PANEL DE CONTROL — GALERÍAS RAMOS</h1>
             <div class="acciones-header">
-                <button class="btn-accion btn-crear-todo" onclick="inicializar88Obras()">🚀 Subir las 88 obras con
-                    precios exactos</button>
+                <button class="btn-accion btn-crear-todo" onclick="inicializar88Obras()">🚀 Subir las 88 obras con los precios actualizados</button>
                 <button class="btn-accion btn-cambiar-pass" onclick="abrirModalPass()">Cambiar Contraseña</button>
                 <button class="btn-accion btn-logout" onclick="cerrarSesion()">Cerrar Sesión</button>
             </div>
@@ -348,8 +347,7 @@
                     <label>Nueva Contraseña:</label>
                     <input type="password" id="nueva-pass" required minlength="4">
                 </div>
-                <button type="submit" class="btn-guardar" style="margin-bottom: 0.5rem;">GUARDAR NUEVA
-                    CONTRASEÑA</button>
+                <button type="submit" class="btn-guardar" style="margin-bottom: 0.5rem;">GUARDAR NUEVA CONTRASEÑA</button>
                 <button type="button" onclick="cerrarModalPass()"
                     style="width:100%; padding:0.6rem; background:#666; color:white; border:none; border-radius:4px; cursor:pointer;">CANCELAR</button>
             </form>
@@ -452,7 +450,7 @@
             tbody.innerHTML = '';
 
             if (obras.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 1.5rem;">No hay obras en Firebase. Pulsa el botón naranja superior para subirlas.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 1.5rem;">No hay obras en Firebase. Pulsa el botón superior para subirlas.</td></tr>';
                 return;
             }
 
@@ -523,9 +521,9 @@
                 });
         }
 
-        // SUBIDA AUTOMÁTICA DE LAS 88 OBRAS CON SUS PRECIOS EXACTOS
+        // SUBIDA AUTOMÁTICA DE LAS 88 OBRAS CON SUS PRECIOS ACTUALIZADOS
         async function inicializar88Obras() {
-            if (!confirm("¿Deseas subir o actualizar las 88 obras con sus precios exactos en Firebase?")) return;
+            if (!confirm("¿Deseas subir o actualizar las 88 obras con los precios actualizados en Firebase?")) return;
 
             const obras3000 = [19, 86];
             const obras2000 = [1, 4, 5, 18, 21, 23, 26, 28, 34, 84, 85];
@@ -560,7 +558,7 @@
 
             try {
                 await batch.commit();
-                alert("✅ ¡Las 88 obras se han subido con éxito a Firebase con todos sus precios correctos!");
+                alert("✅ ¡Las 88 obras se han subido con éxito a Firebase con los precios actualizados!");
             } catch (err) {
                 alert("Error al guardar en Firebase: " + err.message);
             }
