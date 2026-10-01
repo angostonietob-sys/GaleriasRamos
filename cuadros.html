@@ -1,110 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GNRFJE97VL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-GNRFJE97VL');
-</script>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Obras | Galerías Ramos</title>
+    <title>Galerías Ramos - Catálogo de Obras</title>
     <style>
         :root {
-            --color-primario: #1a1a1a;
-            --color-secundario: #4a4a4a;
-            --color-fondo: #f9f9f9;
-            --color-blanco: #ffffff;
-            --color-borde: #e0e0e0;
-            --color-destacado: #2c3e50;
-            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --bg-color: #f4eee1;
+            --card-bg: #e6dfcc;
+            --brand-red: #c82323;
+            --text-dark: #1a1a1a;
+            --border-color: #d8d0bd;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            font-family: var(--fuente-principal);
-            background-color: var(--color-fondo);
-            color: var(--color-primario);
-            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
         }
 
+        /* HEADER & NAVEGACIÓN */
         header {
-            background-color: var(--color-blanco);
-            border-bottom: 1px solid var(--color-borde);
-            padding: 1.5rem 2rem;
-            text-align: center;
+            background-color: var(--bg-color);
+            border-bottom: 2px solid var(--brand-red);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        header h1 {
-            font-size: 2rem;
-            letter-spacing: 2px;
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-dark);
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        nav {
-            margin-top: 1rem;
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
         }
 
         nav a {
-            color: var(--color-secundario);
             text-decoration: none;
-            margin: 0 15px;
-            font-weight: 500;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
         }
 
-        nav a:hover {
-            color: var(--color-primario);
+        nav a:hover,
+        nav a.active {
+            color: var(--brand-red);
         }
 
-        .contenedor {
-            max-width: 1200px;
+        nav a.active-pill {
+            background-color: var(--brand-red);
+            color: white;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        main {
+            max-width: 1300px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
 
-        .filtros-container {
+        .titulo-seccion {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .titulo-seccion h1 {
+            font-size: 2.2rem;
+            color: var(--brand-red);
+            text-transform: uppercase;
+        }
+
+        .titulo-seccion p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* BOTONES DE FILTRO DE PRECIOS */
+        .contenedor-filtros-botones {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 2rem;
+            align-items: center;
+            gap: 0.8rem;
             flex-wrap: wrap;
+            margin-bottom: 2rem;
         }
 
         .btn-filtro {
-            background-color: var(--color-blanco);
-            border: 1px solid var(--color-borde);
-            padding: 8px 16px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--brand-red);
+            color: var(--brand-red);
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 800;
+            font-size: 0.9rem;
             cursor: pointer;
-            border-radius: 4px;
-            font-weight: 500;
             transition: all 0.2s ease;
         }
 
-        .btn-filtro:hover, .btn-filtro.activo {
-            background-color: var(--color-destacado);
-            color: var(--color-blanco);
-            border-color: var(--color-destacado);
+        .btn-filtro:hover,
+        .btn-filtro.activo {
+            background-color: var(--brand-red);
+            color: white;
         }
 
+        /* GRID DE CUADROS */
         .grid-cuadros {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            min-height: 400px;
         }
 
         .card-cuadro {
-            background: var(--color-blanco);
-            border: 1px solid var(--color-borde);
-            border-radius: 6px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -113,26 +148,27 @@
 
         .card-cuadro:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
 
         .contenedor-img {
             width: 100%;
             height: 220px;
-            background-color: #eee;
-            cursor: pointer;
             overflow: hidden;
+            background-color: #d8d0bd;
+            cursor: pointer;
         }
 
         .contenedor-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
             transition: transform 0.3s ease;
         }
 
         .contenedor-img:hover img {
-            transform: scale(1.03);
+            transform: scale(1.05);
         }
 
         .info-cuadro {
@@ -144,186 +180,262 @@
 
         .info-cuadro h3 {
             font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-dark);
         }
 
         .info-cuadro p {
-            font-size: 0.9rem;
-            color: var(--color-secundario);
+            font-size: 0.85rem;
+            color: #444;
             margin-bottom: 0.3rem;
         }
 
         .precio-cuadro {
             font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--color-destacado);
-            margin: 0.8rem 0;
+            font-weight: 800;
+            color: var(--brand-red);
+            margin: 1rem 0;
         }
 
         .btn-comprar {
-            margin-top: auto;
-            width: 100%;
-            padding: 10px;
-            background-color: var(--color-primario);
-            color: var(--color-blanco);
+            background-color: var(--brand-red);
+            color: white;
             border: none;
+            padding: 0.7rem;
+            width: 100%;
             border-radius: 4px;
+            font-weight: 800;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-top: auto;
+            transition: background-color 0.2s;
         }
 
         .btn-comprar:hover {
-            background-color: #333;
+            background-color: #a01a1a;
         }
 
         .btn-comprar:disabled {
-            background-color: #ccc;
+            background-color: #888888 !important;
             cursor: not-allowed;
         }
 
-        .paginacion {
+        /* PAGINACIÓN */
+        .contenedor-paginacion {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            margin-top: 3rem;
+            gap: 0.5rem;
+            margin: 2.5rem 0 1rem;
+            flex-wrap: wrap;
         }
 
         .btn-pag {
-            padding: 8px 12px;
-            border: 1px solid var(--color-borde);
-            background-color: var(--color-blanco);
-            cursor: pointer;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 0.5rem 0.9rem;
             border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
+        .btn-pag:hover,
         .btn-pag.activa {
-            background-color: var(--color-destacado);
-            color: var(--color-blanco);
-            border-color: var(--color-destacado);
+            background-color: var(--brand-red);
+            color: white;
+            border-color: var(--brand-red);
         }
 
         .btn-pag:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
         }
 
-        /* Visor Modal */
-        .modal {
+        /* MODAL / VISOR FLOTANTE */
+        .modal-visor {
             display: none;
             position: fixed;
-            z-index: 1000;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.85);
+            background-color: rgba(0, 0, 0, 0.88);
+            z-index: 99999;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            padding: 20px;
         }
 
         .modal-contenido {
+            position: relative;
             max-width: 90%;
             max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-contenido img {
+            max-width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
             border-radius: 4px;
         }
 
         .modal-titulo {
-            color: #fff;
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 800;
             margin-top: 15px;
-            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 0.5px;
         }
 
-        .cerrar-modal {
+        .btn-cerrar-modal {
             position: absolute;
             top: 20px;
             right: 30px;
-            color: #fff;
-            font-size: 35px;
+            color: #ffffff;
+            font-size: 40px;
             font-weight: bold;
             cursor: pointer;
+            user-select: none;
+            transition: color 0.2s;
+            z-index: 100000;
+        }
+
+        .btn-cerrar-modal:hover {
+            color: var(--brand-red);
         }
     </style>
+
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
+
 <body>
 
+    <!-- NAV / HEADER -->
     <header>
-        <h1>Galerías Ramos</h1>
+        <div class="logo">GALERÍAS RAMOS</div>
         <nav>
-            <a href="index.html">Inicio</a>
-            <a href="cuadros.html">Catálogo</a>
-            <a href="contacto.html">Contacto</a>
+            <ul>
+                <li><a href="index.html">INICIO</a></li>
+                <li><a href="galeria3d.html">GALERÍA 3D</a></li>
+                <li><a href="cuadros.html" class="active-pill">CUADROS</a></li>
+                <li><a href="contacto.html">CONTACTO</a></li>
+            </ul>
         </nav>
     </header>
 
-    <div class="contenedor">
-        <div class="filtros-container">
-            <button class="btn-filtro activo" onclick="filtrarPorPrecio('todos', this)">Todas las obras</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio('1000', this)">1000 €</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio('2000', this)">2000 €</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio('3000', this)">3000 €</button>
+    <main>
+        <div class="titulo-seccion">
+            <h1 id="titulo-catalogo">CATÁLOGO DE OBRAS</h1>
+            <p>Colección de obras originales de Melquiades Ramos.</p>
         </div>
 
-        <div id="grid-cuadros" class="grid-cuadros">
-            <!-- Los cuadros se generan dinámicamente -->
+        <!-- FILTROS POR PRECIO -->
+        <div class="contenedor-filtros-botones">
+            <button class="btn-filtro activo" onclick="filtrarPorPrecio('todos', this)">TODAS LAS OBRAS</button>
+            <button class="btn-filtro" onclick="filtrarPorPrecio(1000, this)">1000 €</button>
+            <button class="btn-filtro" onclick="filtrarPorPrecio(2000, this)">2000 €</button>
+            <button class="btn-filtro" onclick="filtrarPorPrecio(3000, this)">3000 €</button>
         </div>
 
-        <div id="paginacion" class="paginacion">
-            <!-- La paginación se genera dinámicamente -->
+        <!-- CONTENEDOR DE CUADROS DINÁMICO -->
+        <div class="grid-cuadros" id="grid-cuadros">
+            <p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666; font-weight: bold;">Cargando
+                catálogo en directo...</p>
         </div>
-    </div>
 
-    <!-- Visor Modal para ampliar imagen -->
-    <div id="modalVisor" class="modal" onclick="cerrarVisorModal()">
-        <span class="cerrar-modal">&times;</span>
-        <img id="imgModal" class="modal-contenido" src="" alt="Ampliación de obra">
-        <div id="tituloModal" class="modal-titulo"></div>
+        <!-- CONTENEDOR DE PAGINACIÓN -->
+        <div class="contenedor-paginacion" id="paginacion"></div>
+    </main>
+
+    <!-- MODAL PARA AMPLIAR LA OBRA -->
+    <div id="modalVisor" class="modal-visor" onclick="cerrarVisorModal()">
+        <span class="btn-cerrar-modal" onclick="cerrarVisorModal()">&times;</span>
+        <div class="modal-contenido" onclick="event.stopPropagation()">
+            <img id="imgModal" src="" alt="Obra Ampliada">
+            <div id="tituloModal" class="modal-titulo"></div>
+        </div>
     </div>
 
     <script>
+        // Configuración idéntica a tu panel de administración
+        const firebaseConfig = {
+            apiKey: "AIzaSyCojaFTEL_LHiCwfyeFtSesYNsDiiy3f2A",
+            authDomain: "galeriasramos-cc818.firebaseapp.com",
+            projectId: "galeriasramos-cc818",
+            storageBucket: "galeriasramos-cc818.firebasestorage.app",
+            messagingSenderId: "365138640156",
+            appId: "1:365138640156:web:959c1690ee4ea759b4ced9"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
         let obrasGlobales = [];
         let obrasFiltradas = [];
         let paginaActual = 1;
         const obrasPorPagina = 12;
 
-        function cargarCatalogo() {
-            // BORRAMOS CUALQUIER MEMORIA PREVIA PARA PREVENIR ERRORES
-            localStorage.clear();
+        // Escucha en tiempo real de Firestore
+        function escucharCatalogoFirebase() {
+            db.collection("obras").onSnapshot((snapshot) => {
+                obrasGlobales = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const numObra = parseInt(doc.id.replace(/\D/g, '')) || 0;
 
-            let obras = [];
+                    // Asegurar ruta de imagen
+                    const rutaFoto = data.foto ? (data.foto.includes('obra mera') ? data.foto : (data.foto.startsWith('foto') ? `obra mera (${numObra}).jpeg` : data.foto)) : `obra mera (${numObra}).jpeg`;
 
-            // Listas exactas de precios asignadas por id de obra
-            const a3000 = [19, 43, 86];
-            const a2000 = [1, 4, 5, 18, 21, 23, 26, 28, 34, 57, 84, 85];
-
-            for (let i = 1; i <= 88; i++) {
-                const es35 = (i === 35);
-                let precioReal = "1000 €";
-
-                if (es35) {
-                    precioReal = "-";
-                } else if (a3000.includes(i)) {
-                    precioReal = "3000 €";
-                } else if (a2000.includes(i)) {
-                    precioReal = "2000 €";
-                }
-
-                obras.push({
-                    id: i,
-                    titulo: `Obra N.º ${i}`,
-                    tecnica: "mixta sobre tela",
-                    medidas: "a consultar",
-                    precio: precioReal,
-                    estado: es35 ? "NO DISPONIBLE" : "DISPONIBLE",
-                    imagen: `obra mera (${i}).jpeg`
+                    obrasGlobales.push({
+                        id: numObra,
+                        docId: doc.id,
+                        titulo: data.obraNum || `Obra N.º ${numObra}`,
+                        tecnica: data.tecnica || "mixta sobre tela",
+                        medidas: data.medidas || "a consultar",
+                        precio: (data.precio !== undefined && data.precio !== '') ? data.precio : "-",
+                        estado: data.estado || "DISPONIBLE",
+                        imagen: rutaFoto
+                    });
                 });
-            }
 
-            obrasGlobales = obras;
-            obrasFiltradas = [...obrasGlobales];
-            renderizarPagina(1);
+                // Ordenar del 1 al 88 numéricamente
+                obrasGlobales.sort((a, b) => a.id - b.id);
+
+                // Aplicar el filtro activo actual (o todas por defecto)
+                aplicarFiltroActual();
+            }, (error) => {
+                console.error("Error al leer Firestore en cuadros:", error);
+                document.getElementById('grid-cuadros').innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red;">Error al conectar con la base de datos: ${error.message}</p>`;
+            });
+        }
+
+        function aplicarFiltroActual() {
+            const btnActivo = document.querySelector('.btn-filtro.activo');
+            const texto = btnActivo ? btnActivo.innerText.trim() : 'TODAS LAS OBRAS';
+
+            if (texto.includes('1000')) {
+                filtrarPorPrecio(1000);
+            } else if (texto.includes('2000')) {
+                filtrarPorPrecio(2000);
+            } else if (texto.includes('3000')) {
+                filtrarPorPrecio(3000);
+            } else {
+                filtrarPorPrecio('todos');
+            }
         }
 
         function renderizarPagina(numPagina) {
@@ -348,6 +460,14 @@
                 const esNoDisponible = (obra.estado === 'NO DISPONIBLE');
                 const textoBtn = esNoDisponible ? 'NO DISPONIBLE' : 'ME INTERESA / COMPRAR';
 
+                // Formatear precio
+                let textoPrecio = obra.precio;
+                if (esNoDisponible) {
+                    textoPrecio = '-';
+                } else if (!textoPrecio.includes('€') && textoPrecio !== '-') {
+                    textoPrecio = `${textoPrecio} €`;
+                }
+
                 card.innerHTML = `
                     <div class="contenedor-img" onclick="abrirVisorModal('${obra.imagen}', '${obra.titulo}')">
                         <img src="${obra.imagen}" alt="${obra.titulo}" onerror="this.src='https://via.placeholder.com/300x220?text=Obra+Galeria'">
@@ -356,7 +476,7 @@
                         <h3>${obra.titulo}</h3>
                         <p><strong>Técnica:</strong> ${obra.tecnica}</p>
                         <p><strong>Medidas:</strong> ${obra.medidas}</p>
-                        <div class="precio-cuadro">${obra.precio}</div>
+                        <div class="precio-cuadro">${textoPrecio}</div>
                         <button class="btn-comprar" ${esNoDisponible ? 'disabled' : ''} onclick="contactarObra('${obra.titulo}')">${textoBtn}</button>
                     </div>
                 `;
@@ -364,7 +484,6 @@
             });
 
             renderizarPaginacion();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function renderizarPaginacion() {
@@ -374,38 +493,52 @@
             const totalPaginas = Math.ceil(obrasFiltradas.length / obrasPorPagina);
             if (totalPaginas <= 1) return;
 
+            // Botón Anterior
             const btnAnt = document.createElement('button');
             btnAnt.className = 'btn-pag';
             btnAnt.innerText = '« Anterior';
             btnAnt.disabled = (paginaActual === 1);
-            btnAnt.onclick = () => renderizarPagina(paginaActual - 1);
+            btnAnt.onclick = () => {
+                renderizarPagina(paginaActual - 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
             contenedorPag.appendChild(btnAnt);
 
+            // Números de páginas
             for (let i = 1; i <= totalPaginas; i++) {
                 const btnNum = document.createElement('button');
                 btnNum.className = `btn-pag ${i === paginaActual ? 'activa' : ''}`;
                 btnNum.innerText = i;
-                btnNum.onclick = () => renderizarPagina(i);
+                btnNum.onclick = () => {
+                    renderizarPagina(i);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
                 contenedorPag.appendChild(btnNum);
             }
 
+            // Botón Siguiente
             const btnSig = document.createElement('button');
             btnSig.className = 'btn-pag';
             btnSig.innerText = 'Siguiente »';
             btnSig.disabled = (paginaActual === totalPaginas);
-            btnSig.onclick = () => renderizarPagina(paginaActual + 1);
+            btnSig.onclick = () => {
+                renderizarPagina(paginaActual + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
             contenedorPag.appendChild(btnSig);
         }
 
         function filtrarPorPrecio(precioSeleccionado, boton) {
-            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('activo'));
-            if (boton) boton.classList.add('activo');
+            if (boton) {
+                document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('activo'));
+                boton.classList.add('activo');
+            }
 
             if (precioSeleccionado === 'todos') {
                 obrasFiltradas = [...obrasGlobales];
             } else {
                 obrasFiltradas = obrasGlobales.filter(obra => {
-                    if (obra.precio === '-') return false;
+                    if (obra.estado === 'NO DISPONIBLE' || obra.precio === '-') return false;
                     const valorNum = parseInt(obra.precio.replace(/[^0-9]/g, '')) || 0;
                     return valorNum === parseInt(precioSeleccionado);
                 });
@@ -432,13 +565,12 @@
             document.getElementById('modalVisor').style.display = 'none';
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                cerrarVisorModal();
-            }
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') cerrarVisorModal();
         });
 
-        document.addEventListener('DOMContentLoaded', cargarCatalogo);
+        document.addEventListener('DOMContentLoaded', escucharCatalogoFirebase);
     </script>
 </body>
+
 </html>
