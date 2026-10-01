@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galerías Ramos - Panel Admin</title>
+    <title>Galería de Arte Melquiades Ramos - Panel Admin</title>
     <style>
         :root {
             --bg-color: #f4eee1;
@@ -240,7 +240,7 @@
     <!-- PANTALLA LOGIN -->
     <div id="seccion-login" class="contenedor-login">
         <h2>Acceso Administración</h2>
-        <p>Galerías Ramos — Gestión de Catálogo</p>
+        <p>Galería de Arte Melquiades Ramos — Gestión de Catálogo</p>
 
         <form id="form-login" onsubmit="iniciarSesion(event)">
             <div class="campo">
@@ -259,10 +259,9 @@
     <!-- PANEL PRINCIPAL -->
     <div id="seccion-admin" style="display: none;">
         <header>
-            <h1>PANEL DE CONTROL — GALERÍAS RAMOS</h1>
+            <h1>PANEL DE CONTROL — GALERÍA DE ARTE MELQUIADES RAMOS</h1>
             <div class="acciones-header">
-                <button class="btn-accion btn-crear-todo" onclick="inicializar88Obras()">🚀 Subir las 88 obras con los
-                    precios actualizados</button>
+                <button class="btn-accion btn-crear-todo" onclick="inicializar88Obras()">🚀 Subir las 88 obras con los precios actualizados</button>
                 <button class="btn-accion btn-cambiar-pass" onclick="abrirModalPass()">Cambiar Contraseña</button>
                 <button class="btn-accion btn-logout" onclick="cerrarSesion()">Cerrar Sesión</button>
             </div>
@@ -346,10 +345,9 @@
             <form onsubmit="guardarNuevaPass(event)">
                 <div class="campo">
                     <label>Nueva Contraseña:</label>
-                    <input type="password" id="nueva-pass" required minlength="4">
+                    <input type="password" id="nueva-pass" required minlength="4" placeholder="••••••••">
                 </div>
-                <button type="submit" class="btn-guardar" style="margin-bottom: 0.5rem;">GUARDAR NUEVA
-                    CONTRASEÑA</button>
+                <button type="submit" class="btn-guardar" style="margin-bottom: 0.5rem;">GUARDAR NUEVA CONTRASEÑA</button>
                 <button type="button" onclick="cerrarModalPass()"
                     style="width:100%; padding:0.6rem; background:#666; color:white; border:none; border-radius:4px; cursor:pointer;">CANCELAR</button>
             </form>
@@ -372,21 +370,18 @@
 
         let listaObras = [];
 
-        // LÓGICA DE INICIO DE SESIÓN
+        // LÓGICA DE INICIO DE SESIÓN ESTRICTA (Sin comodines)
         function iniciarSesion(e) {
             e.preventDefault();
             const emailInput = document.getElementById('login-email').value.trim().toLowerCase();
             const passInput = document.getElementById('login-pass').value.trim();
 
             const correoCorrecto = "melquiadesramos94@gmail.com";
+            // Si nunca la ha cambiado, la inicial es ramos2026. En cuanto la cambie, SOLO valdrá la suya.
             const passGuardada = localStorage.getItem('admin_pass') || 'ramos2026';
 
-            const esValida = (passInput === passGuardada) ||
-                (passInput === 'ramos2026') ||
-                (passInput === 'ramos 2026');
-
-            if (emailInput === correoCorrecto && esValida) {
-                localStorage.setItem('admin_pass', passInput);
+            // Comprobación estricta y única
+            if (emailInput === correoCorrecto && passInput === passGuardada) {
                 document.getElementById('seccion-login').style.display = 'none';
                 document.getElementById('seccion-admin').style.display = 'block';
                 document.getElementById('error-login').style.display = 'none';
@@ -408,8 +403,11 @@
         function guardarNuevaPass(e) {
             e.preventDefault();
             const nueva = document.getElementById('nueva-pass').value.trim();
+            if (!nueva) return;
+
+            // Se almacena únicamente en su navegador y sobreescribe cualquier clave previa
             localStorage.setItem('admin_pass', nueva);
-            alert('¡Contraseña cambiada con éxito!');
+            alert('¡Contraseña cambiada con éxito! A partir de ahora solo se puede acceder con la nueva clave.');
             cerrarModalPass();
             document.getElementById('nueva-pass').value = '';
         }
