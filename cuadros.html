@@ -26,7 +26,6 @@
             color: var(--text-dark);
         }
 
-        /* HEADER & NAVEGACIÓN */
         header {
             background-color: var(--bg-color);
             border-bottom: 2px solid var(--brand-red);
@@ -76,7 +75,6 @@
             border-radius: 20px;
         }
 
-        /* CONTENIDO PRINCIPAL */
         main {
             max-width: 1300px;
             margin: 2rem auto;
@@ -100,7 +98,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* BOTONES DE FILTRO DE PRECIOS */
         .contenedor-filtros-botones {
             display: flex;
             justify-content: center;
@@ -128,7 +125,6 @@
             color: white;
         }
 
-        /* GRID DE CUADROS */
         .grid-cuadros {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -221,7 +217,6 @@
             cursor: not-allowed;
         }
 
-        /* PAGINACIÓN */
         .contenedor-paginacion {
             display: flex;
             justify-content: center;
@@ -254,7 +249,6 @@
             cursor: not-allowed;
         }
 
-        /* MODAL / VISOR FLOTANTE */
         .modal-visor {
             display: none;
             position: fixed;
@@ -294,283 +288,4 @@
             font-weight: 800;
             margin-top: 15px;
             text-align: center;
-            letter-spacing: 0.5px;
         }
-
-        .btn-cerrar-modal {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: #ffffff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
-            transition: color 0.2s;
-            z-index: 100000;
-        }
-
-        .btn-cerrar-modal:hover {
-            color: var(--brand-red);
-        }
-    </style>
-
-    <!-- Firebase SDK Compat -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-</head>
-
-<body>
-
-    <!-- NAV / HEADER -->
-    <header>
-        <div class="logo">GALERÍAS RAMOS</div>
-        <nav>
-            <ul>
-                <li><a href="index.html">INICIO</a></li>
-                <li><a href="galeria3d.html">GALERÍA 3D</a></li>
-                <li><a href="cuadros.html" class="active-pill">CUADROS</a></li>
-                <li><a href="contacto.html">CONTACTO</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <div class="titulo-seccion">
-            <h1 id="titulo-catalogo">CATÁLOGO DE OBRAS</h1>
-            <p>Colección de obras originales de Melquiades Ramos.</p>
-        </div>
-
-        <!-- FILTROS POR PRECIO -->
-        <div class="contenedor-filtros-botones">
-            <button class="btn-filtro activo" onclick="filtrarPorPrecio('todos', this)">TODAS LAS OBRAS</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio(1000, this)">1000 €</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio(2000, this)">2000 €</button>
-            <button class="btn-filtro" onclick="filtrarPorPrecio(3000, this)">3000 €</button>
-        </div>
-
-        <!-- CONTENEDOR DE CUADROS DINÁMICO -->
-        <div class="grid-cuadros" id="grid-cuadros">
-            <p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666; font-weight: bold;">Cargando
-                catálogo en directo...</p>
-        </div>
-
-        <!-- CONTENEDOR DE PAGINACIÓN -->
-        <div class="contenedor-paginacion" id="paginacion"></div>
-    </main>
-
-    <!-- MODAL PARA AMPLIAR LA OBRA -->
-    <div id="modalVisor" class="modal-visor" onclick="cerrarVisorModal()">
-        <span class="btn-cerrar-modal" onclick="cerrarVisorModal()">&times;</span>
-        <div class="modal-contenido" onclick="event.stopPropagation()">
-            <img id="imgModal" src="" alt="Obra Ampliada">
-            <div id="tituloModal" class="modal-titulo"></div>
-        </div>
-    </div>
-
-    <script>
-        // Configuración idéntica a tu panel de administración
-        const firebaseConfig = {
-            apiKey: "AIzaSyCojaFTEL_LHiCwfyeFtSesYNsDiiy3f2A",
-            authDomain: "galeriasramos-cc818.firebaseapp.com",
-            projectId: "galeriasramos-cc818",
-            storageBucket: "galeriasramos-cc818.firebasestorage.app",
-            messagingSenderId: "365138640156",
-            appId: "1:365138640156:web:959c1690ee4ea759b4ced9"
-        };
-
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.firestore();
-
-        let obrasGlobales = [];
-        let obrasFiltradas = [];
-        let paginaActual = 1;
-        const obrasPorPagina = 12;
-
-        // Escucha en tiempo real de Firestore
-        function escucharCatalogoFirebase() {
-            db.collection("obras").onSnapshot((snapshot) => {
-                obrasGlobales = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const numObra = parseInt(doc.id.replace(/\D/g, '')) || 0;
-
-                    // Asegurar ruta de imagen
-                    const rutaFoto = data.foto ? (data.foto.includes('obra mera') ? data.foto : (data.foto.startsWith('foto') ? `obra mera (${numObra}).jpeg` : data.foto)) : `obra mera (${numObra}).jpeg`;
-
-                    obrasGlobales.push({
-                        id: numObra,
-                        docId: doc.id,
-                        titulo: data.obraNum || `Obra N.º ${numObra}`,
-                        tecnica: data.tecnica || "mixta sobre tela",
-                        medidas: data.medidas || "a consultar",
-                        precio: (data.precio !== undefined && data.precio !== '') ? data.precio : "-",
-                        estado: data.estado || "DISPONIBLE",
-                        imagen: rutaFoto
-                    });
-                });
-
-                // Ordenar del 1 al 88 numéricamente
-                obrasGlobales.sort((a, b) => a.id - b.id);
-
-                // Aplicar el filtro activo actual (o todas por defecto)
-                aplicarFiltroActual();
-            }, (error) => {
-                console.error("Error al leer Firestore en cuadros:", error);
-                document.getElementById('grid-cuadros').innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red;">Error al conectar con la base de datos: ${error.message}</p>`;
-            });
-        }
-
-        function aplicarFiltroActual() {
-            const btnActivo = document.querySelector('.btn-filtro.activo');
-            const texto = btnActivo ? btnActivo.innerText.trim() : 'TODAS LAS OBRAS';
-
-            if (texto.includes('1000')) {
-                filtrarPorPrecio(1000);
-            } else if (texto.includes('2000')) {
-                filtrarPorPrecio(2000);
-            } else if (texto.includes('3000')) {
-                filtrarPorPrecio(3000);
-            } else {
-                filtrarPorPrecio('todos');
-            }
-        }
-
-        function renderizarPagina(numPagina) {
-            paginaActual = numPagina;
-            const grid = document.getElementById('grid-cuadros');
-            grid.innerHTML = '';
-
-            const inicio = (paginaActual - 1) * obrasPorPagina;
-            const fin = inicio + obrasPorPagina;
-            const obrasPagina = obrasFiltradas.slice(inicio, fin);
-
-            if (obrasPagina.length === 0) {
-                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666; font-weight: bold;">No hay obras para mostrar.</p>`;
-                document.getElementById('paginacion').innerHTML = '';
-                return;
-            }
-
-            obrasPagina.forEach(obra => {
-                const card = document.createElement('div');
-                card.className = 'card-cuadro';
-
-                const esNoDisponible = (obra.estado === 'NO DISPONIBLE');
-                const textoBtn = esNoDisponible ? 'NO DISPONIBLE' : 'ME INTERESA / COMPRAR';
-
-                // Formatear precio
-                let textoPrecio = obra.precio;
-                if (esNoDisponible) {
-                    textoPrecio = '-';
-                } else if (!textoPrecio.includes('€') && textoPrecio !== '-') {
-                    textoPrecio = `${textoPrecio} €`;
-                }
-
-                card.innerHTML = `
-                    <div class="contenedor-img" onclick="abrirVisorModal('${obra.imagen}', '${obra.titulo}')">
-                        <img src="${obra.imagen}" alt="${obra.titulo}" onerror="this.src='https://via.placeholder.com/300x220?text=Obra+Galeria'">
-                    </div>
-                    <div class="info-cuadro">
-                        <h3>${obra.titulo}</h3>
-                        <p><strong>Técnica:</strong> ${obra.tecnica}</p>
-                        <p><strong>Medidas:</strong> ${obra.medidas}</p>
-                        <div class="precio-cuadro">${textoPrecio}</div>
-                        <button class="btn-comprar" ${esNoDisponible ? 'disabled' : ''} onclick="contactarObra('${obra.titulo}')">${textoBtn}</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-
-            renderizarPaginacion();
-        }
-
-        function renderizarPaginacion() {
-            const contenedorPag = document.getElementById('paginacion');
-            contenedorPag.innerHTML = '';
-
-            const totalPaginas = Math.ceil(obrasFiltradas.length / obrasPorPagina);
-            if (totalPaginas <= 1) return;
-
-            // Botón Anterior
-            const btnAnt = document.createElement('button');
-            btnAnt.className = 'btn-pag';
-            btnAnt.innerText = '« Anterior';
-            btnAnt.disabled = (paginaActual === 1);
-            btnAnt.onclick = () => {
-                renderizarPagina(paginaActual - 1);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
-            contenedorPag.appendChild(btnAnt);
-
-            // Números de páginas
-            for (let i = 1; i <= totalPaginas; i++) {
-                const btnNum = document.createElement('button');
-                btnNum.className = `btn-pag ${i === paginaActual ? 'activa' : ''}`;
-                btnNum.innerText = i;
-                btnNum.onclick = () => {
-                    renderizarPagina(i);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                };
-                contenedorPag.appendChild(btnNum);
-            }
-
-            // Botón Siguiente
-            const btnSig = document.createElement('button');
-            btnSig.className = 'btn-pag';
-            btnSig.innerText = 'Siguiente »';
-            btnSig.disabled = (paginaActual === totalPaginas);
-            btnSig.onclick = () => {
-                renderizarPagina(paginaActual + 1);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
-            contenedorPag.appendChild(btnSig);
-        }
-
-        function filtrarPorPrecio(precioSeleccionado, boton) {
-            if (boton) {
-                document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('activo'));
-                boton.classList.add('activo');
-            }
-
-            if (precioSeleccionado === 'todos') {
-                obrasFiltradas = [...obrasGlobales];
-            } else {
-                obrasFiltradas = obrasGlobales.filter(obra => {
-                    if (obra.estado === 'NO DISPONIBLE' || obra.precio === '-') return false;
-                    const valorNum = parseInt(obra.precio.replace(/[^0-9]/g, '')) || 0;
-                    return valorNum === parseInt(precioSeleccionado);
-                });
-            }
-
-            renderizarPagina(1);
-        }
-
-        function contactarObra(titulo) {
-            window.location.href = `contacto.html?obra=${encodeURIComponent(titulo)}`;
-        }
-
-        function abrirVisorModal(rutaImagen, titulo) {
-            const modal = document.getElementById('modalVisor');
-            const img = document.getElementById('imgModal');
-            const txtTitulo = document.getElementById('tituloModal');
-
-            img.src = rutaImagen;
-            txtTitulo.innerText = titulo;
-            modal.style.display = 'flex';
-        }
-
-        function cerrarVisorModal() {
-            document.getElementById('modalVisor').style.display = 'none';
-        }
-
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') cerrarVisorModal();
-        });
-
-        document.addEventListener('DOMContentLoaded', escucharCatalogoFirebase);
-    </script>
-</body>
-
-</html>
