@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galería de Arte Melquiades Ramos - Catálogo de Obras</title>
+    <title>Galería de Arte Melquiades Ramos - Obras Expuestas</title>
     <style>
         :root {
             --bg-color: #f6f1eb;
@@ -27,41 +27,43 @@
             line-height: 1.5;
         }
 
-        /* ENCABEZADO */
+        /* ENCABEZADO BLINDADO CONTRA DESBORDAMIENTOS */
         header {
             background-color: #ffffff;
             border-bottom: 2px solid var(--primary-red);
-            padding: 1.2rem 2.5rem;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
+            flex-wrap: nowrap;
+            gap: 1rem;
         }
 
         .logo {
-            font-size: 1.35rem;
+            font-size: 1.15rem;
             font-weight: 900;
             letter-spacing: 0.5px;
             color: #000000;
             text-decoration: none;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         nav ul {
             display: flex;
             list-style: none;
             align-items: center;
-            gap: 1.75rem;
+            gap: 1.1rem;
         }
 
         nav a {
             text-decoration: none;
             color: #1a1a1a;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             letter-spacing: 0.5px;
             transition: color 0.2s ease;
+            white-space: nowrap;
         }
 
         nav a:hover {
@@ -71,7 +73,7 @@
         nav a.active-link {
             background-color: var(--primary-red);
             color: #ffffff;
-            padding: 0.5rem 1.4rem;
+            padding: 0.45rem 1.1rem;
             border-radius: 9999px;
         }
 
@@ -272,7 +274,7 @@
             font-weight: bold;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 860px) {
             header {
                 flex-direction: column;
                 align-items: center;
@@ -291,14 +293,14 @@
 
 <body>
 
-    <!-- ENCABEZADO ACTUALIZADO -->
+    <!-- ENCABEZADO CON "OBRAS EXPUESTAS" -->
     <header>
         <a href="index.html" class="logo">GALERÍA DE ARTE MELQUIADES RAMOS</a>
         <nav>
             <ul>
                 <li><a href="index.html">INICIO</a></li>
                 <li><a href="galeria3d.html">GALERÍA 3D</a></li>
-                <li><a href="cuadros.html" class="active-link">CUADROS</a></li>
+                <li><a href="cuadros.html" class="active-link">OBRAS EXPUESTAS</a></li>
                 <li><a href="contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -317,8 +319,7 @@
 
         <!-- CONTENEDOR DONDE FIREBASE INYECTA LOS CUADROS -->
         <div class="grid-cuadros" id="grid-cuadros">
-            <p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666; font-weight: bold;">Cargando
-                catálogo en directo...</p>
+            <p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666; font-weight: bold;">Cargando catálogo en directo...</p>
         </div>
 
         <!-- PAGINACIÓN DINÁMICA -->
@@ -405,9 +406,7 @@
                 const card = document.createElement("article");
                 card.className = "card-obra";
 
-                // Mapeo exacto de los campos de Firestore
                 const numDoc = parseInt(obra.id.replace(/\D/g, '')) || (index + 1);
-                // Si obra.foto viene como "foto1.jpeg" pero en tu carpeta local son "obra mera (X).jpeg":
                 const imagenSrc = obra.foto || `obra mera (${numDoc}).jpeg`;
                 const titulo = obra.obraNum ? obra.obraNum.trim() : `Obra #${numDoc}`;
                 const tecnica = obra.tecnica || "Técnica mixta sobre tela";
