@@ -27,11 +27,11 @@
             line-height: 1.5;
         }
 
-        /* ENCABEZADO BLINDADO CONTRA DESBORDAMIENTOS */
+        /* ENCABEZADO OPTIMIZADO PARA 5 BOTONES */
         header {
             background-color: #ffffff;
             border-bottom: 2px solid var(--primary-red);
-            padding: 1rem 2rem;
+            padding: 0.9rem 1.8rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -40,7 +40,7 @@
         }
 
         .logo {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 900;
             letter-spacing: 0.5px;
             color: #000000;
@@ -53,14 +53,14 @@
             display: flex;
             list-style: none;
             align-items: center;
-            gap: 1.1rem;
+            gap: 0.9rem;
         }
 
         nav a {
             text-decoration: none;
             color: #1a1a1a;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             letter-spacing: 0.5px;
             transition: color 0.2s ease;
             white-space: nowrap;
@@ -73,7 +73,7 @@
         nav a.active-link {
             background-color: var(--primary-red);
             color: #ffffff;
-            padding: 0.45rem 1.1rem;
+            padding: 0.4rem 0.95rem;
             border-radius: 9999px;
         }
 
@@ -274,7 +274,7 @@
             font-weight: bold;
         }
 
-        @media (max-width: 860px) {
+        @media (max-width: 920px) {
             header {
                 flex-direction: column;
                 align-items: center;
@@ -293,7 +293,7 @@
 
 <body>
 
-    <!-- ENCABEZADO CON "OBRAS EXPUESTAS" -->
+    <!-- ENCABEZADO CON ENLACE EXACTO A OBRASANTERIORES.HTML -->
     <header>
         <a href="index.html" class="logo">GALERÍA DE ARTE MELQUIADES RAMOS</a>
         <nav>
@@ -301,6 +301,7 @@
                 <li><a href="index.html">INICIO</a></li>
                 <li><a href="galeria3d.html">GALERÍA 3D</a></li>
                 <li><a href="cuadros.html" class="active-link">OBRAS EXPUESTAS</a></li>
+                <li><a href="obrasanteriores.html">OBRA ANTERIOR</a></li>
                 <li><a href="contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -319,7 +320,8 @@
 
         <!-- CONTENEDOR DONDE FIREBASE INYECTA LOS CUADROS -->
         <div class="grid-cuadros" id="grid-cuadros">
-            <p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666; font-weight: bold;">Cargando catálogo en directo...</p>
+            <p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666; font-weight: bold;">Cargando
+                catálogo en directo...</p>
         </div>
 
         <!-- PAGINACIÓN DINÁMICA -->
