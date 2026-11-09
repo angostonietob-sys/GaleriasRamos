@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galerías Ramos - Galería 3D</title>
+    <title>Galerías Ramos - Calle Melquiades Ramos & Galería 3D</title>
     <style>
         :root {
             --bg-color: #f4eee1;
@@ -15,16 +16,16 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Cinzel', 'Times New Roman', Georgia, serif;
+            user-select: none;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: #120c18;
             color: var(--text-dark);
             overflow: hidden;
         }
 
-        /* HEADER & NAVEGACIÓN */
         header {
             background-color: var(--bg-color);
             border-bottom: 2px solid var(--brand-red);
@@ -40,11 +41,11 @@
         }
 
         .logo {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 900;
             color: var(--text-dark);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         nav ul {
@@ -60,7 +61,8 @@
             font-weight: 700;
             font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-family: system-ui, sans-serif;
         }
 
         nav a.active-pill {
@@ -70,70 +72,97 @@
             border-radius: 20px;
         }
 
-        /* CANVA 3D */
         #canvas-container {
             width: 100vw;
             height: 100vh;
             display: block;
+            cursor: grab;
         }
 
-        /* PLAQUITA DE COMPRA EN ESQUINA INFERIOR */
+        #canvas-container:active {
+            cursor: grabbing;
+        }
+
+        .mira-centro {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 235, 200, 0.45);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
         .placa-comprar-esquina {
             position: fixed;
             bottom: 75px;
             right: 25px;
-            background-color: #e6dfcc;
-            border: 2px solid #c82323;
+            background-color: #fcf9f2;
+            border: 2px solid var(--brand-red);
             color: #1a1a1a;
             padding: 0.8rem 1.2rem;
             border-radius: 8px;
             text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
             z-index: 999;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 0.2rem;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease;
+            font-family: system-ui, sans-serif;
         }
 
         .placa-comprar-esquina:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(200, 35, 35, 0.4);
-            background-color: #f4eee1;
         }
 
         .placa-comprar-esquina span {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: #555;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
         .placa-comprar-esquina strong {
-            font-size: 0.85rem;
-            color: #c82323;
-            font-weight: 800;
+            font-size: 0.88rem;
+            color: var(--brand-red);
+            font-weight: 900;
         }
 
-        /* AVISO CONTROLES ABAJO */
         .controles-info {
             position: absolute;
-            bottom: 60px;
+            bottom: 58px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(230, 223, 204, 0.9);
-            border: 1px solid #d8d0bd;
-            padding: 0.6rem 1.5rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            background-color: rgba(24, 18, 22, 0.88);
+            border: 1px solid rgba(255, 180, 140, 0.25);
+            color: #fcefe3;
+            padding: 0.55rem 1.5rem;
+            border-radius: 24px;
+            font-size: 0.82rem;
             font-weight: 600;
-            color: #333;
             z-index: 10;
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
             pointer-events: none;
+            font-family: system-ui, sans-serif;
         }
 
-        /* MODAL EXPANDIR CUADRO AL HACER CLIC */
+        .tecla-badge {
+            background: #3c2a33;
+            color: #ffd8b5;
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid #754f5f;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
         .modal-cuadro {
             display: none;
             position: fixed;
@@ -141,7 +170,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.85);
+            background: rgba(10, 6, 12, 0.94);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -151,39 +180,40 @@
         .modal-cuadro img {
             max-width: 85%;
             max-height: 80%;
-            border: 4px solid #e6dfcc;
+            border: 3px solid #dfd7c5;
             border-radius: 4px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.8);
+            box-shadow: 0 0 45px rgba(255, 120, 60, 0.2);
         }
 
         .modal-cuadro h3 {
-            color: white;
-            margin-top: 1rem;
-            font-size: 1.2rem;
+            color: #fff;
+            margin-top: 1.2rem;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
         }
 
         .btn-cerrar-modal {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 25px;
+            right: 35px;
             color: white;
             font-size: 2.5rem;
             font-weight: bold;
             cursor: pointer;
         }
 
-        /* FOOTER */
         footer {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: #1a1a1a;
-            color: #ccc;
+            background-color: #121212;
+            color: #aaa;
             text-align: center;
-            padding: 0.6rem 1rem;
-            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.72rem;
             z-index: 10;
+            font-family: system-ui, sans-serif;
         }
 
         footer span {
@@ -192,11 +222,11 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
+
 <body>
 
-    <!-- HEADER / NAVEGACIÓN -->
     <header>
-        <div class="logo">OBRAS EXPUESTAS 3D</div> 
+        <div class="logo">GALERÍA MELQUIADES RAMOS 3D</div>
         <nav>
             <ul>
                 <li><a href="index.html">INICIO</a></li>
@@ -207,145 +237,584 @@
         </nav>
     </header>
 
-    <!-- CONTENEDOR 3D -->
     <div id="canvas-container"></div>
+    <div class="mira-centro"></div>
 
-    <!-- CARTELITO DE COMPRA EN ESQUINA -->
     <a href="cuadros.html" class="placa-comprar-esquina">
-        <span>¿Quieres adquirir una obra?</span>
-        <strong>VER PRECIOS Y DISPONIBILIDAD ➔</strong>
+        <span>¿Interesado en una obra?</span>
+        <strong>CONSULTAR DISPONIBILIDAD ➔</strong>
     </a>
 
-    <!-- AVISO DE CONTROLES -->
     <div class="controles-info">
-        Avanza con W/S o Flechas arriba/abajo. Haz clic en un cuadro para expandirlo.
+        <div><span class="tecla-badge">W</span> <span class="tecla-badge">A</span> <span class="tecla-badge">S</span>
+            <span class="tecla-badge">D</span> Caminar</div>
+        <div>Arrastra ratón: Mirar</div>
+        <div>Clic: Abrir cuadro</div>
     </div>
 
-    <!-- MODAL DE VISUALIZACIÓN EN ALTA CALIDAD -->
     <div class="modal-cuadro" id="modal-cuadro" onclick="cerrarModal()">
         <span class="btn-cerrar-modal">&times;</span>
         <img id="img-modal" src="" alt="Obra">
         <h3 id="titulo-modal"></h3>
     </div>
 
-    <!-- FOOTER -->
     <footer>
-        Galerías Ramos — Todos los derechos reservados © 2026<br>
+        Galerías Ramos — Colección Permanente © 2026<br>
         Contacto: Melquiadesramos94@gmail.com | Tel: 643 406 667<br>
         <span>Página web diseñada y creada por Borja Angosto Nieto con tecnología VSC</span>
     </footer>
 
     <script>
-        // ESCENA 3D (Ángulo de cámara más amplio a 70)
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf4eee1);
 
-        const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 2, 8);
+        // 1. ATMÓSFERA COMPLETA AL ATARDECER
+        scene.background = new THREE.Color(0xb56846);
+        scene.fog = new THREE.Fog(0xb56846, 50, 260);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // Empezamos en la entrada (Z=5) con vista a las puertas automáticas y el interior
+        camera.position.set(0, 1.85, 5.0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
+        renderer.setPixelRatio(window.devicePixelRatio || 1);
+        renderer.outputEncoding = THREE.sRGBEncoding;
         container.appendChild(renderer.domElement);
 
-        // ILUMINACIÓN
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambientLight);
+        const maxAniso = renderer.capabilities.getMaxAnisotropy();
 
-        // PASILLO MÁS ANCHO (Suelo de 24 de ancho y paredes a 8)
-        const floorGeo = new THREE.PlaneGeometry(24, 100);
-        const floorMat = new THREE.MeshStandardMaterial({ color: 0xc82323, roughness: 0.3 });
-        const floor = new THREE.Mesh(floorGeo, floorMat);
-        floor.rotation.x = -Math.PI / 2;
-        floor.position.z = -40;
-        scene.add(floor);
+        // ILUMINACIÓN ATARDECER Y SALA
+        scene.add(new THREE.AmbientLight(0xffeedd, 0.72));
 
-        const wallMat = new THREE.MeshStandardMaterial({ color: 0xe6dfcc });
-        
-        const leftWallGeo = new THREE.PlaneGeometry(100, 10);
-        const leftWall = new THREE.Mesh(leftWallGeo, wallMat);
-        leftWall.position.set(-8, 5, -40); // Más separado
-        leftWall.rotation.y = Math.PI / 2;
-        scene.add(leftWall);
+        const sun = new THREE.DirectionalLight(0xff9966, 0.95);
+        sun.position.set(20, 35, -90);
+        scene.add(sun);
 
-        const rightWall = new THREE.Mesh(leftWallGeo, wallMat);
-        rightWall.position.set(8, 5, -40); // Más separado
-        rightWall.rotation.y = -Math.PI / 2;
-        scene.add(rightWall);
+        const fill = new THREE.DirectionalLight(0xffcca6, 0.5);
+        fill.position.set(-25, 25, 30);
+        scene.add(fill);
 
-        const backWallGeo = new THREE.PlaneGeometry(16, 10);
-        const backWall = new THREE.Mesh(backWallGeo, wallMat);
-        backWall.position.set(0, 5, -90);
-        scene.add(backWall);
-
-        // CARGA DE CUADROS PEGADOS A LAS NUEVAS PAREDES
-        const textureLoader = new THREE.TextureLoader();
-        const cuadrosMesh = [];
-
-        for (let i = 1; i <= 88; i++) {
-            const esIzquierda = (i % 2 !== 0);
-            const zPos = - (Math.floor((i - 1) / 2) * 2) - 2;
-            const xPos = esIzquierda ? -7.9 : 7.9; // Pegados a la pared en -8 y 8
-            const yRot = esIzquierda ? Math.PI / 2 : -Math.PI / 2;
-
-            const cuadroGeo = new THREE.PlaneGeometry(1.4, 1.0);
-            const rutaImagen = `obra mera (${i}).jpeg`;
-            const cuadroMat = new THREE.MeshStandardMaterial({
-                map: textureLoader.load(rutaImagen)
-            });
-
-            const cuadroMesh = new THREE.Mesh(cuadroGeo, cuadroMat);
-            cuadroMesh.position.set(xPos, 2.2, zPos);
-            cuadroMesh.rotation.y = yRot;
-            cuadroMesh.name = `Obra N.º ${i}`;
-            cuadroMesh.userData = { src: rutaImagen };
-
-            scene.add(cuadroMesh);
-            cuadrosMesh.push(cuadroMesh);
+        for (let lz = -6; lz >= -90; lz -= 14) {
+            const spot = new THREE.PointLight(0xffe6cb, 0.8, 20);
+            spot.position.set(0, 5.0, lz);
+            scene.add(spot);
         }
 
-        // CONTROLES SOLO ADELANTE / ATRÁS
+        const loader = new THREE.TextureLoader();
+
+        const anchoG = 18, largoG = 96, altoEdificio = 6.0, altoP = 3.6, zP = 0, zF = -92;
+
+        // 2. CALLE MELQUIADES RAMOS, ACERAS Y PLAZA
+        const mAvenida = new THREE.MeshStandardMaterial({ color: 0x423d3b, roughness: 0.75 });
+        const calleMelquiades = new THREE.Mesh(new THREE.PlaneGeometry(16, 68), mAvenida);
+        calleMelquiades.rotation.x = -Math.PI / 2;
+        calleMelquiades.position.set(0, -0.01, 32);
+        scene.add(calleMelquiades);
+
+        const mAcera = new THREE.MeshStandardMaterial({ color: 0x6e6660, roughness: 0.65 });
+        const aceraIzq = new THREE.Mesh(new THREE.BoxGeometry(6, 0.15, 68), mAcera);
+        aceraIzq.position.set(-11, 0.075, 32);
+        scene.add(aceraIzq);
+
+        const aceraDer = new THREE.Mesh(new THREE.BoxGeometry(6, 0.15, 68), mAcera);
+        aceraDer.position.set(11, 0.075, 32);
+        scene.add(aceraDer);
+
+        const mEje = new THREE.MeshStandardMaterial({ color: 0x82776e, roughness: 0.6 });
+        const ejeEntrada = new THREE.Mesh(new THREE.PlaneGeometry(6, 68), mEje);
+        ejeEntrada.rotation.x = -Math.PI / 2;
+        ejeEntrada.position.set(0, 0.01, 32);
+        scene.add(ejeEntrada);
+
+        // PLACA OFICIAL CALLE
+        const cvPlaca = document.createElement('canvas');
+        cvPlaca.width = 2048; cvPlaca.height = 700;
+        const cxP = cvPlaca.getContext('2d');
+        cxP.fillStyle = '#0b1d3a'; cxP.fillRect(0, 0, 2048, 700);
+        cxP.strokeStyle = '#d4af37'; cxP.lineWidth = 26;
+        cxP.strokeRect(30, 30, 1988, 640);
+        cxP.strokeStyle = '#f4eee1'; cxP.lineWidth = 8;
+        cxP.strokeRect(60, 60, 1928, 580);
+        cxP.textAlign = 'center'; cxP.textBaseline = 'middle';
+        cxP.fillStyle = '#f4eee1'; cxP.font = 'bold 105px Georgia, serif'; cxP.letterSpacing = '12px';
+        cxP.fillText('CIUDAD DE LAS ARTES', 1024, 200);
+        cxP.fillStyle = '#ffd700'; cxP.font = '900 165px Georgia, serif'; cxP.letterSpacing = '6px';
+        cxP.fillText('CALLE MELQUIADES RAMOS', 1024, 430);
+
+        const texPlaca = new THREE.CanvasTexture(cvPlaca);
+        texPlaca.anisotropy = maxAniso;
+        texPlaca.encoding = THREE.sRGBEncoding;
+
+        const mPoste = new THREE.MeshStandardMaterial({ color: 0x181818, roughness: 0.35 });
+        const posteCalle = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 4.2), mPoste);
+        posteCalle.position.set(-6.5, 2.1, 46);
+        scene.add(posteCalle);
+
+        const placaMesh = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.85, 0.08), new THREE.MeshStandardMaterial({ map: texPlaca, roughness: 0.3 }));
+        placaMesh.position.set(-6.5, 3.8, 46);
+        placaMesh.rotation.y = 0.25;
+        scene.add(placaMesh);
+
+        // EDIFICIOS MODERNOS ALEDAÑOS
+        const mEdif1 = new THREE.MeshStandardMaterial({ color: 0x3d353c, roughness: 0.7 });
+        const mEdif2 = new THREE.MeshStandardMaterial({ color: 0x4f4347, roughness: 0.65 });
+        const mEdif3 = new THREE.MeshStandardMaterial({ color: 0x2b242e, roughness: 0.8 });
+        const mCristal = new THREE.MeshStandardMaterial({ color: 0xffb585, roughness: 0.18, metalness: 0.6 });
+        const mEscaparate = new THREE.MeshStandardMaterial({ color: 0xffe6cb, roughness: 0.2 });
+
+        function crearEdificioCalle(x, z, w, h, d, mat, esLadoIzq) {
+            const grupo = new THREE.Group();
+            const cuerpo = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+            cuerpo.position.set(0, h / 2, 0);
+            grupo.add(cuerpo);
+
+            const esc = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.8, d * 0.75), mEscaparate);
+            esc.position.set(esLadoIzq ? w / 2 + 0.1 : -w / 2 - 0.1, 1.6, 0);
+            grupo.add(esc);
+
+            const plantas = Math.floor(h / 3.4);
+            for (let p = 1; p < plantas; p++) {
+                const yV = p * 3.4;
+                const v = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.4, d * 0.65), mCristal);
+                v.position.set(esLadoIzq ? w / 2 + 0.05 : -w / 2 - 0.05, yV, 0);
+                grupo.add(v);
+            }
+
+            grupo.position.set(x, 0, z);
+            scene.add(grupo);
+        }
+
+        crearEdificioCalle(-23, 44, 18, 24, 22, mEdif1, true);
+        crearEdificioCalle(-24, 20, 20, 32, 24, mEdif2, true);
+        crearEdificioCalle(-25, -5, 22, 28, 24, mEdif3, true);
+
+        crearEdificioCalle(23, 44, 18, 28, 22, mEdif2, false);
+        crearEdificioCalle(24, 20, 20, 22, 24, mEdif3, false);
+        crearEdificioCalle(25, -5, 22, 34, 24, mEdif1, false);
+
+        // FAROLAS
+        const mFarola = new THREE.MeshStandardMaterial({ color: 0x161616, roughness: 0.35 });
+        const mFoco = new THREE.MeshBasicMaterial({ color: 0xffd3aa });
+        function colocarFarolaCalle(x, z) {
+            const fPoste = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 4.8), mFarola);
+            fPoste.position.set(x, 2.4, z);
+            scene.add(fPoste);
+
+            const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), mFoco);
+            bulb.position.set(x > 0 ? x - 0.3 : x + 0.3, 4.6, z);
+            scene.add(bulb);
+
+            const l = new THREE.PointLight(0xffcaa2, 0.6, 15);
+            l.position.set(x > 0 ? x - 0.3 : x + 0.3, 4.4, z);
+            scene.add(l);
+        }
+        for (let zFar = 42; zFar >= 8; zFar -= 16) {
+            colocarFarolaCalle(-8.2, zFar);
+            colocarFarolaCalle(8.2, zFar);
+        }
+
+        // PEATONES ANDANDO
+        const peatones = [];
+        const coloresRopa = [0x2c3e50, 0x8e44ad, 0x2c3e50, 0x7f8c8d, 0x16a085, 0xd35400, 0x34495e];
+        const mPiel = new THREE.MeshStandardMaterial({ color: 0xd9b38c, roughness: 0.6 });
+
+        function crearPeaton(x, z, sentidoZ) {
+            const peaton = new THREE.Group();
+            const colRopa = coloresRopa[Math.floor(Math.random() * coloresRopa.length)];
+            const mRopa = new THREE.MeshStandardMaterial({ color: colRopa, roughness: 0.7 });
+            const mPantalon = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 });
+
+            const torso = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.58, 0.22), mRopa);
+            torso.position.y = 1.15;
+            peaton.add(torso);
+
+            const cabeza = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), mPiel);
+            cabeza.position.y = 1.58;
+            peaton.add(cabeza);
+
+            const piernaI = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.68, 0.14), mPantalon);
+            piernaI.position.set(-0.1, 0.5, 0);
+            peaton.add(piernaI);
+
+            const piernaD = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.68, 0.14), mPantalon);
+            piernaD.position.set(0.1, 0.5, 0);
+            peaton.add(piernaD);
+
+            peaton.position.set(x, 0.15, z);
+            peaton.rotation.y = sentidoZ < 0 ? Math.PI : 0;
+
+            scene.add(peaton);
+            peatones.push({ obj: peaton, piernaI, piernaD, dir: sentidoZ, vel: 0.04 + Math.random() * 0.02, fase: Math.random() * Math.PI * 2 });
+        }
+
+        crearPeaton(-9.5, 12, 1);
+        crearPeaton(-10.2, 28, -1);
+        crearPeaton(-9.0, 42, 1);
+        crearPeaton(-10.8, 52, -1);
+        crearPeaton(9.5, 16, -1);
+        crearPeaton(10.5, 32, 1);
+        crearPeaton(9.2, 46, -1);
+        crearPeaton(10.0, 56, 1);
+
+        // SKYLINE
+        const mSky = [
+            new THREE.MeshStandardMaterial({ color: 0x251728, roughness: 0.6 }),
+            new THREE.MeshStandardMaterial({ color: 0x372238, roughness: 0.5 }),
+            new THREE.MeshStandardMaterial({ color: 0x18101c, roughness: 0.7 })
+        ];
+        for (let i = -100; i <= 100; i += 12) {
+            const h = 45 + Math.abs(Math.sin(i * 0.32)) * 65;
+            const t = new THREE.Mesh(new THREE.BoxGeometry(10, h, 10), mSky[Math.abs(i) % 3]);
+            t.position.set(i, h / 2, -165 - Math.abs(Math.cos(i * 0.2)) * 40);
+            scene.add(t);
+        }
+
+        // FACHADA DE LA GALERÍA
+        const mHormigon = new THREE.MeshStandardMaterial({ color: 0xc2b8a7, roughness: 0.8 });
+        const mMadera = new THREE.MeshStandardMaterial({ color: 0x9e7345, roughness: 0.5 });
+        const mMarco = new THREE.MeshStandardMaterial({ color: 0x3d2212, roughness: 0.6 });
+
+        const anchoPuerta = 4.4, wLat = (anchoG - 10) / 2, wRoble = (10 - anchoPuerta) / 2;
+
+        const pIzq = new THREE.Mesh(new THREE.BoxGeometry(wLat, altoEdificio, 0.6), mHormigon);
+        pIzq.position.set(-anchoG / 2 + wLat / 2, altoEdificio / 2, zP);
+        scene.add(pIzq);
+
+        const pDer = new THREE.Mesh(new THREE.BoxGeometry(wLat, altoEdificio, 0.6), mHormigon);
+        pDer.position.set(anchoG / 2 - wLat / 2, altoEdificio / 2, zP);
+        scene.add(pDer);
+
+        const rIzq = new THREE.Mesh(new THREE.BoxGeometry(wRoble, altoP, 0.65), mMadera);
+        rIzq.position.set(-anchoPuerta / 2 - wRoble / 2, altoP / 2, zP + 0.02);
+        scene.add(rIzq);
+
+        const rDer = new THREE.Mesh(new THREE.BoxGeometry(wRoble, altoP, 0.65), mMadera);
+        rDer.position.set(anchoPuerta / 2 + wRoble / 2, altoP / 2, zP + 0.02);
+        scene.add(rDer);
+
+        const peto = new THREE.Mesh(new THREE.BoxGeometry(anchoG, altoEdificio - altoP, 0.7), mMadera);
+        peto.position.set(0, altoP + (altoEdificio - altoP) / 2, zP + 0.05);
+        scene.add(peto);
+
+        const mSup = new THREE.Mesh(new THREE.BoxGeometry(anchoPuerta + 0.6, 0.35, 0.85), mMarco);
+        mSup.position.set(0, altoP + 0.17, zP + 0.1);
+        scene.add(mSup);
+
+        // PUERTAS AUTOMÁTICAS
+        const mPta = new THREE.MeshStandardMaterial({ color: 0x8c6237, roughness: 0.45 });
+        const mPomo = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.3 });
+        const wHoja = anchoPuerta / 2;
+
+        const pivIzq = new THREE.Group();
+        pivIzq.position.set(-wHoja, 0, zP);
+        scene.add(pivIzq);
+        const hojaI = new THREE.Mesh(new THREE.BoxGeometry(wHoja, altoP, 0.12), mPta);
+        hojaI.position.set(wHoja / 2, altoP / 2, 0);
+        pivIzq.add(hojaI);
+        const pomoI = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.4, 0.16), mPomo);
+        pomoI.position.set(wHoja - 0.25, altoP / 2, 0.08);
+        pivIzq.add(pomoI);
+
+        const pivDer = new THREE.Group();
+        pivDer.position.set(wHoja, 0, zP);
+        scene.add(pivDer);
+        const hojaD = new THREE.Mesh(new THREE.BoxGeometry(wHoja, altoP, 0.12), mPta);
+        hojaD.position.set(-wHoja / 2, altoP / 2, 0);
+        pivDer.add(hojaD);
+        const pomoD = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.4, 0.16), mPomo);
+        pomoD.position.set(-wHoja + 0.25, altoP / 2, 0.08);
+        pivDer.add(pomoD);
+
+        // RÓTULO FACHADA
+        const cv = document.createElement('canvas');
+        cv.width = 2048; cv.height = 460;
+        const cx = cv.getContext('2d');
+        cx.fillStyle = '#9e7345'; cx.fillRect(0, 0, 2048, 460);
+        cx.textAlign = 'center'; cx.textBaseline = 'middle';
+        cx.fillStyle = '#111111'; cx.font = '300 62px Georgia, serif'; cx.letterSpacing = "12px";
+        cx.fillText('GALERÍA DE ARTE', 1024, 140);
+        cx.strokeStyle = '#222222'; cx.lineWidth = 3.5;
+        cx.beginPath(); cx.moveTo(680, 220); cx.lineTo(1368, 220); cx.stroke();
+        cx.fillStyle = '#050505'; cx.font = 'bold 98px Georgia, serif'; cx.letterSpacing = "7px";
+        cx.fillText('MELQUIADES RAMOS', 1024, 330);
+
+        const texRotulo = new THREE.CanvasTexture(cv);
+        texRotulo.anisotropy = maxAniso;
+        texRotulo.encoding = THREE.sRGBEncoding;
+
+        const rMesh = new THREE.Mesh(new THREE.PlaneGeometry(6.2, 1.4), new THREE.MeshStandardMaterial({ map: texRotulo, roughness: 0.4 }));
+        rMesh.position.set(0, altoP + (altoEdificio - altoP) / 2, zP + 0.42);
+        scene.add(rMesh);
+
+        // TECHO TÉCNICO Y CLARABOYA
+        const wTechoAla = (anchoG - 5.5) / 2;
+        const mTecho = new THREE.MeshStandardMaterial({ color: 0x181319, roughness: 0.85 });
+
+        const tIzq = new THREE.Mesh(new THREE.BoxGeometry(wTechoAla, 0.4, largoG), mTecho);
+        tIzq.position.set(-anchoG / 2 + wTechoAla / 2, altoEdificio, -largoG / 2);
+        scene.add(tIzq);
+
+        const tDer = new THREE.Mesh(new THREE.BoxGeometry(wTechoAla, 0.4, largoG), mTecho);
+        tDer.position.set(anchoG / 2 - wTechoAla / 2, altoEdificio, -largoG / 2);
+        scene.add(tDer);
+
+        const claraboya = new THREE.Mesh(new THREE.PlaneGeometry(5.5, largoG), new THREE.MeshStandardMaterial({ color: 0xdf9368, roughness: 0.2, transparent: true, opacity: 0.5 }));
+        claraboya.rotation.x = Math.PI / 2;
+        claraboya.position.set(0, altoEdificio + 0.05, -largoG / 2);
+        scene.add(claraboya);
+
+        const mViga = new THREE.MeshStandardMaterial({ color: 0x100b11, roughness: 0.4 });
+        for (let z = 0; z >= -largoG; z -= 5) {
+            const v = new THREE.Mesh(new THREE.BoxGeometry(anchoG, 0.2, 0.2), mViga);
+            v.position.set(0, altoEdificio - 0.1, z);
+            scene.add(v);
+        }
+
+        // INTERIOR: PAREDES ANTRACITA Y SUELO
+        const mWall = new THREE.MeshStandardMaterial({ color: 0x363032, roughness: 0.72, side: THREE.DoubleSide });
+        const wL = new THREE.Mesh(new THREE.PlaneGeometry(largoG, altoEdificio), mWall);
+        wL.position.set(-anchoG / 2, altoEdificio / 2, -largoG / 2);
+        wL.rotation.y = Math.PI / 2;
+        scene.add(wL);
+
+        const wR = new THREE.Mesh(new THREE.PlaneGeometry(largoG, altoEdificio), mWall);
+        wR.position.set(anchoG / 2, altoEdificio / 2, -largoG / 2);
+        wR.rotation.y = -Math.PI / 2;
+        scene.add(wR);
+
+        const wB = new THREE.Mesh(new THREE.PlaneGeometry(anchoG, altoEdificio), mWall);
+        wB.position.set(0, altoEdificio / 2, zF);
+        scene.add(wB);
+
+        const mFloor = new THREE.MeshStandardMaterial({ color: 0x524339, roughness: 0.58, metalness: 0.04 });
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(anchoG, largoG), mFloor);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.set(0, 0.01, -largoG / 2);
+        scene.add(floor);
+
+        const mBaseWall = new THREE.MeshStandardMaterial({ color: 0x1f1715, roughness: 0.6 });
+        const rodapieL = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.18, largoG), mBaseWall);
+        rodapieL.position.set(-anchoG / 2 + 0.04, 0.09, -largoG / 2);
+        scene.add(rodapieL);
+        const rodapieR = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.18, largoG), mBaseWall);
+        rodapieR.position.set(anchoG / 2 - 0.04, 0.09, -largoG / 2);
+        scene.add(rodapieR);
+
+        const mMolduraSup = new THREE.MeshStandardMaterial({ color: 0x7a5332, roughness: 0.5 });
+        const cornisaL = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.22, largoG), mMolduraSup);
+        cornisaL.position.set(-anchoG / 2 + 0.06, altoEdificio - 0.11, -largoG / 2);
+        scene.add(cornisaL);
+        const cornisaR = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.22, largoG), mMolduraSup);
+        cornisaR.position.set(anchoG / 2 - 0.06, altoEdificio - 0.11, -largoG / 2);
+        scene.add(cornisaR);
+
+        const mPilastra = new THREE.MeshStandardMaterial({ color: 0x7a5332, roughness: 0.5 });
+        const zPilastras = [-12.2, -28.6, -45.0, -61.4, -77.8];
+        for (const zp of zPilastras) {
+            const pL = new THREE.Mesh(new THREE.BoxGeometry(0.06, altoEdificio, 0.3), mPilastra);
+            pL.position.set(-anchoG / 2 + 0.03, altoEdificio / 2, zp);
+            scene.add(pL);
+
+            const pR = new THREE.Mesh(new THREE.BoxGeometry(0.06, altoEdificio, 0.3), mPilastra);
+            pR.position.set(anchoG / 2 - 0.03, altoEdificio / 2, zp);
+            scene.add(pR);
+        }
+
+        const mBanco = new THREE.MeshStandardMaterial({ color: 0x5a3d28, roughness: 0.45 });
+        const mPatas = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.3 });
+        for (let zb = -16; zb >= -76; zb -= 20) {
+            const asiento = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.12, 2.6), mBanco);
+            asiento.position.set(0, 0.46, zb);
+            scene.add(asiento);
+
+            const pata1 = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.4, 0.08), mPatas);
+            pata1.position.set(0, 0.2, zb - 1.0);
+            scene.add(pata1);
+
+            const pata2 = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.4, 0.08), mPatas);
+            pata2.position.set(0, 0.2, zb + 1.0);
+            scene.add(pata2);
+        }
+
+        const mMarcoVentana = new THREE.MeshStandardMaterial({ color: 0x3d2719, roughness: 0.5 });
+        const marcoV = new THREE.Mesh(new THREE.BoxGeometry(12.4, 3.8, 0.15), mMarcoVentana);
+        marcoV.position.set(0, 2.4, zF + 0.02);
+        scene.add(marcoV);
+
+        const mPaisaje = new THREE.MeshBasicMaterial({ color: 0xb56846 });
+        loader.load('paisaje.jpg', (t) => {
+            t.encoding = THREE.sRGBEncoding;
+            t.anisotropy = maxAniso;
+            mPaisaje.map = t;
+            mPaisaje.color.setHex(0xffffff);
+            mPaisaje.needsUpdate = true;
+        }, undefined, () => { });
+        const ventanal = new THREE.Mesh(new THREE.PlaneGeometry(12, 3.4), mPaisaje);
+        ventanal.position.set(0, 2.4, zF + 0.08);
+        scene.add(ventanal);
+
+        // ==========================================================
+        // 3. LOS 88 CUADROS CON LIENZO FRONTAL GARANTIZADO
+        // ==========================================================
+        const cuadrosMesh = [];
+        const mFrameGold = new THREE.MeshStandardMaterial({ color: 0xa88754, roughness: 0.35, metalness: 0.5 });
+
+        for (let i = 1; i <= 88; i++) {
+            const esIzq = (i % 2 !== 0);
+            const idx = Math.floor((i - 1) / 2);
+
+            const bloque = Math.floor(idx / 4);
+            const subIdx = idx % 4;
+            const z = -3.5 - (bloque * 8.2) - (subIdx * 1.85);
+
+            // Posición separada del muro hacia el centro de la sala
+            const xLienzo = esIzq ? (-anchoG / 2 + 0.08) : (anchoG / 2 - 0.08);
+            const xMarco = esIzq ? (-anchoG / 2 + 0.05) : (anchoG / 2 - 0.05);
+
+            // 1. Marco dorado detrás del lienzo
+            const marco = new THREE.Mesh(new THREE.BoxGeometry(0.04, 1.02, 1.42), mFrameGold);
+            marco.position.set(xMarco, 2.15, z);
+            scene.add(marco);
+
+            // 2. Lienzo frontal con DoubleSide para que NUNCA se vea invisible
+            const matLienzo = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                side: THREE.DoubleSide
+            });
+            const lienzo = new THREE.Mesh(new THREE.PlaneGeometry(1.35, 0.95), matLienzo);
+            lienzo.position.set(xLienzo, 2.15, z);
+            lienzo.rotation.y = esIzq ? Math.PI / 2 : -Math.PI / 2;
+            lienzo.name = `Obra N.º ${i}`;
+            lienzo.userData = { src: `obra mera (${i}).jpeg`, num: i };
+            scene.add(lienzo);
+            cuadrosMesh.push(lienzo);
+
+            // 3. Carga directa de la imagen
+            (function (mesh, mBox, num) {
+                const img = new Image();
+                img.onload = function () {
+                    const tex = new THREE.Texture(img);
+                    tex.encoding = THREE.sRGBEncoding;
+                    tex.anisotropy = maxAniso;
+                    tex.needsUpdate = true;
+                    mesh.material.map = tex;
+                    mesh.material.needsUpdate = true;
+
+                    // Ajustar proporción exacta
+                    if (img.width && img.height) {
+                        const asp = img.width / img.height;
+                        const w = Math.max(0.7, Math.min(1.7, 0.95 * asp));
+                        mesh.geometry.dispose();
+                        mesh.geometry = new THREE.PlaneGeometry(w, 0.95);
+                        mBox.geometry.dispose();
+                        mBox.geometry = new THREE.BoxGeometry(0.04, 1.02, w + 0.07);
+                    }
+                };
+                img.onerror = function () {
+                    // Si falla sin escapar, prueba con encodeURI
+                    const imgEsc = new Image();
+                    imgEsc.onload = function () {
+                        const tex = new THREE.Texture(imgEsc);
+                        tex.encoding = THREE.sRGBEncoding;
+                        tex.anisotropy = maxAniso;
+                        tex.needsUpdate = true;
+                        mesh.material.map = tex;
+                        mesh.material.needsUpdate = true;
+                    };
+                    imgEsc.src = encodeURI(`obra mera (${num}).jpeg`);
+                };
+                img.src = `obra mera (${num}).jpeg`;
+            })(lienzo, marco, i);
+        }
+
+        // CONTROLES Y ANIMACIÓN
         const keys = {};
         window.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true);
         window.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
 
-        function moverCamara() {
-            const speed = 0.25;
-            if (keys['w'] || keys['arrowup']) camera.position.z -= speed;
-            if (keys['s'] || keys['arrowdown']) camera.position.z += speed;
+        let pitch = 0, yaw = 0, isMouseDown = false, prevX = 0, prevY = 0;
 
-            camera.position.x = 0;
-            camera.position.z = Math.max(-85, Math.min(8, camera.position.z));
-        }
-
-        window.addEventListener('wheel', (e) => {
-            camera.position.z += e.deltaY * 0.01;
-            camera.position.z = Math.max(-85, Math.min(8, camera.position.z));
+        container.addEventListener('mousedown', (e) => { isMouseDown = true; prevX = e.clientX; prevY = e.clientY; });
+        window.addEventListener('mouseup', () => isMouseDown = false);
+        window.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+            yaw -= (e.clientX - prevX) * 0.0035;
+            pitch -= (e.clientY - prevY) * 0.003;
+            pitch = Math.max(-Math.PI / 4, Math.min(Math.PI / 4, pitch));
+            prevX = e.clientX; prevY = e.clientY;
         });
 
-        // CLIC PARA EXPANDIR
+        let reloj = 0;
+        function actualizarPeatones() {
+            reloj += 0.05;
+            for (const p of peatones) {
+                p.obj.position.z += p.vel * p.dir;
+                const angPaso = Math.sin(reloj * 6 + p.fase) * 0.45;
+                p.piernaI.rotation.x = angPaso;
+                p.piernaD.rotation.x = -angPaso;
+
+                if (p.obj.position.z > 62) {
+                    p.dir = -1;
+                    p.obj.rotation.y = Math.PI;
+                } else if (p.obj.position.z < 6) {
+                    p.dir = 1;
+                    p.obj.rotation.y = 0;
+                }
+            }
+        }
+
+        function actualizarControles() {
+            const speed = 0.24;
+            const fwd = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
+            const side = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+
+            if (keys['w'] || keys['arrowup']) camera.position.addScaledVector(fwd, speed);
+            if (keys['s'] || keys['arrowdown']) camera.position.addScaledVector(fwd, -speed);
+            if (keys['a']) camera.position.addScaledVector(side, -speed);
+            if (keys['d']) camera.position.addScaledVector(side, speed);
+
+            camera.position.y = 1.85;
+
+            // Apertura de puertas
+            const dPuerta = camera.position.z - zP;
+            let ang = (dPuerta < 6 && dPuerta > -6 && Math.abs(camera.position.x) < 4) ? (Math.PI / 2.2) : 0;
+            pivIzq.rotation.y = THREE.MathUtils.lerp(pivIzq.rotation.y, -ang, 0.08);
+            pivDer.rotation.y = THREE.MathUtils.lerp(pivDer.rotation.y, ang, 0.08);
+
+            // Límites de navegación
+            if (camera.position.z > 0.2) {
+                camera.position.x = Math.max(-12, Math.min(12, camera.position.x));
+                camera.position.z = Math.min(62, camera.position.z);
+            } else {
+                camera.position.x = Math.max(-8.4, Math.min(8.4, camera.position.x));
+                camera.position.z = Math.max(zF + 2.5, camera.position.z);
+            }
+
+            const dx = Math.sin(yaw) * Math.cos(pitch);
+            const dy = Math.sin(pitch);
+            const dz = -Math.cos(yaw) * Math.cos(pitch);
+            camera.lookAt(camera.position.x + dx, camera.position.y + dy, camera.position.z + dz);
+        }
+
+        // CLIC EN CUADRO
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
 
-        window.addEventListener('click', (event) => {
-            if (event.clientY < 70 || event.clientY > window.innerHeight - 50) return;
-
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
+        container.addEventListener('click', (e) => {
+            if (e.clientY < 70 || e.clientY > window.innerHeight - 50) return;
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(cuadrosMesh);
-
-            if (intersects.length > 0) {
-                const obra = intersects[0].object;
-                abrirModal(obra.name, obra.userData.src);
+            const hit = raycaster.intersectObjects(cuadrosMesh);
+            if (hit.length > 0 && hit[0].object.userData.src) {
+                abrirModal(hit[0].object.name, hit[0].object.userData.src);
             }
         });
 
-        function abrirModal(titulo, src) {
-            document.getElementById('titulo-modal').innerText = titulo;
-            document.getElementById('img-modal').src = src;
+        function abrirModal(t, s) {
+            document.getElementById('titulo-modal').innerText = t;
+            document.getElementById('img-modal').src = s;
             document.getElementById('modal-cuadro').style.display = 'flex';
         }
 
@@ -353,10 +822,10 @@
             document.getElementById('modal-cuadro').style.display = 'none';
         }
 
-        // ANIMACIÓN
         function animate() {
             requestAnimationFrame(animate);
-            moverCamara();
+            actualizarPeatones();
+            actualizarControles();
             renderer.render(scene, camera);
         }
         animate();
@@ -365,7 +834,9 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio || 1);
         });
     </script>
 </body>
+
 </html>
