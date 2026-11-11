@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MELQUIADES RAMOS - OBRAS DE ARTE</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f7f4ee;
+            color: #222222;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER & NAVEGACIÓN SUPERIOR */
+        header.site-header {
+            background-color: #ffffff;
+            border-bottom: 2px solid #a32824;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 14px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #111111;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #222222;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #a32824;
+        }
+
+        .nav-links a.active-pill {
+            background-color: #a32824;
+            color: #ffffff;
+            padding: 7px 18px;
+            border-radius: 20px;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        main.main-content {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 45px 24px 80px 24px;
+        }
+
+        .titulo-seccion {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .titulo-seccion h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #a32824;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .titulo-seccion p {
+            font-size: 1.05rem;
+            color: #666666;
+        }
+
+        /* GRID DE OBRAS */
+        .grid-obras {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
+        }
+
+        @media (max-width: 1100px) {
+            .grid-obras {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-obras {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid-obras {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* TARJETAS DE OBRAS */
+        .card-obra {
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-obra:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+        }
+
+        .img-wrapper {
+            width: 100%;
+            height: 290px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 12px 6px 12px;
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .pie-obra {
+            background-color: #ece4d7;
+            margin: 8px 12px 12px 12px;
+            padding: 10px 14px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.88rem;
+            color: #222222;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pie-obra strong {
+            font-weight: 800;
+            color: #111111;
+        }
+
+        /* OBRAS ADICIONALES (OCULTAS INICIALMENTE) */
+        .obra-extra {
+            display: none;
+        }
+
+        /* CONTENEDOR Y BOTÓN 'VER MÁS' CENTRADO ABAJO */
+        .contenedor-boton-catalogo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 55px 0 20px 0;
+        }
+
+        .btn-wikiart {
+            background-color: #a32824;
+            color: #ffffff;
+            border: none;
+            padding: 15px 42px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            border-radius: 30px;
+            box-shadow: 0 4px 14px rgba(163, 40, 36, 0.28);
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-wikiart:hover {
+            background-color: #841e1b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(163, 40, 36, 0.38);
+        }
+
+        /* MODAL DE AMPLIACIÓN */
+        .modal-visor {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.88);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-contenido {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-contenido img {
+            max-width: 85vw;
+            max-height: 80vh;
+            object-fit: contain;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+        }
+
+        .modal-titulo {
+            margin-top: 15px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-cerrar-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: 300;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .btn-cerrar-modal:hover {
+            color: #cccccc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN PRINCIPAL -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">MELQUIADES RAMOS - OBRAS DE ARTE</a>
+            <ul class="nav-links">
+                <li><a href="index.html">INICIO</a></li>
+                <li><a href="galeria3d.html">GALERÍA 3D</a></li>
+                <li><a href="cuadrosfinales.html">OBRAS EXPUESTAS</a></li>
+                <li><a href="obrasanteriores.html" class="active-pill">OBRA ANTERIOR</a></li>
+                <li><a href="contacto.html">CONTACTO</a></li>
+            </ul>
+        </div>
+    </header>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+        <div class="titulo-seccion">
+            <h1>OBRA REALIZADA ANTERIORMENTE</h1>
+            <p>Retrospectiva y trayectoria pictórica de Melquiades Ramos.</p>
+        </div>
+
+        <!-- CUADRÍCULA CON LAS OBRAS -->
+        <div class="grid-obras" id="grid-obras">
+
+            <!-- ======================================================== -->
+            <!-- 16 OBRAS INICIALES (1977 - 1986)                        -->
+            <!-- ======================================================== -->
+
+            <!-- 1977 (3 obras) -->
+            <article class="card-obra"
+                onclick="abrirVisorModal('1977/Cantoneses bajo la lluvia.jpg', 'Cantoneses bajo la lluvia, 1977')">
+                <div class="img-wrapper">
+                    <img src="1977/Cantoneses bajo la lluvia.jpg" alt="Cantoneses bajo la lluvia" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Cantoneses bajo la lluvia</strong>, 1977</p>
+            </article>
+
+            <article class="card-obra" onclick="abrirVisorModal('1977/El balcón.jpg', 'El balcón, 1977')">
+                <div class="img-wrapper">
+                    <img src="1977/El balcón.jpg" alt="El balcón" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El balcón</strong>, 1977</p>
+            </article>
+
+            <article class="card-obra"
+                onclick="abrirVisorModal('1977/Habitantes del subsuelo.jpg', 'Habitantes del subsuelo, 1977')">
+                <div class="img-wrapper">
+                    <img src="1977/Habitantes del subsuelo.jpg" alt="Habitantes del subsuelo" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Habitantes del subsuelo</strong>, 1977</p>
+            </article>
+
+            <!-- 1978 (4 obras) -->
+            <article class="card-obra"
+                onclick="abrirVisorModal('1978/Antropología del ser humano.jpg', 'Antropología del ser humano, 1978')">
+                <div class="img-wrapper">
+                    <img src="1978/Antropología del ser humano.jpg" alt="Antropología del ser humano" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Antropología del ser humano</strong>, 1978</p>
+            </article>
+
+            <article class="card-obra"
+                onclick="abrirVisorModal('1978/Los caballos del rey.jpg', 'Los caballos del rey, 1978')">
+                <div class="img-wrapper">
+                    <img src="1978/Los caballos del rey.jpg" alt="Los caballos del rey" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Los caballos del rey</strong>, 1978</p>
+            </article>
+
+            <article class="card-obra" onclick="abrirVisorModal('1978/Los peces.jpg', 'Los peces, 1978')">
+                <div class="img-wrapper">
+                    <img src="1978/Los peces.jpg" alt="Los peces" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Los peces</strong>, 1978</p>
+            </article>
+
+            <article class="card-obra"
+                onclick="abrirVisorModal('1978/Máquina de guerra.jpg', 'Máquina de guerra, 1978')">
+                <div class="img-wrapper">
+                    <img src="1978/Máquina de guerra.jpg" alt="Máquina de guerra" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Máquina de guerra</strong>, 1978</p>
+            </article>
+
+            <!-- 1980 (3 obras) -->
+            <article class="card-obra"
+                onclick="abrirVisorModal('1980/Amanecer rojo sobre la pared.jpg', 'Amanecer rojo sobre la pared, 1980')">
+                <div class="img-wrapper">
+                    <img src="1980/Amanecer rojo sobre la pared.jpg" alt="Amanecer rojo sobre la pared" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Amanecer rojo sobre la pared</strong>, 1980</p>
+            </article>
+
+            <article class="card-obra" onclick="abrirVisorModal('1980/Los amigos.jpg', 'Los amigos, 1980')">
+                <div class="img-wrapper">
+                    <img src="1980/Los amigos.jpg" alt="Los amigos" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Los amigos</strong>, 1980</p>
+            </article>
+
+            <article class="card-obra"
+                onclick="abrirVisorModal('1980/Paisaje abstracto.jpg', 'Paisaje abstracto, 1980')">
+                <div class="img-wrapper">
+                    <img src="1980/Paisaje abstracto.jpg" alt="Paisaje abstracto" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Paisaje abstracto</strong>, 1980</p>
+            </article>
+
+            <!-- 1982 (4 obras) -->
+            <article class="card-obra" onclick="abrirVisorModal('1982/Estela gráfica.jpg', 'Estela gráfica, 1982')">
+                <div class="img-wrapper">
+                    <img src="1982/Estela gráfica.jpg" alt="Estela gráfica" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Estela gráfica</strong>, 1982</p>
+            </article>
+
+            <article class="card-obra" onclick="abrirVisorModal('1982/La pared.jpg', 'La pared, 1982')">
+                <div class="img-wrapper">
+                    <img src="1982/La pared.jpg" alt="La pared" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La pared</strong>, 1982</p>
+            </article>
+
+            <article class="card-obra" onclick="abrirVisorModal('1982/México.jpg', 'México, 1982')">
+                <div class="img-wrapper">
+                    <img src="1982/México.jpg" alt="México" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>México</strong>, 1982</p>
+            </article>
+
+            <article class="card-obra" onclick="abrirVisorModal('1982/Paisaje de tarde.jpg', 'Paisaje de tarde, 1982')">
+                <div class="img-wrapper">
+                    <img src="1982/Paisaje de tarde.jpg" alt="Paisaje de tarde" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Paisaje de tarde</strong>, 1982</p>
+            </article>
+
+            <!-- 1986 (2 obras) -->
+            <article class="card-obra" onclick="abrirVisorModal('1986/Fálico.jpg', 'Fálico, 1986')">
+                <div class="img-wrapper">
+                    <img src="1986/Fálico.jpg" alt="Fálico" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Fálico</strong>, 1986</p>
+            </article>
+
+            <article class="card-obra" onclick="abrirVisorModal('1986/Tepozlan.jpg', 'Tepozlan, 1986')">
+                <div class="img-wrapper">
+                    <img src="1986/Tepozlan.jpg" alt="Tepozlan" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Tepozlan</strong>, 1986</p>
+            </article>
+
+
+            <!-- ======================================================== -->
+            <!-- OBRAS ADICIONALES (1990 – 2021) - 74 OBRAS               -->
+            <!-- ======================================================== -->
+
+            <!-- 1990 (14 obras) -->
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/Alegoría del abismo.jpg', 'Alegoría del abismo, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/Alegoría del abismo.jpg" alt="Alegoría del abismo" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Alegoría del abismo</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/Autorretrato de espaldas.jpg', 'Autorretrato de espaldas, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/Autorretrato de espaldas.jpg" alt="Autorretrato de espaldas" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Autorretrato de espaldas</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/Ciudad atacada y barco a la deriba.jpg', 'Ciudad atacada y barco a la deriva, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/Ciudad atacada y barco a la deriba.jpg" alt="Ciudad atacada y barco a la deriva"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Ciudad atacada y barco a la deriva</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/El árbol de la vida.jpg', 'El árbol de la vida, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/El árbol de la vida.jpg" alt="El árbol de la vida" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El árbol de la vida</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/El dia del armisticio.jpg', 'El día del armisticio, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/El dia del armisticio.jpg" alt="El día del armisticio" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El día del armisticio</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/El espectador.JPG', 'El espectador, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/El espectador.JPG" alt="El espectador" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El espectador</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/El espíritu del maestro.jpg', 'El espíritu del maestro, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/El espíritu del maestro.jpg" alt="El espíritu del maestro" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El espíritu del maestro</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/El regreso del chamán.jpg', 'El regreso del chamán, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/El regreso del chamán.jpg" alt="El regreso del chamán" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El regreso del chamán</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/La mujer y el gendarme.jpg', 'La mujer y el gendarme, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/La mujer y el gendarme.jpg" alt="La mujer y el gendarme" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La mujer y el gendarme</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/Las cavilaciones del estudiante Torles.JPG', 'Las cavilaciones del estudiante Torles, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/Las cavilaciones del estudiante Torles.JPG"
+                        alt="Las cavilaciones del estudiante Torles" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Las cavilaciones del estudiante Torles</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/Madrid claro que si.jpg', 'Madrid claro que sí, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/Madrid claro que si.jpg" alt="Madrid claro que sí" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Madrid claro que sí</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/Material de sueños.jpg', 'Material de sueños, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/Material de sueños.jpg" alt="Material de sueños" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Material de sueños</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('1990/Posesión 2.JPG', 'Posesión 2, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/Posesión 2.JPG" alt="Posesión 2" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Posesión 2</strong>, 1990</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1990/Prosperidad.jpg', 'Prosperidad, 1990')">
+                <div class="img-wrapper">
+                    <img src="1990/Prosperidad.jpg" alt="Prosperidad" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Prosperidad</strong>, 1990</p>
+            </article>
+
+            <!-- 1999 (9 obras) -->
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1999/Agammemnon y el caballo de Troya.jpg', 'Agamenón y el caballo de Troya, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/Agammemnon y el caballo de Troya.jpg" alt="Agamenón y el caballo de Troya"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Agamenón y el caballo de Troya</strong>, 1999</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1999/Ariadna en el laberinto.jpg', 'Ariadna en el laberinto, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/Ariadna en el laberinto.jpg" alt="Ariadna en el laberinto" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Ariadna en el laberinto</strong>, 1999</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1999/Buscando a Helena.jpg', 'Buscando a Helena, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/Buscando a Helena.jpg" alt="Buscando a Helena" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Buscando a Helena</strong>, 1999</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1999/Cafetería Lavanda.jpg', 'Cafetería Lavanda, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/Cafetería Lavanda.jpg" alt="Cafetería Lavanda" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Cafetería Lavanda</strong>, 1999</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1999/Caligrafia Abstracta.jpg', 'Caligrafía Abstracta, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/Caligrafia Abstracta.jpg" alt="Caligrafía Abstracta" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Caligrafía Abstracta</strong>, 1999</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1999/El viaje de Eurídice.jpg', 'El viaje de Eurídice, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/El viaje de Eurídice.jpg" alt="El viaje de Eurídice" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El viaje de Eurídice</strong>, 1999</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1999/Elevación del cubo.jpg', 'Elevación del cubo, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/Elevación del cubo.jpg" alt="Elevación del cubo" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Elevación del cubo</strong>, 1999</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('1999/La mujer del puerto.jpg', 'La mujer del puerto, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/La mujer del puerto.jpg" alt="La mujer del puerto" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La mujer del puerto</strong>, 1999</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('1999/La rubia.jpg', 'La rubia, 1999')">
+                <div class="img-wrapper">
+                    <img src="1999/La rubia.jpg" alt="La rubia" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La rubia</strong>, 1999</p>
+            </article>
+
+            <!-- 2002 (5 obras) -->
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2002/El hombre desgarrado.JPG', 'El hombre desgarrado, 2002')">
+                <div class="img-wrapper">
+                    <img src="2002/El hombre desgarrado.JPG" alt="El hombre desgarrado" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El hombre desgarrado</strong>, 2002</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2002/El Pulpo.jpg', 'El Pulpo, 2002')">
+                <div class="img-wrapper">
+                    <img src="2002/El Pulpo.jpg" alt="El Pulpo" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El Pulpo</strong>, 2002</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2002/Eva.jpg', 'Eva, 2002')">
+                <div class="img-wrapper">
+                    <img src="2002/Eva.jpg" alt="Eva" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Eva</strong>, 2002</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2002/Paisaje lunar.jpg', 'Paisaje lunar, 2002')">
+                <div class="img-wrapper">
+                    <img src="2002/Paisaje lunar.jpg" alt="Paisaje lunar" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Paisaje lunar</strong>, 2002</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2002/Quimera.jpg', 'Quimera, 2002')">
+                <div class="img-wrapper">
+                    <img src="2002/Quimera.jpg" alt="Quimera" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Quimera</strong>, 2002</p>
+            </article>
+
+            <!-- 2004 (1 obra) -->
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2004/Mujeres desnudas.jpg', 'Mujeres desnudas, 2004')">
+                <div class="img-wrapper">
+                    <img src="2004/Mujeres desnudas.jpg" alt="Mujeres desnudas" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Mujeres desnudas</strong>, 2004</p>
+            </article>
+
+            <!-- 2005 (3 obras) -->
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2005/La leyenda de Midas.jpg', 'La leyenda de Midas, 2005')">
+                <div class="img-wrapper">
+                    <img src="2005/La leyenda de Midas.jpg" alt="La leyenda de Midas" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La leyenda de Midas</strong>, 2005</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2005/La mujer del rebozo.jpg', 'La mujer del rebozo, 2005')">
+                <div class="img-wrapper">
+                    <img src="2005/La mujer del rebozo.jpg" alt="La mujer del rebozo" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La mujer del rebozo</strong>, 2005</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2005/Tango.jpg', 'Tango, 2005')">
+                <div class="img-wrapper">
+                    <img src="2005/Tango.jpg" alt="Tango" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Tango</strong>, 2005</p>
+            </article>
+
+            <!-- 2006 (3 obras) -->
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2005/2006/Familia rusa en navidad.jpg', 'Familia rusa en navidad, 2006')">
+                <div class="img-wrapper">
+                    <img src="2005/2006/Familia rusa en navidad.jpg"
+                        onerror="this.src='2006/Familia rusa en navidad.jpg'" alt="Familia rusa en navidad"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Familia rusa en navidad</strong>, 2006</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2005/2006/Hipérbole.jpg', 'Hipérbole, 2006')">
+                <div class="img-wrapper">
+                    <img src="2005/2006/Hipérbole.jpg" onerror="this.src='2006/Hipérbole.jpg'" alt="Hipérbole"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Hipérbole</strong>, 2006</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2005/2006/La vieja de Ukrania.JPG', 'La vieja de Ukrania, 2006')">
+                <div class="img-wrapper">
+                    <img src="2005/2006/La vieja de Ukrania.JPG" onerror="this.src='2006/La vieja de Ukrania.JPG'"
+                        alt="La vieja de Ukrania" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La vieja de Ukrania</strong>, 2006</p>
+            </article>
+
+            <!-- 2010 (3 obras) -->
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2010/En el bosque.JPG', 'En el bosque, 2010')">
+                <div class="img-wrapper">
+                    <img src="2010/En el bosque.JPG" alt="En el bosque" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>En el bosque</strong>, 2010</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2010/Recuerdo.JPG', 'Recuerdo, 2010')">
+                <div class="img-wrapper">
+                    <img src="2010/Recuerdo.JPG" alt="Recuerdo" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Recuerdo</strong>, 2010</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2010/Tropical.JPG', 'Tropical, 2010')">
+                <div class="img-wrapper">
+                    <img src="2010/Tropical.JPG" alt="Tropical" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Tropical</strong>, 2010</p>
+            </article>
+
+            <!-- 2011 (22 obras) -->
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/Amada mía.jpg', 'Amada mía, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/Amada mía.jpg" onerror="this.src='2018/2011/Amada mía.jpg'" alt="Amada mía"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Amada mía</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/BESTIARIO.JPEG', 'BESTIARIO, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/BESTIARIO.JPEG" onerror="this.src='2018/2011/BESTIARIO.JPEG'" alt="BESTIARIO"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>BESTIARIO</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/CARTA NO ENVIADA.jpeg', 'CARTA NO ENVIADA, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/CARTA NO ENVIADA.jpeg" onerror="this.src='2018/2011/CARTA NO ENVIADA.jpeg'"
+                        alt="CARTA NO ENVIADA" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>CARTA NO ENVIADA</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/DE CINE.jpg', 'DE CINE, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/DE CINE.jpg" onerror="this.src='2018/2011/DE CINE.jpg'" alt="DE CINE" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>DE CINE</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/DOS AMIGAS.JPG', 'DOS AMIGAS, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/DOS AMIGAS.JPG" onerror="this.src='2018/2011/DOS AMIGAS.JPG'" alt="DOS AMIGAS"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>DOS AMIGAS</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/EL ASTRONOMO.JPG', 'EL ASTRONOMO, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/EL ASTRONOMO.JPG" onerror="this.src='2018/2011/EL ASTRONOMO.JPG'" alt="EL ASTRONOMO"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>EL ASTRONOMO</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/EL GOLFISTA.JPG', 'EL GOLFISTA, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/EL GOLFISTA.JPG" onerror="this.src='2018/2011/EL GOLFISTA.JPG'" alt="EL GOLFISTA"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>EL GOLFISTA</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/El Penique.jpeg', 'El Penique, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/El Penique.jpeg" onerror="this.src='2018/2011/El Penique.jpeg'" alt="El Penique"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El Penique</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/EL SUDOR DE LOS CABALLOS.JPG', 'EL SUDOR DE LOS CABALLOS, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/EL SUDOR DE LOS CABALLOS.JPG"
+                        onerror="this.src='2018/2011/EL SUDOR DE LOS CABALLOS.JPG'" alt="EL SUDOR DE LOS CABALLOS"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>EL SUDOR DE LOS CABALLOS</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/IMG_1071.JPG', 'Obra 1071, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/IMG_1071.JPG" onerror="this.src='2018/2011/IMG_1071.JPG'" alt="Obra 1071"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Obra 1071</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/Interior de la Lámpara.jpeg', 'Interior de la Lámpara, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/Interior de la Lámpara.jpeg"
+                        onerror="this.src='2018/2011/Interior de la Lámpara.jpeg'" alt="Interior de la Lámpara"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Interior de la Lámpara</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/LA EMIGRANTE.JPG', 'LA EMIGRANTE, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/LA EMIGRANTE.JPG" onerror="this.src='2018/2011/LA EMIGRANTE.JPG'" alt="LA EMIGRANTE"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>LA EMIGRANTE</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/LA PASIÓN ROJA.jpg', 'LA PASIÓN ROJA, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/LA PASIÓN ROJA.jpg" onerror="this.src='2018/2011/LA PASIÓN ROJA.jpg'"
+                        alt="LA PASIÓN ROJA" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>LA PASIÓN ROJA</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/Luces y Sombras.jpg', 'Luces y Sombras, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/Luces y Sombras.jpg" onerror="this.src='2018/2011/Luces y Sombras.jpg'"
+                        alt="Luces y Sombras" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Luces y Sombras</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/Otello.jpg', 'Otello, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/Otello.jpg" onerror="this.src='2018/2011/Otello.jpg'" alt="Otello" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Otello</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/Paisaje Alterado.jpg', 'Paisaje Alterado, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/Paisaje Alterado.jpg" onerror="this.src='2018/2011/Paisaje Alterado.jpg'"
+                        alt="Paisaje Alterado" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Paisaje Alterado</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/Paisaje Americano.jpeg', 'Paisaje Americano, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/Paisaje Americano.jpeg" onerror="this.src='2018/2011/Paisaje Americano.jpeg'"
+                        alt="Paisaje Americano" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Paisaje Americano</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/Paseo por París.jpeg', 'Paseo por París, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/Paseo por París.jpeg" onerror="this.src='2018/2011/Paseo por París.jpeg'"
+                        alt="Paseo por París" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Paseo por París</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/PATRICIO.jpg', 'PATRICIO, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/PATRICIO.jpg" onerror="this.src='2018/2011/PATRICIO.jpg'" alt="PATRICIO"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>PATRICIO</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/TARDE DE VERANO.JPG', 'TARDE DE VERANO, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/TARDE DE VERANO.JPG" onerror="this.src='2018/2011/TARDE DE VERANO.JPG'"
+                        alt="TARDE DE VERANO" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>TARDE DE VERANO</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/TORMENTA EN EL PARNASO.JPG', 'TORMENTA EN EL PARNASO, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/TORMENTA EN EL PARNASO.JPG" onerror="this.src='2018/2011/TORMENTA EN EL PARNASO.JPG'"
+                        alt="TORMENTA EN EL PARNASO" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>TORMENTA EN EL PARNASO</strong>, 2011</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2011/VENCANTADORAS DE SERPIENTES.JPG', 'VENCANTADORAS DE SERPIENTES, 2011')">
+                <div class="img-wrapper">
+                    <img src="2011/VENCANTADORAS DE SERPIENTES.JPG"
+                        onerror="this.src='2018/2011/VENCANTADORAS DE SERPIENTES.JPG'" alt="VENCANTADORAS DE SERPIENTES"
+                        loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>VENCANTADORAS DE SERPIENTES</strong>, 2011</p>
+            </article>
+
+            <!-- 2018 (7 obras) -->
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2018/Andróginon.jpg', 'Andróginon, 2018')">
+                <div class="img-wrapper">
+                    <img src="2018/Andróginon.jpg" alt="Andróginon" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Andróginon</strong>, 2018</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2018/CuadroElviejo.jpg', 'Cuadro El Viejo, 2018')">
+                <div class="img-wrapper">
+                    <img src="2018/CuadroElviejo.jpg" alt="Cuadro El Viejo" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Cuadro El Viejo</strong>, 2018</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2018/dejala que baile.jpg', 'Déjala que baile, 2018')">
+                <div class="img-wrapper">
+                    <img src="2018/dejala que baile.jpg" alt="Déjala que baile" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Déjala que baile</strong>, 2018</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2018/La mujer marcada.jpg', 'La mujer marcada, 2018')">
+                <div class="img-wrapper">
+                    <img src="2018/La mujer marcada.jpg" alt="La mujer marcada" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La mujer marcada</strong>, 2018</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2018/maternidad olgiska.jpg', 'Maternidad olgiska, 2018')">
+                <div class="img-wrapper">
+                    <img src="2018/maternidad olgiska.jpg" alt="Maternidad olgiska" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Maternidad olgiska</strong>, 2018</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2018/mujer con perra.jpg', 'Mujer con perra, 2018')">
+                <div class="img-wrapper">
+                    <img src="2018/mujer con perra.jpg" alt="Mujer con perra" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Mujer con perra</strong>, 2018</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2018/Punto de inflesion.jpg', 'Punto de inflexión, 2018')">
+                <div class="img-wrapper">
+                    <img src="2018/Punto de inflesion.jpg" alt="Punto de inflexión" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Punto de inflexión</strong>, 2018</p>
+            </article>
+
+            <!-- 2019 (5 obras) -->
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2019/El joven.jpg', 'El joven, 2019')">
+                <div class="img-wrapper">
+                    <img src="2019/El joven.jpg" alt="El joven" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El joven</strong>, 2019</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2019/escena del crimen.jpg', 'Escena del crimen, 2019')">
+                <div class="img-wrapper">
+                    <img src="2019/escena del crimen.jpg" alt="Escena del crimen" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Escena del crimen</strong>, 2019</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2019/la bella.jpg', 'La bella, 2019')">
+                <div class="img-wrapper">
+                    <img src="2019/la bella.jpg" alt="La bella" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>La bella</strong>, 2019</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2019/Los emigrantes.jpg', 'Los emigrantes, 2019')">
+                <div class="img-wrapper">
+                    <img src="2019/Los emigrantes.jpg" alt="Los emigrantes" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Los emigrantes</strong>, 2019</p>
+            </article>
+
+            <article class="card-obra obra-extra"
+                onclick="abrirVisorModal('2019/the toiletteLa bañeran.jpg', 'The toilette / La bañera, 2019')">
+                <div class="img-wrapper">
+                    <img src="2019/the toiletteLa bañeran.jpg" alt="The toilette / La bañera" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>The toilette / La bañera</strong>, 2019</p>
+            </article>
+
+            <!-- 2021 (2 obras) -->
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2021/El detalle.jpg', 'El detalle, 2021')">
+                <div class="img-wrapper">
+                    <img src="2021/El detalle.jpg" alt="El detalle" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>El detalle</strong>, 2021</p>
+            </article>
+
+            <article class="card-obra obra-extra" onclick="abrirVisorModal('2021/Un sueño.jpg', 'Un sueño, 2021')">
+                <div class="img-wrapper">
+                    <img src="2021/Un sueño.jpg" alt="Un sueño" loading="lazy">
+                </div>
+                <p class="pie-obra"><strong>Un sueño</strong>, 2021</p>
+            </article>
+
+        </div>
+
+        <!-- BOTÓN SITUADO JUSTO DEBAJO DE LAS 16 OBRAS INICIALES -->
+        <div class="contenedor-boton-catalogo">
+            <button id="btnVerMas" class="btn-wikiart">VER MÁS OBRAS (1990 – 2021) · 74 OBRAS</button>
+        </div>
+
+    </main>
+
+    <!-- MODAL DE AMPLIACIÓN -->
+    <div id="modalVisor" class="modal-visor" onclick="cerrarVisorModal()">
+        <span class="btn-cerrar-modal" onclick="cerrarVisorModal()">&times;</span>
+        <div class="modal-contenido" onclick="event.stopPropagation()">
+            <img id="imgModal" src="" alt="Obra Ampliada">
+            <div id="tituloModal" class="modal-titulo"></div>
+        </div>
+    </div>
+
+    <script>
+        function abrirVisorModal(src, titulo) {
+            const modal = document.getElementById("modalVisor");
+            document.getElementById("imgModal").src = src;
+            document.getElementById("tituloModal").innerText = titulo;
+            modal.style.display = "flex";
+        }
+
+        function cerrarVisorModal() {
+            document.getElementById("modalVisor").style.display = "none";
+        }
+
+        // Al hacer clic, hace visibles las obras ocultas y retira el botón
+        const btnVerMas = document.getElementById('btnVerMas');
+        if (btnVerMas) {
+            btnVerMas.addEventListener('click', () => {
+                document.querySelectorAll('.obra-extra').forEach(obra => {
+                    obra.style.display = 'flex';
+                });
+                btnVerMas.parentElement.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+
+</html>
