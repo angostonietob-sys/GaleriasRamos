@@ -504,6 +504,9 @@
         if (!relPath || typeof relPath !== "string") return;
         if (!/\.(jpe?g|png|webp|gif)$/i.test(relPath)) return;
         const cleanRel = relPath.split(String.fromCharCode(92)).join("/").replace(/^\/+/, "");
+        if (!cleanRel.includes("/")) return;
+        const baseName = cleanRel.split("/").pop() || "";
+        if (/^obra\s*mera/i.test(baseName)) return;
         const year = extractYearFromPath(cleanRel);
         const yearNum = parseInt(year, 10);
         if (isNaN(yearNum) || yearNum < 1977 || yearNum > 2021) return;
