@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pasillo LED Inmersivo 300m — Colección Cronológica</title>
+  <title>Pasillo LED Inmersivo 300m — Galería Melquiades Ramos</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="catalogo.js"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -76,26 +77,19 @@
     }
 
     #intro-overlay p {
-      max-width: 660px;
+      max-width: 640px;
       color: #b7c0d8;
       font-size: 1.05rem;
       line-height: 1.55;
-      margin-bottom: 1.8rem;
-    }
-
-    .intro-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
+      margin-bottom: 2rem;
     }
 
     .btn-primary {
       cursor: pointer;
       border: none;
-      padding: 0.95rem 2rem;
+      padding: 1rem 2.3rem;
       border-radius: 999px;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #05060b;
       background: linear-gradient(135deg, #00f0ff 0%, #52ff9c 100%);
@@ -104,55 +98,8 @@
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 0 42px rgba(0, 240, 255, 0.7);
-    }
-
-    .btn-folder-intro {
-      cursor: pointer;
-      border: 1px solid rgba(255, 46, 147, 0.65);
-      padding: 0.95rem 1.8rem;
-      border-radius: 999px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #ffffff;
-      background: rgba(255, 46, 147, 0.22);
-      transition: all 0.2s ease;
-    }
-
-    .btn-folder-intro:hover {
-      background: rgba(255, 46, 147, 0.36);
-      border-color: #ff2e93;
-    }
-
-    .drop-hint {
-      margin-top: 1.1rem;
-      font-size: 0.86rem;
-      color: #8f9bb8;
-    }
-
-    #drag-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 60;
-      background: rgba(2, 6, 18, 0.9);
-      border: 3px dashed #00f0ff;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 12px;
-      text-align: center;
-      pointer-events: none;
-    }
-
-    #drag-overlay.active {
-      display: flex;
-    }
-
-    #drag-overlay h2 {
-      font-size: 2rem;
-      color: #00f0ff;
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 42px rgba(0, 240, 255, 0.75);
     }
 
     #hud-top {
@@ -390,48 +337,29 @@
       font-weight: 700;
       letter-spacing: 0.08em;
     }
-
-    #folder-input {
-      display: none;
-    }
   </style>
 </head>
 
 <body>
   <div id="canvas-container"></div>
 
-  <input type="file" id="folder-input" webkitdirectory multiple accept="image/*" />
-
-  <div id="drag-overlay">
-    <h2>📂 Suelta aquí todas tus carpetas juntas</h2>
-    <p>Se leerán automáticamente todos los años y obras de golpe</p>
-  </div>
-
   <div id="intro-overlay">
-    <div class="badge-top">TÚNEL INMERSIVO 300 METROS · 51 PANTALLAS LED</div>
-    <h1>Pasillo LED Cronológico</h1>
-    <p>
-      Selecciona directamente tu carpeta raíz <strong>amigojuliofinal</strong> (o arrastra todas las carpetas de años
-      juntas a esta ventana) y el pasillo de <strong>300 metros</strong> cargará todas las obras ordenadas por año y
-      título con luces reactivas y música animada.
+    <div class="badge-top">EXPOSICIÓN INMERSIVA 300 METROS · 51 PANTALLAS LED</div>
+    <h1>Obras Anteriores (1977 – 2021)</h1>
+    <p id="intro-summary">
+      Recorre un pasillo negro espejo de <strong>300 metros</strong> con 51 pantallas LED ordenadas cronológicamente
+      desde <strong>1977</strong> al inicio hasta <strong>2021</strong> al final del recorrido. Haz clic en cualquier
+      obra para ampliarla.
     </p>
-    <div class="intro-actions">
-      <button class="btn-folder-intro" id="btn-intro-folder">📁 Cargar Carpeta Raíz (Todas juntas)</button>
-      <button class="btn-primary" id="btn-start-demo">▶ Entrar al Pasillo con Demo</button>
-    </div>
-    <div class="drop-hint">💡 También puedes seleccionar varias carpetas a la vez en Windows y arrastrarlas aquí encima
-    </div>
+    <button class="btn-primary" id="btn-start-expo">▶ Entrar a la Exposición</button>
   </div>
 
   <div id="hud-top">
     <div class="hud-group hide-clean">
-      <button class="hud-btn active" id="btn-load-folder">📁 Cargar Todo Junto</button>
-      <button class="hud-btn" id="btn-add-folder" title="Sumar más carpetas sin borrar las anteriores">➕ Sumar
-        Carpeta</button>
       <div class="glass-pill">
         <span class="meter-badge" id="hud-meters">0 m / 300 m</span>
         <span style="opacity:0.3">|</span>
-        <span class="counter-badge" id="hud-photo-count">Colección base: 18 obras</span>
+        <span class="counter-badge" id="hud-photo-count">Cargando colección...</span>
       </div>
     </div>
 
@@ -447,8 +375,8 @@
   </div>
 
   <div id="controls-hint">
-    Arrastra todas tus carpetas juntas aquí encima en cualquier momento · <strong>W / S</strong> caminar · Clic en
-    pantalla LED para ampliar
+    1977 al inicio → 2021 al final · <strong>W / S</strong> o <strong>↑ / ↓</strong> caminar · Arrastra para mirar ·
+    Clic en pantalla para ampliar
   </div>
 
   <div id="hud-bottom">
@@ -461,10 +389,10 @@
     </select>
 
     <select class="hud-select" id="decade-select" title="Filtrar por época">
-      <option value="ALL">📅 Todas las épocas (1977 – 2026)</option>
+      <option value="ALL">📅 Todas las épocas (1977 – 2021)</option>
       <option value="70-80">📅 Años 70 y 80 (1977 – 1989)</option>
       <option value="90-00">📅 Años 90 y 2000 (1990 – 2009)</option>
-      <option value="10-26">📅 Contemporáneo (2010 – 2026)</option>
+      <option value="10-26">📅 Contemporáneo (2010 – 2021)</option>
     </select>
 
     <select class="hud-select" id="year-select" title="Ir directamente a un año">
@@ -498,82 +426,35 @@
   </div>
 
   <script>
-    const BASE_COLLECTION = [
-      { year: "1977", title: "Cantoneses bajo la lluvia", palette: ["#00f0ff", "#1a2a6c", "#ff2e93"] },
-      { year: "1977", title: "El balcón", palette: ["#ff9a00", "#ff2e93", "#2b1055"] },
-      { year: "1977", title: "Habitantes del subsuelo", palette: ["#52ff9c", "#0f3443", "#34e89e"] },
-      { year: "1978", title: "Antropología del ser humano", palette: ["#f857a6", "#ff5858", "#1f1c2c"] },
-      { year: "1978", title: "Los caballos del rey", palette: ["#ffd200", "#f7971e", "#232526"] },
-      { year: "1978", title: "Los peces", palette: ["#00c6ff", "#0072ff", "#090d16"] },
-      { year: "1978", title: "Máquina de guerra", palette: ["#ff416c", "#ff4b2b", "#141414"] },
-      { year: "1980", title: "Amanecer rojo sobre la pared", palette: ["#ff0844", "#ffb199", "#1e0510"] },
-      { year: "1980", title: "Los amigos", palette: ["#7f00ff", "#e100ff", "#120724"] },
-      { year: "1980", title: "Paisaje abstracto", palette: ["#43e97b", "#38f9d7", "#0b1e26"] },
-      { year: "1982", title: "Horizonte nocturno", palette: ["#4facfe", "#00f2fe", "#081229"] },
-      { year: "1986", title: "Reflejos urbanos", palette: ["#fa709a", "#fee140", "#1a1026"] },
-      { year: "1990", title: "Cromatismo interior", palette: ["#a18cd1", "#fbc2eb", "#17112b"] },
-      { year: "1999", title: "Cambio de siglo", palette: ["#ff00cc", "#333399", "#0c091d"] },
-      { year: "2005", title: "Geometría viva", palette: ["#00f5d4", "#00bbf9", "#091526"] },
-      { year: "2010", title: "Luz sobre materia", palette: ["#fee440", "#f15bb5", "#190a24"] },
-      { year: "2019", title: "Ecos del tiempo", palette: ["#9b5de5", "#00f5d4", "#0c0c1c"] },
-      { year: "2021", title: "Nueva perspectiva", palette: ["#ff2e93", "#00f0ff", "#070913"] }
-    ];
-
     let fullArtworks = [];
     let filteredArtworks = [];
-    let appendMode = false;
     const imageCache = new Map();
 
-    function createProceduralArtDataURL(item, idx) {
-      const c = document.createElement("canvas");
-      c.width = 960;
-      c.height = 680;
-      const ctx = c.getContext("2d");
-
-      const grad = ctx.createLinearGradient(0, 0, c.width, c.height);
-      grad.addColorStop(0, item.palette[2]);
-      grad.addColorStop(0.55, item.palette[1]);
-      grad.addColorStop(1, item.palette[0]);
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, c.width, c.height);
-
-      const seed = (idx + 1) * 37.3;
-      for (let i = 0; i < 16; i++) {
-        ctx.save();
-        ctx.globalAlpha = 0.16 + ((i % 4) * 0.08);
-        ctx.fillStyle = item.palette[i % item.palette.length];
-        const x = ((Math.sin(seed + i * 1.7) + 1) * 0.5) * c.width;
-        const y = ((Math.cos(seed + i * 2.3) + 1) * 0.5) * c.height;
-        const r = 60 + ((i * 29 + idx * 17) % 190);
-        ctx.beginPath();
-        if (i % 3 === 0) {
-          ctx.arc(x, y, r, 0, Math.PI * 2);
-        } else if (i % 3 === 1) {
-          ctx.rect(x - r * 0.7, y - r * 0.5, r * 1.4, r);
-        } else {
-          ctx.moveTo(x, y - r);
-          ctx.lineTo(x + r, y + r * 0.8);
-          ctx.lineTo(x - r, y + r * 0.8);
-          ctx.closePath();
-        }
-        ctx.fill();
-        ctx.restore();
+    function extractYearFromPath(pathStr) {
+      const normalized = String(pathStr || "").split(String.fromCharCode(92)).join("/");
+      const parts = normalized.split("/").filter(Boolean);
+      for (let i = parts.length - 2; i >= 0; i--) {
+        const match = parts[i].match(/^(19\d{2}|20\d{2})$/);
+        if (match) return match[1];
       }
-
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
-      ctx.lineWidth = 2;
-      for (let y = 24; y < c.height; y += 36) {
-        ctx.beginPath();
-        ctx.moveTo(28, y);
-        ctx.lineTo(c.width - 28, y);
-        ctx.stroke();
-      }
-
-      return c.toDataURL("image/jpeg", 0.88);
+      return "1977";
     }
 
-    function clearImageCache() {
-      imageCache.clear();
+    function formatTitleFromPath(pathStr) {
+      const normalized = String(pathStr || "").split(String.fromCharCode(92)).join("/");
+      const fileName = normalized.split("/").pop() || "";
+      return fileName
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[_-]+/g, " ")
+        .trim();
+    }
+
+    function encodeWebPath(relPath) {
+      return String(relPath || "")
+        .split(String.fromCharCode(92)).join("/")
+        .split("/")
+        .map(segment => encodeURIComponent(segment))
+        .join("/");
     }
 
     function getDecodedImage(src) {
@@ -586,9 +467,7 @@
           if (typeof img.decode === "function") {
             try {
               await img.decode();
-            } catch (err) {
-              // Ignorar si ya está decodificada
-            }
+            } catch (err) { }
           }
           resolve(img);
         };
@@ -606,7 +485,7 @@
     function populateYearSelector() {
       const yearSelect = document.getElementById("year-select");
       const years = Array.from(new Set(fullArtworks.map(a => a.year))).sort((a, b) => a.localeCompare(b));
-      yearSelect.innerHTML = `<option value="ALL">🗓️ Año: Todos (${years.length} carpetas)</option>`;
+      yearSelect.innerHTML = `<option value="ALL">🗓️ Año: Todos (${years.length} años)</option>`;
       years.forEach(yr => {
         const count = fullArtworks.filter(a => a.year === yr).length;
         const opt = document.createElement("option");
@@ -616,189 +495,48 @@
       });
     }
 
-    function initBaseCollection() {
-      fullArtworks = BASE_COLLECTION.map((item, idx) => ({
-        year: item.year,
-        title: item.title,
-        src: createProceduralArtDataURL(item, idx),
-        isUserFile: false
-      }));
-      populateYearSelector();
-      applyEraFilter();
-    }
+    function loadCatalogAutomatically() {
+      const rawList = Array.isArray(window.CATALOGO_OBRAS) ? window.CATALOGO_OBRAS : [];
+      const seen = new Set();
+      const items = [];
 
-    function extractYearFromPath(pathStr) {
-      const normalized = String(pathStr || "").replace(/\\/g, "/");
-      const parts = normalized.split("/").filter(Boolean);
-      for (let i = parts.length - 2; i >= 0; i--) {
-        const match = parts[i].match(/(19\d{2}|20\d{2})/);
-        if (match) return match[1];
-      }
-      const fileMatch = (parts[parts.length - 1] || "").match(/(19\d{2}|20\d{2})/);
-      if (fileMatch) return fileMatch[1];
-      return "S/F";
-    }
+      rawList.forEach(relPath => {
+        if (!relPath || typeof relPath !== "string") return;
+        if (!/\.(jpe?g|png|webp|gif)$/i.test(relPath)) return;
+        const cleanRel = relPath.split(String.fromCharCode(92)).join("/").replace(/^\/+/, "");
+        const year = extractYearFromPath(cleanRel);
+        const yearNum = parseInt(year, 10);
+        if (isNaN(yearNum) || yearNum < 1977 || yearNum > 2021) return;
+        if (seen.has(cleanRel.toLowerCase())) return;
+        seen.add(cleanRel.toLowerCase());
 
-    function ingestFileList(entriesWithPaths, shouldAppend = false) {
-      const validImages = entriesWithPaths.filter(item => item && item.file && /\.(jpe?g|png|webp|gif)$/i.test(item.file.name));
-      if (!validImages.length) return;
-
-      const hasUserFilesAlready = fullArtworks.some(a => a.isUserFile);
-      const keepExisting = shouldAppend && hasUserFilesAlready;
-
-      if (!keepExisting) {
-        clearImageCache();
-        fullArtworks.forEach(a => {
-          if (a.isUserFile && a.src) URL.revokeObjectURL(a.src);
-        });
-      }
-
-      const seenKeys = new Set();
-      const loaded = [];
-
-      if (keepExisting) {
-        fullArtworks.forEach(a => {
-          const key = `${a.year}::${a.title.toLowerCase()}`;
-          seenKeys.add(key);
-          loaded.push(a);
-        });
-      }
-
-      validImages.forEach(({ file, path }) => {
-        const year = extractYearFromPath(path);
-        const rawTitle = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]+/g, " ").trim();
-        const dedupeKey = `${year}::${rawTitle.toLowerCase()}`;
-        if (seenKeys.has(dedupeKey)) return;
-        seenKeys.add(dedupeKey);
-
-        loaded.push({
+        items.push({
           year,
-          title: rawTitle,
-          src: URL.createObjectURL(file),
-          isUserFile: true
+          title: formatTitleFromPath(cleanRel),
+          src: encodeWebPath(cleanRel)
         });
       });
 
-      loaded.sort((a, b) => a.year.localeCompare(b.year) || a.title.localeCompare(b.title));
-      fullArtworks = loaded;
+      items.sort((a, b) => {
+        if (a.year !== b.year) return a.year.localeCompare(b.year);
+        return a.title.localeCompare(b.title, "es", { numeric: true });
+      });
 
-      const distinctYears = new Set(fullArtworks.map(a => a.year)).size;
-      document.getElementById("hud-photo-count").textContent = `${fullArtworks.length} obras · ${distinctYears} años`;
+      fullArtworks = items;
+
+      const countEl = document.getElementById("hud-photo-count");
+      const summaryEl = document.getElementById("intro-summary");
+      if (fullArtworks.length > 0) {
+        const distinctYears = new Set(fullArtworks.map(a => a.year)).size;
+        countEl.textContent = `${fullArtworks.length} obras · ${distinctYears} años (1977–2021)`;
+        summaryEl.innerHTML = `Recorre un pasillo negro espejo de <strong>300 metros</strong> con 51 pantallas LED mostrando las <strong>${fullArtworks.length} obras</strong> desde <strong>1977</strong> al inicio hasta <strong>2021</strong> al final del recorrido.`;
+      } else {
+        countEl.textContent = "Sin obras 1977–2021 en catalogo.js";
+      }
+
       populateYearSelector();
-      document.getElementById("year-select").value = "ALL";
       applyEraFilter();
-
-      const intro = document.getElementById("intro-overlay");
-      if (!intro.classList.contains("hidden")) {
-        startExperience();
-      }
     }
-
-    const folderInput = document.getElementById("folder-input");
-    document.getElementById("btn-load-folder").addEventListener("click", () => {
-      appendMode = false;
-      folderInput.value = "";
-      folderInput.click();
-    });
-    document.getElementById("btn-intro-folder").addEventListener("click", () => {
-      appendMode = false;
-      folderInput.value = "";
-      folderInput.click();
-    });
-    document.getElementById("btn-add-folder").addEventListener("click", () => {
-      appendMode = true;
-      folderInput.value = "";
-      folderInput.click();
-    });
-
-    folderInput.addEventListener("change", (e) => {
-      const files = Array.from(e.target.files || []);
-      const mapped = files.map(f => ({
-        file: f,
-        path: f.webkitRelativePath || f.name
-      }));
-      ingestFileList(mapped, appendMode);
-    });
-
-    // Arrastrar y soltar múltiples carpetas juntas
-    const dragOverlay = document.getElementById("drag-overlay");
-    let dragDepth = 0;
-
-    window.addEventListener("dragenter", (e) => {
-      e.preventDefault();
-      dragDepth++;
-      dragOverlay.classList.add("active");
-    });
-
-    window.addEventListener("dragover", (e) => {
-      e.preventDefault();
-    });
-
-    window.addEventListener("dragleave", (e) => {
-      e.preventDefault();
-      dragDepth--;
-      if (dragDepth <= 0) {
-        dragDepth = 0;
-        dragOverlay.classList.remove("active");
-      }
-    });
-
-    async function readEntryRecursively(entry, parentPath = "") {
-      if (!entry) return [];
-      if (entry.isFile) {
-        return new Promise((resolve) => {
-          entry.file(
-            (file) => resolve([{ file, path: `${parentPath}/${file.name}` }]),
-            () => resolve([])
-          );
-        });
-      }
-      if (entry.isDirectory) {
-        const dirReader = entry.createReader();
-        const readAllEntries = () => new Promise((resolve) => {
-          const all = [];
-          const step = () => {
-            dirReader.readEntries((batch) => {
-              if (!batch || !batch.length) {
-                resolve(all);
-              } else {
-                all.push(...batch);
-                step();
-              }
-            }, () => resolve(all));
-          };
-          step();
-        });
-        const children = await readAllEntries();
-        const nested = await Promise.all(
-          children.map(child => readEntryRecursively(child, `${parentPath}/${entry.name}`))
-        );
-        return nested.flat();
-      }
-      return [];
-    }
-
-    window.addEventListener("drop", async (e) => {
-      e.preventDefault();
-      dragDepth = 0;
-      dragOverlay.classList.remove("active");
-
-      const items = Array.from((e.dataTransfer && e.dataTransfer.items) || []);
-      const entries = items
-        .map(it => (typeof it.webkitGetAsEntry === "function" ? it.webkitGetAsEntry() : null))
-        .filter(Boolean);
-
-      if (entries.length) {
-        const collected = (await Promise.all(entries.map(en => readEntryRecursively(en, "")))).flat();
-        ingestFileList(collected, false);
-      } else if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
-        const fallback = Array.from(e.dataTransfer.files).map(f => ({
-          file: f,
-          path: f.webkitRelativePath || f.name
-        }));
-        ingestFileList(fallback, false);
-      }
-    });
 
     function applyEraFilter() {
       const decadeVal = document.getElementById("decade-select").value;
@@ -1154,15 +892,15 @@
         ctx.fillText(artwork.year, 34, h - footerH / 2);
 
         ctx.fillStyle = "rgba(255,255,255,0.22)";
-        ctx.fillRect(142, h - footerH + 28, 3, footerH - 56);
+        ctx.fillRect(160, h - footerH + 28, 3, footerH - 56);
 
         ctx.fillStyle = "#ffffff";
         ctx.font = "600 30px 'Segoe UI', system-ui, sans-serif";
         let titleText = artwork.title;
-        while (ctx.measureText(titleText).width > w - 195 && titleText.length > 8) {
+        while (ctx.measureText(titleText).width > w - 210 && titleText.length > 8) {
           titleText = titleText.slice(0, -4) + "...";
         }
-        ctx.fillText(titleText, 166, h - footerH / 2);
+        ctx.fillText(titleText, 184, h - footerH / 2);
       };
 
       try {
@@ -1258,16 +996,30 @@
       renderArtworkToCanvas(screenObj.canvas, art, screenObj.canvas._renderToken);
     }
 
+    function getChronologicalArtworkForScreen(screenObj, screenIdx) {
+      const total = filteredArtworks.length;
+      if (!total) return null;
+      const maxSlot = Math.max(1, ledScreens.length - 1);
+      const progressRatio = Math.min(1, screenIdx / maxSlot);
+      const baseIndex = Math.floor(progressRatio * Math.max(0, total - 1));
+      const idx = (baseIndex + cycleOffset) % total;
+      return filteredArtworks[idx];
+    }
+
     function refreshAllScreens(force = false) {
       if (!filteredArtworks.length) return;
       ledScreens.forEach((scr, idx) => {
         if (force) scr.artwork = null;
-        assignArtworkToScreen(scr, idx + cycleOffset);
+        const art = getChronologicalArtworkForScreen(scr, idx);
+        if (!art || scr.artwork === art) return;
+        scr.artwork = art;
+        scr.canvas._renderToken++;
+        renderArtworkToCanvas(scr.canvas, art, scr.canvas._renderToken);
       });
     }
 
     let autoWalk = true;
-    let autoCycle = true;
+    let autoCycle = false;
     let yaw = 0;
     let pitch = 0;
     let isDragging = false;
@@ -1337,10 +1089,17 @@
       e.currentTarget.classList.toggle("active", autoWalk);
     });
 
-    document.getElementById("btn-auto-cycle").addEventListener("click", (e) => {
+    const autoCycleBtn = document.getElementById("btn-auto-cycle");
+    autoCycleBtn.textContent = "🔄 Rotación Obras: OFF";
+    autoCycleBtn.classList.remove("active");
+    autoCycleBtn.addEventListener("click", (e) => {
       autoCycle = !autoCycle;
       e.currentTarget.textContent = autoCycle ? "🔄 Rotación Obras: ON" : "🔄 Rotación Obras: OFF";
       e.currentTarget.classList.toggle("active", autoCycle);
+      if (!autoCycle) {
+        cycleOffset = 0;
+        refreshAllScreens(true);
+      }
     });
 
     document.getElementById("btn-clean-view").addEventListener("click", (e) => {
@@ -1349,12 +1108,10 @@
       e.currentTarget.textContent = isClean ? "🎛️ Mostrar Controles" : "👁️ Vista Limpia";
     });
 
-    function startExperience() {
+    document.getElementById("btn-start-expo").addEventListener("click", () => {
       document.getElementById("intro-overlay").classList.add("hidden");
       startSequencer();
-    }
-
-    document.getElementById("btn-start-demo").addEventListener("click", startExperience);
+    });
 
     let lastTime = performance.now();
     let waveIndex = 0;
@@ -1401,8 +1158,6 @@
 
       if (camera.position.z < -CORRIDOR_LENGTH + 14) {
         camera.position.z = -3;
-        cycleOffset += ledScreens.length;
-        refreshAllScreens(false);
       }
       if (camera.position.z > -2) camera.position.z = -2;
 
@@ -1414,13 +1169,14 @@
       document.getElementById("hud-meters").textContent = `${currentMeters} m / 300 m`;
       document.getElementById("corridor-fill").style.height = `${(currentMeters / 300) * 100}%`;
 
-      if (autoCycle && filteredArtworks.length > ledScreens.length) {
+      if (autoCycle && filteredArtworks.length > 0) {
         waveAccumulator += dt * (0.8 + bassEnergy * 2.4) * speedMult;
-        if (waveAccumulator >= 0.38) {
+        if (waveAccumulator >= 0.45) {
           waveAccumulator = 0;
           const targetScr = ledScreens[waveIndex % ledScreens.length];
-          const nextArtIdx = cycleOffset + ledScreens.length + waveIndex;
-          assignArtworkToScreen(targetScr, nextArtIdx);
+          const baseArt = getChronologicalArtworkForScreen(targetScr, waveIndex % ledScreens.length);
+          const idx = (filteredArtworks.indexOf(baseArt) + Math.floor(waveIndex / ledScreens.length) + 1) % filteredArtworks.length;
+          assignArtworkToScreen(targetScr, idx);
 
           targetScr.rimMat.color.setHSL((now * 0.0005 + waveIndex * 0.08) % 1, 1, 0.62);
           waveIndex++;
@@ -1454,7 +1210,7 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    initBaseCollection();
+    loadCatalogAutomatically();
     requestAnimationFrame(animate);
   </script>
 </body>
