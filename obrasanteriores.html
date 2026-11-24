@@ -2,1160 +2,1461 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MELQUIADES RAMOS - OBRAS DE ARTE</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pasillo LED Inmersivo 300m — Colección Cronológica</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f7f4ee;
-            color: #222222;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #020205;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      color: #f4f6fb;
+    }
 
-        /* HEADER & NAVEGACIÓN SUPERIOR */
-        header.site-header {
-            background-color: #ffffff;
-            border-bottom: 2px solid #a32824;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
+    #canvas-container {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+    }
 
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 14px 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: radial-gradient(circle at center, rgba(16, 12, 34, 0.92) 0%, rgba(2, 2, 6, 0.98) 100%);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
 
-        .logo {
-            font-size: 1.15rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: #111111;
-            text-transform: uppercase;
-            text-decoration: none;
-        }
+    #intro-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 22px;
-            list-style: none;
-        }
+    .badge-top {
+      font-size: 0.78rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      background: rgba(0, 240, 255, 0.08);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
 
-        .nav-links a {
-            text-decoration: none;
-            color: #222222;
-            font-size: 0.82rem;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            transition: color 0.2s ease;
-        }
+    #intro-overlay h1 {
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(120deg, #ffffff 15%, #00f0ff 52%, #ff2e93 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      margin-bottom: 0.8rem;
+    }
 
-        .nav-links a:hover {
-            color: #a32824;
-        }
+    #intro-overlay p {
+      max-width: 660px;
+      color: #b7c0d8;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      margin-bottom: 1.8rem;
+    }
 
-        .nav-links a.active-pill {
-            background-color: #a32824;
-            color: #ffffff;
-            padding: 7px 18px;
-            border-radius: 20px;
-        }
+    .intro-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
 
-        /* CONTENEDOR PRINCIPAL */
-        main.main-content {
-            flex: 1;
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 45px 24px 80px 24px;
-        }
+    .btn-primary {
+      cursor: pointer;
+      border: none;
+      padding: 0.95rem 2rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #05060b;
+      background: linear-gradient(135deg, #00f0ff 0%, #52ff9c 100%);
+      box-shadow: 0 0 32px rgba(0, 240, 255, 0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        .titulo-seccion {
-            text-align: center;
-            margin-bottom: 45px;
-        }
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 0 42px rgba(0, 240, 255, 0.7);
+    }
 
-        .titulo-seccion h1 {
-            font-size: 2.2rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            color: #a32824;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+    .btn-folder-intro {
+      cursor: pointer;
+      border: 1px solid rgba(255, 46, 147, 0.65);
+      padding: 0.95rem 1.8rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: rgba(255, 46, 147, 0.22);
+      transition: all 0.2s ease;
+    }
 
-        .titulo-seccion p {
-            font-size: 1.05rem;
-            color: #666666;
-        }
+    .btn-folder-intro:hover {
+      background: rgba(255, 46, 147, 0.36);
+      border-color: #ff2e93;
+    }
 
-        /* GRID DE OBRAS */
-        .grid-obras {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 28px;
-        }
+    .drop-hint {
+      margin-top: 1.1rem;
+      font-size: 0.86rem;
+      color: #8f9bb8;
+    }
 
-        @media (max-width: 1100px) {
-            .grid-obras {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
+    #drag-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(2, 6, 18, 0.9);
+      border: 3px dashed #00f0ff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+      pointer-events: none;
+    }
 
-        @media (max-width: 768px) {
-            .grid-obras {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+    #drag-overlay.active {
+      display: flex;
+    }
 
-        @media (max-width: 480px) {
-            .grid-obras {
-                grid-template-columns: 1fr;
-            }
-        }
+    #drag-overlay h2 {
+      font-size: 2rem;
+      color: #00f0ff;
+    }
 
-        /* TARJETAS DE OBRAS */
-        .card-obra {
-            background-color: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+    #hud-top {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
 
-        .card-obra:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
-        }
+    .hud-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+      flex-wrap: wrap;
+    }
 
-        .img-wrapper {
-            width: 100%;
-            height: 290px;
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 12px 6px 12px;
-        }
+    .glass-pill {
+      background: rgba(8, 10, 20, 0.74);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    }
 
-        .img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 4px;
-        }
+    .hud-btn {
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #f4f6fb;
+      padding: 8px 14px;
+      border-radius: 11px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.18s ease;
+    }
 
-        .pie-obra {
-            background-color: #ece4d7;
-            margin: 8px 12px 12px 12px;
-            padding: 10px 14px;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 0.88rem;
-            color: #222222;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    .hud-btn:hover {
+      background: rgba(0, 240, 255, 0.18);
+      border-color: rgba(0, 240, 255, 0.55);
+      color: #ffffff;
+    }
 
-        .pie-obra strong {
-            font-weight: 800;
-            color: #111111;
-        }
+    .hud-btn.active {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.28), rgba(255, 46, 147, 0.28));
+      border-color: #00f0ff;
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.28);
+    }
 
-        /* OBRAS ADICIONALES (OCULTAS INICIALMENTE) */
-        .obra-extra {
-            display: none;
-        }
+    .meter-badge {
+      font-variant-numeric: tabular-nums;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #00f0ff;
+      letter-spacing: 0.04em;
+    }
 
-        /* CONTENEDOR Y BOTÓN 'VER MÁS' CENTRADO ABAJO */
-        .contenedor-boton-catalogo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin: 55px 0 20px 0;
-        }
+    .counter-badge {
+      font-size: 0.82rem;
+      color: #b7c0d8;
+    }
 
-        .btn-wikiart {
-            background-color: #a32824;
-            color: #ffffff;
-            border: none;
-            padding: 15px 42px;
-            font-size: 0.92rem;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            border-radius: 30px;
-            box-shadow: 0 4px 14px rgba(163, 40, 36, 0.28);
-            transition: all 0.25s ease;
-            text-transform: uppercase;
-        }
+    #hud-bottom {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(8, 10, 20, 0.78);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      padding: 10px 16px;
+      border-radius: 18px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+      max-width: 96vw;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
 
-        .btn-wikiart:hover {
-            background-color: #841e1b;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(163, 40, 36, 0.38);
-        }
+    select.hud-select {
+      background: rgba(18, 22, 38, 0.95);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      padding: 7px 11px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
 
-        /* MODAL DE AMPLIACIÓN */
-        .modal-visor {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.88);
-            justify-content: center;
-            align-items: center;
-        }
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.8rem;
+      color: #b7c0d8;
+    }
 
-        .modal-contenido {
-            position: relative;
-            max-width: 90vw;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    input[type="range"] {
+      accent-color: #00f0ff;
+      cursor: pointer;
+      width: 86px;
+    }
 
-        .modal-contenido img {
-            max-width: 85vw;
-            max-height: 80vh;
-            object-fit: contain;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-radius: 4px;
-        }
+    #corridor-track {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      width: 6px;
+      height: 220px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      transition: opacity 0.35s ease;
+    }
 
-        .modal-titulo {
-            margin-top: 15px;
-            color: #ffffff;
-            font-size: 1.1rem;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
+    #corridor-fill {
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(180deg, #00f0ff, #ff2e93);
+      border-radius: 999px;
+      box-shadow: 0 0 12px #00f0ff;
+    }
 
-        .btn-cerrar-modal {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: #ffffff;
-            font-size: 40px;
-            font-weight: 300;
-            cursor: pointer;
-            user-select: none;
-            transition: color 0.2s ease;
-        }
+    body.clean-mode #hud-top .hide-clean,
+    body.clean-mode #hud-bottom,
+    body.clean-mode #corridor-track,
+    body.clean-mode #controls-hint {
+      opacity: 0;
+      pointer-events: none;
+    }
 
-        .btn-cerrar-modal:hover {
-            color: #cccccc;
-        }
-    </style>
+    #controls-hint {
+      position: fixed;
+      bottom: 84px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 15;
+      font-size: 0.78rem;
+      color: rgba(210, 220, 245, 0.72);
+      background: rgba(5, 7, 15, 0.55);
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    #artwork-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(2, 3, 8, 0.86);
+      backdrop-filter: blur(14px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    #artwork-modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #0c0f1d;
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 20px;
+      max-width: 820px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 240, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-img-wrap {
+      width: 100%;
+      max-height: 68vh;
+      background: #04050a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-img-wrap img {
+      max-width: 100%;
+      max-height: 64vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-footer {
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .modal-meta h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .modal-meta span {
+      font-size: 0.88rem;
+      color: #00f0ff;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    #folder-input {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
-
-    <!-- BARRA DE NAVEGACIÓN PRINCIPAL -->
-    <header class="site-header">
-        <div class="nav-container">
-            <a href="index.html" class="logo">MELQUIADES RAMOS - OBRAS DE ARTE</a>
-            <ul class="nav-links">
-                <li><a href="index.html">INICIO</a></li>
-                <li><a href="galeria3d.html">GALERÍA 3D</a></li>
-                <li><a href="cuadrosfinales.html">OBRAS EXPUESTAS</a></li>
-                <li><a href="obrasanteriores.html" class="active-pill">OBRA ANTERIOR</a></li>
-                <li><a href="contacto.html">CONTACTO</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="main-content">
-
-        <div class="titulo-seccion">
-            <h1>OBRA REALIZADA ANTERIORMENTE</h1>
-            <p>Retrospectiva y trayectoria pictórica de Melquiades Ramos.</p>
-        </div>
-
-        <!-- CUADRÍCULA CON LAS OBRAS -->
-        <div class="grid-obras" id="grid-obras">
-
-            <!-- ======================================================== -->
-            <!-- 16 OBRAS INICIALES (1977 - 1986)                        -->
-            <!-- ======================================================== -->
-
-            <!-- 1977 (3 obras) -->
-            <article class="card-obra"
-                onclick="abrirVisorModal('1977/Cantoneses bajo la lluvia.jpg', 'Cantoneses bajo la lluvia, 1977')">
-                <div class="img-wrapper">
-                    <img src="1977/Cantoneses bajo la lluvia.jpg" alt="Cantoneses bajo la lluvia" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Cantoneses bajo la lluvia</strong>, 1977</p>
-            </article>
-
-            <article class="card-obra" onclick="abrirVisorModal('1977/El balcón.jpg', 'El balcón, 1977')">
-                <div class="img-wrapper">
-                    <img src="1977/El balcón.jpg" alt="El balcón" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El balcón</strong>, 1977</p>
-            </article>
-
-            <article class="card-obra"
-                onclick="abrirVisorModal('1977/Habitantes del subsuelo.jpg', 'Habitantes del subsuelo, 1977')">
-                <div class="img-wrapper">
-                    <img src="1977/Habitantes del subsuelo.jpg" alt="Habitantes del subsuelo" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Habitantes del subsuelo</strong>, 1977</p>
-            </article>
-
-            <!-- 1978 (4 obras) -->
-            <article class="card-obra"
-                onclick="abrirVisorModal('1978/Antropología del ser humano.jpg', 'Antropología del ser humano, 1978')">
-                <div class="img-wrapper">
-                    <img src="1978/Antropología del ser humano.jpg" alt="Antropología del ser humano" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Antropología del ser humano</strong>, 1978</p>
-            </article>
-
-            <article class="card-obra"
-                onclick="abrirVisorModal('1978/Los caballos del rey.jpg', 'Los caballos del rey, 1978')">
-                <div class="img-wrapper">
-                    <img src="1978/Los caballos del rey.jpg" alt="Los caballos del rey" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Los caballos del rey</strong>, 1978</p>
-            </article>
-
-            <article class="card-obra" onclick="abrirVisorModal('1978/Los peces.jpg', 'Los peces, 1978')">
-                <div class="img-wrapper">
-                    <img src="1978/Los peces.jpg" alt="Los peces" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Los peces</strong>, 1978</p>
-            </article>
-
-            <article class="card-obra"
-                onclick="abrirVisorModal('1978/Máquina de guerra.jpg', 'Máquina de guerra, 1978')">
-                <div class="img-wrapper">
-                    <img src="1978/Máquina de guerra.jpg" alt="Máquina de guerra" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Máquina de guerra</strong>, 1978</p>
-            </article>
-
-            <!-- 1980 (3 obras) -->
-            <article class="card-obra"
-                onclick="abrirVisorModal('1980/Amanecer rojo sobre la pared.jpg', 'Amanecer rojo sobre la pared, 1980')">
-                <div class="img-wrapper">
-                    <img src="1980/Amanecer rojo sobre la pared.jpg" alt="Amanecer rojo sobre la pared" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Amanecer rojo sobre la pared</strong>, 1980</p>
-            </article>
-
-            <article class="card-obra" onclick="abrirVisorModal('1980/Los amigos.jpg', 'Los amigos, 1980')">
-                <div class="img-wrapper">
-                    <img src="1980/Los amigos.jpg" alt="Los amigos" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Los amigos</strong>, 1980</p>
-            </article>
-
-            <article class="card-obra"
-                onclick="abrirVisorModal('1980/Paisaje abstracto.jpg', 'Paisaje abstracto, 1980')">
-                <div class="img-wrapper">
-                    <img src="1980/Paisaje abstracto.jpg" alt="Paisaje abstracto" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Paisaje abstracto</strong>, 1980</p>
-            </article>
-
-            <!-- 1982 (4 obras) -->
-            <article class="card-obra" onclick="abrirVisorModal('1982/Estela gráfica.jpg', 'Estela gráfica, 1982')">
-                <div class="img-wrapper">
-                    <img src="1982/Estela gráfica.jpg" alt="Estela gráfica" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Estela gráfica</strong>, 1982</p>
-            </article>
-
-            <article class="card-obra" onclick="abrirVisorModal('1982/La pared.jpg', 'La pared, 1982')">
-                <div class="img-wrapper">
-                    <img src="1982/La pared.jpg" alt="La pared" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La pared</strong>, 1982</p>
-            </article>
-
-            <article class="card-obra" onclick="abrirVisorModal('1982/México.jpg', 'México, 1982')">
-                <div class="img-wrapper">
-                    <img src="1982/México.jpg" alt="México" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>México</strong>, 1982</p>
-            </article>
-
-            <article class="card-obra" onclick="abrirVisorModal('1982/Paisaje de tarde.jpg', 'Paisaje de tarde, 1982')">
-                <div class="img-wrapper">
-                    <img src="1982/Paisaje de tarde.jpg" alt="Paisaje de tarde" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Paisaje de tarde</strong>, 1982</p>
-            </article>
-
-            <!-- 1986 (2 obras) -->
-            <article class="card-obra" onclick="abrirVisorModal('1986/Fálico.jpg', 'Fálico, 1986')">
-                <div class="img-wrapper">
-                    <img src="1986/Fálico.jpg" alt="Fálico" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Fálico</strong>, 1986</p>
-            </article>
-
-            <article class="card-obra" onclick="abrirVisorModal('1986/Tepozlan.jpg', 'Tepozlan, 1986')">
-                <div class="img-wrapper">
-                    <img src="1986/Tepozlan.jpg" alt="Tepozlan" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Tepozlan</strong>, 1986</p>
-            </article>
-
-
-            <!-- ======================================================== -->
-            <!-- OBRAS ADICIONALES (1990 – 2021) - 83 OBRAS               -->
-            <!-- ======================================================== -->
-
-            <!-- 1990 (14 obras) -->
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/Alegoría del abismo.jpg', 'Alegoría del abismo, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/Alegoría del abismo.jpg" alt="Alegoría del abismo" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Alegoría del abismo</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/Autorretrato de espaldas.jpg', 'Autorretrato de espaldas, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/Autorretrato de espaldas.jpg" alt="Autorretrato de espaldas" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Autorretrato de espaldas</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/Ciudad atacada y barco a la deriba.jpg', 'Ciudad atacada y barco a la deriva, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/Ciudad atacada y barco a la deriba.jpg" alt="Ciudad atacada y barco a la deriva"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Ciudad atacada y barco a la deriva</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/El árbol de la vida.jpg', 'El árbol de la vida, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/El árbol de la vida.jpg" alt="El árbol de la vida" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El árbol de la vida</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/El dia del armisticio.jpg', 'El día del armisticio, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/El dia del armisticio.jpg" alt="El día del armisticio" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El día del armisticio</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/El espectador.JPG', 'El espectador, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/El espectador.JPG" alt="El espectador" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El espectador</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/El espíritu del maestro.jpg', 'El espíritu del maestro, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/El espíritu del maestro.jpg" alt="El espíritu del maestro" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El espíritu del maestro</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/El regreso del chamán.jpg', 'El regreso del chamán, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/El regreso del chamán.jpg" alt="El regreso del chamán" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El regreso del chamán</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/La mujer y el gendarme.jpg', 'La mujer y el gendarme, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/La mujer y el gendarme.jpg" alt="La mujer y el gendarme" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La mujer y el gendarme</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/Las cavilaciones del estudiante Torles.JPG', 'Las cavilaciones del estudiante Torles, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/Las cavilaciones del estudiante Torles.JPG"
-                        alt="Las cavilaciones del estudiante Torles" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Las cavilaciones del estudiante Torles</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/Madrid claro que si.jpg', 'Madrid claro que sí, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/Madrid claro que si.jpg" alt="Madrid claro que sí" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Madrid claro que sí</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/Material de sueños.jpg', 'Material de sueños, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/Material de sueños.jpg" alt="Material de sueños" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Material de sueños</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('1990/Posesión 2.JPG', 'Posesión 2, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/Posesión 2.JPG" alt="Posesión 2" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Posesión 2</strong>, 1990</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1990/Prosperidad.jpg', 'Prosperidad, 1990')">
-                <div class="img-wrapper">
-                    <img src="1990/Prosperidad.jpg" alt="Prosperidad" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Prosperidad</strong>, 1990</p>
-            </article>
-
-            <!-- 1999 (9 obras) -->
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1999/Agammemnon y el caballo de Troya.jpg', 'Agamenón y el caballo de Troya, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/Agammemnon y el caballo de Troya.jpg" alt="Agamenón y el caballo de Troya"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Agamenón y el caballo de Troya</strong>, 1999</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1999/Ariadna en el laberinto.jpg', 'Ariadna en el laberinto, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/Ariadna en el laberinto.jpg" alt="Ariadna en el laberinto" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Ariadna en el laberinto</strong>, 1999</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1999/Buscando a Helena.jpg', 'Buscando a Helena, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/Buscando a Helena.jpg" alt="Buscando a Helena" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Buscando a Helena</strong>, 1999</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1999/Cafetería Lavanda.jpg', 'Cafetería Lavanda, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/Cafetería Lavanda.jpg" alt="Cafetería Lavanda" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Cafetería Lavanda</strong>, 1999</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1999/Caligrafia Abstracta.jpg', 'Caligrafía Abstracta, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/Caligrafia Abstracta.jpg" alt="Caligrafía Abstracta" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Caligrafía Abstracta</strong>, 1999</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1999/El viaje de Eurídice.jpg', 'El viaje de Eurídice, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/El viaje de Eurídice.jpg" alt="El viaje de Eurídice" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El viaje de Eurídice</strong>, 1999</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1999/Elevación del cubo.jpg', 'Elevación del cubo, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/Elevación del cubo.jpg" alt="Elevación del cubo" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Elevación del cubo</strong>, 1999</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('1999/La mujer del puerto.jpg', 'La mujer del puerto, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/La mujer del puerto.jpg" alt="La mujer del puerto" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La mujer del puerto</strong>, 1999</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('1999/La rubia.jpg', 'La rubia, 1999')">
-                <div class="img-wrapper">
-                    <img src="1999/La rubia.jpg" alt="La rubia" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La rubia</strong>, 1999</p>
-            </article>
-
-            <!-- 2002 (5 obras) -->
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2002/El hombre desgarrado.JPG', 'El hombre desgarrado, 2002')">
-                <div class="img-wrapper">
-                    <img src="2002/El hombre desgarrado.JPG" alt="El hombre desgarrado" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El hombre desgarrado</strong>, 2002</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2002/El Pulpo.jpg', 'El Pulpo, 2002')">
-                <div class="img-wrapper">
-                    <img src="2002/El Pulpo.jpg" alt="El Pulpo" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El Pulpo</strong>, 2002</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2002/Eva.jpg', 'Eva, 2002')">
-                <div class="img-wrapper">
-                    <img src="2002/Eva.jpg" alt="Eva" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Eva</strong>, 2002</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2002/Paisaje lunar.jpg', 'Paisaje lunar, 2002')">
-                <div class="img-wrapper">
-                    <img src="2002/Paisaje lunar.jpg" alt="Paisaje lunar" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Paisaje lunar</strong>, 2002</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2002/Quimera.jpg', 'Quimera, 2002')">
-                <div class="img-wrapper">
-                    <img src="2002/Quimera.jpg" alt="Quimera" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Quimera</strong>, 2002</p>
-            </article>
-
-            <!-- 2004 (1 obra) -->
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2004/Mujeres desnudas.jpg', 'Mujeres desnudas, 2004')">
-                <div class="img-wrapper">
-                    <img src="2004/Mujeres desnudas.jpg" alt="Mujeres desnudas" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Mujeres desnudas</strong>, 2004</p>
-            </article>
-
-            <!-- 2005 (3 obras) -->
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2005/La leyenda de Midas.jpg', 'La leyenda de Midas, 2005')">
-                <div class="img-wrapper">
-                    <img src="2005/La leyenda de Midas.jpg" alt="La leyenda de Midas" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La leyenda de Midas</strong>, 2005</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2005/La mujer del rebozo.jpg', 'La mujer del rebozo, 2005')">
-                <div class="img-wrapper">
-                    <img src="2005/La mujer del rebozo.jpg" alt="La mujer del rebozo" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La mujer del rebozo</strong>, 2005</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2005/Tango.jpg', 'Tango, 2005')">
-                <div class="img-wrapper">
-                    <img src="2005/Tango.jpg" alt="Tango" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Tango</strong>, 2005</p>
-            </article>
-
-            <!-- 2006 (3 obras) -->
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2005/2006/Familia rusa en navidad.jpg', 'Familia rusa en navidad, 2006')">
-                <div class="img-wrapper">
-                    <img src="2005/2006/Familia rusa en navidad.jpg"
-                        onerror="this.src='2006/Familia rusa en navidad.jpg'" alt="Familia rusa en navidad"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Familia rusa en navidad</strong>, 2006</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2005/2006/Hipérbole.jpg', 'Hipérbole, 2006')">
-                <div class="img-wrapper">
-                    <img src="2005/2006/Hipérbole.jpg" onerror="this.src='2006/Hipérbole.jpg'" alt="Hipérbole"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Hipérbole</strong>, 2006</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2005/2006/La vieja de Ukrania.JPG', 'La vieja de Ukrania, 2006')">
-                <div class="img-wrapper">
-                    <img src="2005/2006/La vieja de Ukrania.JPG" onerror="this.src='2006/La vieja de Ukrania.JPG'"
-                        alt="La vieja de Ukrania" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La vieja de Ukrania</strong>, 2006</p>
-            </article>
-
-            <!-- 2010 (3 obras) -->
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2010/En el bosque.JPG', 'En el bosque, 2010')">
-                <div class="img-wrapper">
-                    <img src="2010/En el bosque.JPG" alt="En el bosque" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>En el bosque</strong>, 2010</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2010/Recuerdo.JPG', 'Recuerdo, 2010')">
-                <div class="img-wrapper">
-                    <img src="2010/Recuerdo.JPG" alt="Recuerdo" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Recuerdo</strong>, 2010</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2010/Tropical.JPG', 'Tropical, 2010')">
-                <div class="img-wrapper">
-                    <img src="2010/Tropical.JPG" alt="Tropical" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Tropical</strong>, 2010</p>
-            </article>
-
-            <!-- 2011 (22 obras) -->
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/Amada mía.jpg', 'Amada mía, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/Amada mía.jpg" onerror="this.src='2018/2011/Amada mía.jpg'" alt="Amada mía"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Amada mía</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/BESTIARIO.JPEG', 'BESTIARIO, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/BESTIARIO.JPEG" onerror="this.src='2018/2011/BESTIARIO.JPEG'" alt="BESTIARIO"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>BESTIARIO</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/CARTA NO ENVIADA.jpeg', 'CARTA NO ENVIADA, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/CARTA NO ENVIADA.jpeg" onerror="this.src='2018/2011/CARTA NO ENVIADA.jpeg'"
-                        alt="CARTA NO ENVIADA" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>CARTA NO ENVIADA</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/DE CINE.jpg', 'DE CINE, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/DE CINE.jpg" onerror="this.src='2018/2011/DE CINE.jpg'" alt="DE CINE" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>DE CINE</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/DOS AMIGAS.JPG', 'DOS AMIGAS, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/DOS AMIGAS.JPG" onerror="this.src='2018/2011/DOS AMIGAS.JPG'" alt="DOS AMIGAS"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>DOS AMIGAS</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/EL ASTRONOMO.JPG', 'EL ASTRONOMO, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/EL ASTRONOMO.JPG" onerror="this.src='2018/2011/EL ASTRONOMO.JPG'" alt="EL ASTRONOMO"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>EL ASTRONOMO</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/EL GOLFISTA.JPG', 'EL GOLFISTA, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/EL GOLFISTA.JPG" onerror="this.src='2018/2011/EL GOLFISTA.JPG'" alt="EL GOLFISTA"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>EL GOLFISTA</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/El Penique.jpeg', 'El Penique, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/El Penique.jpeg" onerror="this.src='2018/2011/El Penique.jpeg'" alt="El Penique"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El Penique</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/EL SUDOR DE LOS CABALLOS.JPG', 'EL SUDOR DE LOS CABALLOS, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/EL SUDOR DE LOS CABALLOS.JPG"
-                        onerror="this.src='2018/2011/EL SUDOR DE LOS CABALLOS.JPG'" alt="EL SUDOR DE LOS CABALLOS"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>EL SUDOR DE LOS CABALLOS</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/IMG_1071.JPG', 'Obra 1071, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/IMG_1071.JPG" onerror="this.src='2018/2011/IMG_1071.JPG'" alt="Obra 1071"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Obra 1071</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/Interior de la Lámpara.jpeg', 'Interior de la Lámpara, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/Interior de la Lámpara.jpeg"
-                        onerror="this.src='2018/2011/Interior de la Lámpara.jpeg'" alt="Interior de la Lámpara"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Interior de la Lámpara</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/LA EMIGRANTE.JPG', 'LA EMIGRANTE, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/LA EMIGRANTE.JPG" onerror="this.src='2018/2011/LA EMIGRANTE.JPG'" alt="LA EMIGRANTE"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>LA EMIGRANTE</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/LA PASIÓN ROJA.jpg', 'LA PASIÓN ROJA, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/LA PASIÓN ROJA.jpg" onerror="this.src='2018/2011/LA PASIÓN ROJA.jpg'"
-                        alt="LA PASIÓN ROJA" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>LA PASIÓN ROJA</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/Luces y Sombras.jpg', 'Luces y Sombras, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/Luces y Sombras.jpg" onerror="this.src='2018/2011/Luces y Sombras.jpg'"
-                        alt="Luces y Sombras" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Luces y Sombras</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/Otello.jpg', 'Otello, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/Otello.jpg" onerror="this.src='2018/2011/Otello.jpg'" alt="Otello" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Otello</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/Paisaje Alterado.jpg', 'Paisaje Alterado, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/Paisaje Alterado.jpg" onerror="this.src='2018/2011/Paisaje Alterado.jpg'"
-                        alt="Paisaje Alterado" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Paisaje Alterado</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/Paisaje Americano.jpeg', 'Paisaje Americano, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/Paisaje Americano.jpeg" onerror="this.src='2018/2011/Paisaje Americano.jpeg'"
-                        alt="Paisaje Americano" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Paisaje Americano</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/Paseo por París.jpeg', 'Paseo por París, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/Paseo por París.jpeg" onerror="this.src='2018/2011/Paseo por París.jpeg'"
-                        alt="Paseo por París" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Paseo por París</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2011/PATRICIO.jpg', 'PATRICIO, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/PATRICIO.jpg" onerror="this.src='2018/2011/PATRICIO.jpg'" alt="PATRICIO"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>PATRICIO</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/TARDE DE VERANO.JPG', 'TARDE DE VERANO, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/TARDE DE VERANO.JPG" onerror="this.src='2018/2011/TARDE DE VERANO.JPG'"
-                        alt="TARDE DE VERANO" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>TARDE DE VERANO</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/TORMENTA EN EL PARNASO.JPG', 'TORMENTA EN EL PARNASO, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/TORMENTA EN EL PARNASO.JPG" onerror="this.src='2018/2011/TORMENTA EN EL PARNASO.JPG'"
-                        alt="TORMENTA EN EL PARNASO" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>TORMENTA EN EL PARNASO</strong>, 2011</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2011/VENCANTADORAS DE SERPIENTES.JPG', 'VENCANTADORAS DE SERPIENTES, 2011')">
-                <div class="img-wrapper">
-                    <img src="2011/VENCANTADORAS DE SERPIENTES.JPG"
-                        onerror="this.src='2018/2011/VENCANTADORAS DE SERPIENTES.JPG'" alt="VENCANTADORAS DE SERPIENTES"
-                        loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>VENCANTADORAS DE SERPIENTES</strong>, 2011</p>
-            </article>
-
-            <!-- 2018 (7 obras) -->
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2018/Andróginon.jpg', 'Andróginon, 2018')">
-                <div class="img-wrapper">
-                    <img src="2018/Andróginon.jpg" alt="Andróginon" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Andróginon</strong>, 2018</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2018/CuadroElviejo.jpg', 'Cuadro El Viejo, 2018')">
-                <div class="img-wrapper">
-                    <img src="2018/CuadroElviejo.jpg" alt="Cuadro El Viejo" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Cuadro El Viejo</strong>, 2018</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2018/dejala que baile.jpg', 'Déjala que baile, 2018')">
-                <div class="img-wrapper">
-                    <img src="2018/dejala que baile.jpg" alt="Déjala que baile" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Déjala que baile</strong>, 2018</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2018/La mujer marcada.jpg', 'La mujer marcada, 2018')">
-                <div class="img-wrapper">
-                    <img src="2018/La mujer marcada.jpg" alt="La mujer marcada" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La mujer marcada</strong>, 2018</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2018/maternidad olgiska.jpg', 'Maternidad olgiska, 2018')">
-                <div class="img-wrapper">
-                    <img src="2018/maternidad olgiska.jpg" alt="Maternidad olgiska" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Maternidad olgiska</strong>, 2018</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2018/mujer con perra.jpg', 'Mujer con perra, 2018')">
-                <div class="img-wrapper">
-                    <img src="2018/mujer con perra.jpg" alt="Mujer con perra" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Mujer con perra</strong>, 2018</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2018/Punto de inflesion.jpg', 'Punto de inflexión, 2018')">
-                <div class="img-wrapper">
-                    <img src="2018/Punto de inflesion.jpg" alt="Punto de inflexión" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Punto de inflexión</strong>, 2018</p>
-            </article>
-
-            <!-- 2019 (5 obras) -->
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2019/El joven.jpg', 'El joven, 2019')">
-                <div class="img-wrapper">
-                    <img src="2019/El joven.jpg" alt="El joven" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El joven</strong>, 2019</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2019/escena del crimen.jpg', 'Escena del crimen, 2019')">
-                <div class="img-wrapper">
-                    <img src="2019/escena del crimen.jpg" alt="Escena del crimen" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Escena del crimen</strong>, 2019</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2019/la bella.jpg', 'La bella, 2019')">
-                <div class="img-wrapper">
-                    <img src="2019/la bella.jpg" alt="La bella" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>La bella</strong>, 2019</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2019/Los emigrantes.jpg', 'Los emigrantes, 2019')">
-                <div class="img-wrapper">
-                    <img src="2019/Los emigrantes.jpg" alt="Los emigrantes" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Los emigrantes</strong>, 2019</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2019/the toiletteLa bañeran.jpg', 'The toilette / La bañera, 2019')">
-                <div class="img-wrapper">
-                    <img src="2019/the toiletteLa bañeran.jpg" alt="The toilette / La bañera" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>The toilette / La bañera</strong>, 2019</p>
-            </article>
-
-            <!-- 2020 (9 obras) -->
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2020/El cuervo.jpg', 'El cuervo, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/El cuervo.jpg" alt="El cuervo" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El cuervo</strong>, 2020</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2020/imagen interior.jpg', 'Imagen interior, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/imagen interior.jpg" alt="Imagen interior" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Imagen interior</strong>, 2020</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2020/Momentos.jpg', 'Momentos, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/Momentos.jpg" alt="Momentos" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Momentos</strong>, 2020</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2020/Noche de copas.jpg', 'Noche de copas, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/Noche de copas.jpg" alt="Noche de copas" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Noche de copas</strong>, 2020</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2020/Obsesión.jpg', 'Obsesión, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/Obsesión.jpg" alt="Obsesión" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Obsesión</strong>, 2020</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2020/Paisaje.jpg', 'Paisaje, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/Paisaje.jpg" alt="Paisaje" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Paisaje</strong>, 2020</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2020/Petición de mano.jpg', 'Petición de mano, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/Petición de mano.jpg" alt="Petición de mano" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Petición de mano</strong>, 2020</p>
-            </article>
-
-            <article class="card-obra obra-extra"
-                onclick="abrirVisorModal('2020/Siguiendo la senda del último cuadro de Van Gogh.jpg', 'Siguiendo la senda del último cuadro de Van Gogh, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/Siguiendo la senda del último cuadro de Van Gogh.jpg"
-                        alt="Siguiendo la senda del último cuadro de Van Gogh" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Siguiendo la senda del último cuadro de Van Gogh</strong>, 2020</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2020/Toro.jpg', 'Toro, 2020')">
-                <div class="img-wrapper">
-                    <img src="2020/Toro.jpg" alt="Toro" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Toro</strong>, 2020</p>
-            </article>
-
-            <!-- 2021 (2 obras) -->
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2021/El detalle.jpg', 'El detalle, 2021')">
-                <div class="img-wrapper">
-                    <img src="2021/El detalle.jpg" alt="El detalle" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>El detalle</strong>, 2021</p>
-            </article>
-
-            <article class="card-obra obra-extra" onclick="abrirVisorModal('2021/Un sueño.jpg', 'Un sueño, 2021')">
-                <div class="img-wrapper">
-                    <img src="2021/Un sueño.jpg" alt="Un sueño" loading="lazy">
-                </div>
-                <p class="pie-obra"><strong>Un sueño</strong>, 2021</p>
-            </article>
-
-        </div>
-
-        <!-- BOTÓN SITUADO JUSTO DEBAJO DE LAS 16 OBRAS INICIALES -->
-        <div class="contenedor-boton-catalogo">
-            <button id="btnVerMas" class="btn-wikiart">VER MÁS OBRAS (1990 – 2021) · 83 OBRAS</button>
-        </div>
-
-    </main>
-
-    <!-- MODAL DE AMPLIACIÓN -->
-    <div id="modalVisor" class="modal-visor" onclick="cerrarVisorModal()">
-        <span class="btn-cerrar-modal" onclick="cerrarVisorModal()">&times;</span>
-        <div class="modal-contenido" onclick="event.stopPropagation()">
-            <img id="imgModal" src="" alt="Obra Ampliada">
-            <div id="tituloModal" class="modal-titulo"></div>
-        </div>
+  <div id="canvas-container"></div>
+
+  <input type="file" id="folder-input" webkitdirectory multiple accept="image/*" />
+
+  <div id="drag-overlay">
+    <h2>📂 Suelta aquí todas tus carpetas juntas</h2>
+    <p>Se leerán automáticamente todos los años y obras de golpe</p>
+  </div>
+
+  <div id="intro-overlay">
+    <div class="badge-top">TÚNEL INMERSIVO 300 METROS · 51 PANTALLAS LED</div>
+    <h1>Pasillo LED Cronológico</h1>
+    <p>
+      Selecciona directamente tu carpeta raíz <strong>amigojuliofinal</strong> (o arrastra todas las carpetas de años
+      juntas a esta ventana) y el pasillo de <strong>300 metros</strong> cargará todas las obras ordenadas por año y
+      título con luces reactivas y música animada.
+    </p>
+    <div class="intro-actions">
+      <button class="btn-folder-intro" id="btn-intro-folder">📁 Cargar Carpeta Raíz (Todas juntas)</button>
+      <button class="btn-primary" id="btn-start-demo">▶ Entrar al Pasillo con Demo</button>
+    </div>
+    <div class="drop-hint">💡 También puedes seleccionar varias carpetas a la vez en Windows y arrastrarlas aquí encima
+    </div>
+  </div>
+
+  <div id="hud-top">
+    <div class="hud-group hide-clean">
+      <button class="hud-btn active" id="btn-load-folder">📁 Cargar Todo Junto</button>
+      <button class="hud-btn" id="btn-add-folder" title="Sumar más carpetas sin borrar las anteriores">➕ Sumar
+        Carpeta</button>
+      <div class="glass-pill">
+        <span class="meter-badge" id="hud-meters">0 m / 300 m</span>
+        <span style="opacity:0.3">|</span>
+        <span class="counter-badge" id="hud-photo-count">Colección base: 18 obras</span>
+      </div>
     </div>
 
-    <script>
-        function abrirVisorModal(src, titulo) {
-            const modal = document.getElementById("modalVisor");
-            document.getElementById("imgModal").src = src;
-            document.getElementById("tituloModal").innerText = titulo;
-            modal.style.display = "flex";
+    <div class="hud-group">
+      <button class="hud-btn hide-clean active" id="btn-auto-walk">🚶 Paseo Auto: ON</button>
+      <button class="hud-btn hide-clean active" id="btn-auto-cycle">🔄 Rotación Obras: ON</button>
+      <button class="hud-btn" id="btn-clean-view">👁️ Vista Limpia</button>
+    </div>
+  </div>
+
+  <div id="corridor-track" title="Progreso en el pasillo de 300 metros">
+    <div id="corridor-fill"></div>
+  </div>
+
+  <div id="controls-hint">
+    Arrastra todas tus carpetas juntas aquí encima en cualquier momento · <strong>W / S</strong> caminar · Clic en
+    pantalla LED para ampliar
+  </div>
+
+  <div id="hud-bottom">
+    <button class="hud-btn active" id="btn-audio-toggle">🔊 Música: ON</button>
+
+    <select class="hud-select" id="track-select" title="Seleccionar ritmo musical">
+      <option value="0">🎵 Funky Tunnel (122 BPM)</option>
+      <option value="1">⚡ Electro Pop Gallery (128 BPM)</option>
+      <option value="2">🕺 Nu-Disco Neón (118 BPM)</option>
+    </select>
+
+    <select class="hud-select" id="decade-select" title="Filtrar por época">
+      <option value="ALL">📅 Todas las épocas (1977 – 2026)</option>
+      <option value="70-80">📅 Años 70 y 80 (1977 – 1989)</option>
+      <option value="90-00">📅 Años 90 y 2000 (1990 – 2009)</option>
+      <option value="10-26">📅 Contemporáneo (2010 – 2026)</option>
+    </select>
+
+    <select class="hud-select" id="year-select" title="Ir directamente a un año">
+      <option value="ALL">🗓️ Año: Todos</option>
+    </select>
+
+    <div class="slider-wrap">
+      <span>Velocidad</span>
+      <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.1" value="1.1" />
+    </div>
+
+    <div class="slider-wrap">
+      <span>Volumen</span>
+      <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.65" />
+    </div>
+  </div>
+
+  <div id="artwork-modal">
+    <div class="modal-card">
+      <div class="modal-img-wrap">
+        <img id="modal-img" src="" alt="Obra seleccionada" />
+      </div>
+      <div class="modal-footer">
+        <div class="modal-meta">
+          <span id="modal-year">1977</span>
+          <h2 id="modal-title">Título de la obra</h2>
+        </div>
+        <button class="hud-btn active" id="btn-close-modal">✕ Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const BASE_COLLECTION = [
+      { year: "1977", title: "Cantoneses bajo la lluvia", palette: ["#00f0ff", "#1a2a6c", "#ff2e93"] },
+      { year: "1977", title: "El balcón", palette: ["#ff9a00", "#ff2e93", "#2b1055"] },
+      { year: "1977", title: "Habitantes del subsuelo", palette: ["#52ff9c", "#0f3443", "#34e89e"] },
+      { year: "1978", title: "Antropología del ser humano", palette: ["#f857a6", "#ff5858", "#1f1c2c"] },
+      { year: "1978", title: "Los caballos del rey", palette: ["#ffd200", "#f7971e", "#232526"] },
+      { year: "1978", title: "Los peces", palette: ["#00c6ff", "#0072ff", "#090d16"] },
+      { year: "1978", title: "Máquina de guerra", palette: ["#ff416c", "#ff4b2b", "#141414"] },
+      { year: "1980", title: "Amanecer rojo sobre la pared", palette: ["#ff0844", "#ffb199", "#1e0510"] },
+      { year: "1980", title: "Los amigos", palette: ["#7f00ff", "#e100ff", "#120724"] },
+      { year: "1980", title: "Paisaje abstracto", palette: ["#43e97b", "#38f9d7", "#0b1e26"] },
+      { year: "1982", title: "Horizonte nocturno", palette: ["#4facfe", "#00f2fe", "#081229"] },
+      { year: "1986", title: "Reflejos urbanos", palette: ["#fa709a", "#fee140", "#1a1026"] },
+      { year: "1990", title: "Cromatismo interior", palette: ["#a18cd1", "#fbc2eb", "#17112b"] },
+      { year: "1999", title: "Cambio de siglo", palette: ["#ff00cc", "#333399", "#0c091d"] },
+      { year: "2005", title: "Geometría viva", palette: ["#00f5d4", "#00bbf9", "#091526"] },
+      { year: "2010", title: "Luz sobre materia", palette: ["#fee440", "#f15bb5", "#190a24"] },
+      { year: "2019", title: "Ecos del tiempo", palette: ["#9b5de5", "#00f5d4", "#0c0c1c"] },
+      { year: "2021", title: "Nueva perspectiva", palette: ["#ff2e93", "#00f0ff", "#070913"] }
+    ];
+
+    let fullArtworks = [];
+    let filteredArtworks = [];
+    let appendMode = false;
+    const imageCache = new Map();
+
+    function createProceduralArtDataURL(item, idx) {
+      const c = document.createElement("canvas");
+      c.width = 960;
+      c.height = 680;
+      const ctx = c.getContext("2d");
+
+      const grad = ctx.createLinearGradient(0, 0, c.width, c.height);
+      grad.addColorStop(0, item.palette[2]);
+      grad.addColorStop(0.55, item.palette[1]);
+      grad.addColorStop(1, item.palette[0]);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, c.width, c.height);
+
+      const seed = (idx + 1) * 37.3;
+      for (let i = 0; i < 16; i++) {
+        ctx.save();
+        ctx.globalAlpha = 0.16 + ((i % 4) * 0.08);
+        ctx.fillStyle = item.palette[i % item.palette.length];
+        const x = ((Math.sin(seed + i * 1.7) + 1) * 0.5) * c.width;
+        const y = ((Math.cos(seed + i * 2.3) + 1) * 0.5) * c.height;
+        const r = 60 + ((i * 29 + idx * 17) % 190);
+        ctx.beginPath();
+        if (i % 3 === 0) {
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+        } else if (i % 3 === 1) {
+          ctx.rect(x - r * 0.7, y - r * 0.5, r * 1.4, r);
+        } else {
+          ctx.moveTo(x, y - r);
+          ctx.lineTo(x + r, y + r * 0.8);
+          ctx.lineTo(x - r, y + r * 0.8);
+          ctx.closePath();
+        }
+        ctx.fill();
+        ctx.restore();
+      }
+
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = 2;
+      for (let y = 24; y < c.height; y += 36) {
+        ctx.beginPath();
+        ctx.moveTo(28, y);
+        ctx.lineTo(c.width - 28, y);
+        ctx.stroke();
+      }
+
+      return c.toDataURL("image/jpeg", 0.88);
+    }
+
+    function clearImageCache() {
+      imageCache.clear();
+    }
+
+    function getDecodedImage(src) {
+      if (imageCache.has(src)) {
+        return imageCache.get(src);
+      }
+      const promise = new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = async () => {
+          if (typeof img.decode === "function") {
+            try {
+              await img.decode();
+            } catch (err) {
+              // Ignorar si ya está decodificada
+            }
+          }
+          resolve(img);
+        };
+        img.onerror = reject;
+        img.src = src;
+      });
+      if (imageCache.size > 160) {
+        const oldestKey = imageCache.keys().next().value;
+        imageCache.delete(oldestKey);
+      }
+      imageCache.set(src, promise);
+      return promise;
+    }
+
+    function populateYearSelector() {
+      const yearSelect = document.getElementById("year-select");
+      const years = Array.from(new Set(fullArtworks.map(a => a.year))).sort((a, b) => a.localeCompare(b));
+      yearSelect.innerHTML = `<option value="ALL">🗓️ Año: Todos (${years.length} carpetas)</option>`;
+      years.forEach(yr => {
+        const count = fullArtworks.filter(a => a.year === yr).length;
+        const opt = document.createElement("option");
+        opt.value = yr;
+        opt.textContent = `🗓️ ${yr} (${count})`;
+        yearSelect.appendChild(opt);
+      });
+    }
+
+    function initBaseCollection() {
+      fullArtworks = BASE_COLLECTION.map((item, idx) => ({
+        year: item.year,
+        title: item.title,
+        src: createProceduralArtDataURL(item, idx),
+        isUserFile: false
+      }));
+      populateYearSelector();
+      applyEraFilter();
+    }
+
+    function extractYearFromPath(pathStr) {
+      const normalized = String(pathStr || "").replace(/\\/g, "/");
+      const parts = normalized.split("/").filter(Boolean);
+      for (let i = parts.length - 2; i >= 0; i--) {
+        const match = parts[i].match(/(19\d{2}|20\d{2})/);
+        if (match) return match[1];
+      }
+      const fileMatch = (parts[parts.length - 1] || "").match(/(19\d{2}|20\d{2})/);
+      if (fileMatch) return fileMatch[1];
+      return "S/F";
+    }
+
+    function ingestFileList(entriesWithPaths, shouldAppend = false) {
+      const validImages = entriesWithPaths.filter(item => item && item.file && /\.(jpe?g|png|webp|gif)$/i.test(item.file.name));
+      if (!validImages.length) return;
+
+      const hasUserFilesAlready = fullArtworks.some(a => a.isUserFile);
+      const keepExisting = shouldAppend && hasUserFilesAlready;
+
+      if (!keepExisting) {
+        clearImageCache();
+        fullArtworks.forEach(a => {
+          if (a.isUserFile && a.src) URL.revokeObjectURL(a.src);
+        });
+      }
+
+      const seenKeys = new Set();
+      const loaded = [];
+
+      if (keepExisting) {
+        fullArtworks.forEach(a => {
+          const key = `${a.year}::${a.title.toLowerCase()}`;
+          seenKeys.add(key);
+          loaded.push(a);
+        });
+      }
+
+      validImages.forEach(({ file, path }) => {
+        const year = extractYearFromPath(path);
+        const rawTitle = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]+/g, " ").trim();
+        const dedupeKey = `${year}::${rawTitle.toLowerCase()}`;
+        if (seenKeys.has(dedupeKey)) return;
+        seenKeys.add(dedupeKey);
+
+        loaded.push({
+          year,
+          title: rawTitle,
+          src: URL.createObjectURL(file),
+          isUserFile: true
+        });
+      });
+
+      loaded.sort((a, b) => a.year.localeCompare(b.year) || a.title.localeCompare(b.title));
+      fullArtworks = loaded;
+
+      const distinctYears = new Set(fullArtworks.map(a => a.year)).size;
+      document.getElementById("hud-photo-count").textContent = `${fullArtworks.length} obras · ${distinctYears} años`;
+      populateYearSelector();
+      document.getElementById("year-select").value = "ALL";
+      applyEraFilter();
+
+      const intro = document.getElementById("intro-overlay");
+      if (!intro.classList.contains("hidden")) {
+        startExperience();
+      }
+    }
+
+    const folderInput = document.getElementById("folder-input");
+    document.getElementById("btn-load-folder").addEventListener("click", () => {
+      appendMode = false;
+      folderInput.value = "";
+      folderInput.click();
+    });
+    document.getElementById("btn-intro-folder").addEventListener("click", () => {
+      appendMode = false;
+      folderInput.value = "";
+      folderInput.click();
+    });
+    document.getElementById("btn-add-folder").addEventListener("click", () => {
+      appendMode = true;
+      folderInput.value = "";
+      folderInput.click();
+    });
+
+    folderInput.addEventListener("change", (e) => {
+      const files = Array.from(e.target.files || []);
+      const mapped = files.map(f => ({
+        file: f,
+        path: f.webkitRelativePath || f.name
+      }));
+      ingestFileList(mapped, appendMode);
+    });
+
+    // Arrastrar y soltar múltiples carpetas juntas
+    const dragOverlay = document.getElementById("drag-overlay");
+    let dragDepth = 0;
+
+    window.addEventListener("dragenter", (e) => {
+      e.preventDefault();
+      dragDepth++;
+      dragOverlay.classList.add("active");
+    });
+
+    window.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    window.addEventListener("dragleave", (e) => {
+      e.preventDefault();
+      dragDepth--;
+      if (dragDepth <= 0) {
+        dragDepth = 0;
+        dragOverlay.classList.remove("active");
+      }
+    });
+
+    async function readEntryRecursively(entry, parentPath = "") {
+      if (!entry) return [];
+      if (entry.isFile) {
+        return new Promise((resolve) => {
+          entry.file(
+            (file) => resolve([{ file, path: `${parentPath}/${file.name}` }]),
+            () => resolve([])
+          );
+        });
+      }
+      if (entry.isDirectory) {
+        const dirReader = entry.createReader();
+        const readAllEntries = () => new Promise((resolve) => {
+          const all = [];
+          const step = () => {
+            dirReader.readEntries((batch) => {
+              if (!batch || !batch.length) {
+                resolve(all);
+              } else {
+                all.push(...batch);
+                step();
+              }
+            }, () => resolve(all));
+          };
+          step();
+        });
+        const children = await readAllEntries();
+        const nested = await Promise.all(
+          children.map(child => readEntryRecursively(child, `${parentPath}/${entry.name}`))
+        );
+        return nested.flat();
+      }
+      return [];
+    }
+
+    window.addEventListener("drop", async (e) => {
+      e.preventDefault();
+      dragDepth = 0;
+      dragOverlay.classList.remove("active");
+
+      const items = Array.from((e.dataTransfer && e.dataTransfer.items) || []);
+      const entries = items
+        .map(it => (typeof it.webkitGetAsEntry === "function" ? it.webkitGetAsEntry() : null))
+        .filter(Boolean);
+
+      if (entries.length) {
+        const collected = (await Promise.all(entries.map(en => readEntryRecursively(en, "")))).flat();
+        ingestFileList(collected, false);
+      } else if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+        const fallback = Array.from(e.dataTransfer.files).map(f => ({
+          file: f,
+          path: f.webkitRelativePath || f.name
+        }));
+        ingestFileList(fallback, false);
+      }
+    });
+
+    function applyEraFilter() {
+      const decadeVal = document.getElementById("decade-select").value;
+      const yearVal = document.getElementById("year-select").value;
+
+      filteredArtworks = fullArtworks.filter(item => {
+        if (yearVal !== "ALL" && item.year !== yearVal) return false;
+        const y = parseInt(item.year, 10);
+        if (decadeVal === "ALL" || isNaN(y)) return true;
+        if (decadeVal === "70-80") return y >= 1970 && y <= 1989;
+        if (decadeVal === "90-00") return y >= 1990 && y <= 2009;
+        if (decadeVal === "10-26") return y >= 2010 && y <= 2026;
+        return true;
+      });
+      if (!filteredArtworks.length) filteredArtworks = [...fullArtworks];
+      refreshAllScreens(true);
+    }
+
+    document.getElementById("decade-select").addEventListener("change", () => {
+      document.getElementById("year-select").value = "ALL";
+      applyEraFilter();
+    });
+
+    document.getElementById("year-select").addEventListener("change", applyEraFilter);
+
+    let audioCtx = null;
+    let analyser = null;
+    let masterGain = null;
+    let freqData = null;
+    let isAudioPlaying = false;
+    let stepTimer = null;
+    let currentStep = 0;
+
+    const TRACKS = [
+      {
+        name: "Funky Tunnel",
+        bpm: 122,
+        bass: [55, 0, 55, 65.41, 73.42, 0, 82.41, 65.41, 55, 0, 55, 98, 82.41, 73.42, 65.41, 49],
+        chords: [
+          [220, 261.63, 329.63, 392],
+          null,
+          [246.94, 293.66, 369.99, 440],
+          null,
+          [261.63, 329.63, 392, 493.88],
+          null,
+          [293.66, 349.23, 440, 523.25],
+          null
+        ]
+      },
+      {
+        name: "Electro Pop Gallery",
+        bpm: 128,
+        bass: [65.41, 65.41, 130.81, 65.41, 73.42, 73.42, 146.83, 73.42, 82.41, 82.41, 164.81, 82.41, 98, 98, 196, 98],
+        chords: [
+          [261.63, 329.63, 392],
+          [293.66, 349.23, 440],
+          [329.63, 392, 493.88],
+          [392, 493.88, 587.33]
+        ]
+      },
+      {
+        name: "Nu-Disco Neón",
+        bpm: 118,
+        bass: [49, 0, 98, 49, 55, 0, 110, 55, 61.74, 0, 123.47, 61.74, 65.41, 73.42, 82.41, 98],
+        chords: [
+          [246.94, 311.13, 369.99, 440],
+          null,
+          [277.18, 329.63, 415.30, 493.88],
+          null
+        ]
+      }
+    ];
+
+    function setupAudio() {
+      if (audioCtx) return;
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContextClass();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 128;
+      freqData = new Uint8Array(analyser.frequencyBinCount);
+
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = parseFloat(document.getElementById("vol-slider").value);
+      masterGain.connect(analyser);
+      analyser.connect(audioCtx.destination);
+    }
+
+    function playKick(time) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(145, time);
+      osc.frequency.exponentialRampToValueAtTime(38, time + 0.14);
+      gain.gain.setValueAtTime(0.85, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.22);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(time);
+      osc.stop(time + 0.23);
+    }
+
+    function playHat(time, open = false) {
+      const bufferSize = Math.floor(audioCtx.sampleRate * (open ? 0.14 : 0.045));
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "highpass";
+      filter.frequency.value = 7200;
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(open ? 0.22 : 0.14, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + (open ? 0.14 : 0.045));
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+      noise.start(time);
+    }
+
+    function playBassNote(freq, time, dur) {
+      if (!freq) return;
+      const osc = audioCtx.createOscillator();
+      const filter = audioCtx.createBiquadFilter();
+      const gain = audioCtx.createGain();
+
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(freq, time);
+
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(520, time);
+      filter.frequency.exponentialRampToValueAtTime(160, time + dur);
+
+      gain.gain.setValueAtTime(0.32, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+      osc.start(time);
+      osc.stop(time + dur + 0.02);
+    }
+
+    function playChord(notes, time, dur) {
+      if (!notes) return;
+      notes.forEach(n => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(n, time);
+        gain.gain.setValueAtTime(0.09, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start(time);
+        osc.stop(time + dur + 0.02);
+      });
+    }
+
+    function startSequencer() {
+      setupAudio();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      if (stepTimer) clearInterval(stepTimer);
+      isAudioPlaying = true;
+      updateAudioBtn();
+
+      const schedule = () => {
+        if (!isAudioPlaying) return;
+        const track = TRACKS[parseInt(document.getElementById("track-select").value, 10)];
+        const stepMs = (60 / track.bpm / 4) * 1000;
+        const now = audioCtx.currentTime;
+
+        if (currentStep % 4 === 0) playKick(now);
+        if (currentStep % 2 === 1) playHat(now, currentStep % 8 === 7);
+
+        const bassFreq = track.bass[currentStep % track.bass.length];
+        playBassNote(bassFreq, now, (stepMs / 1000) * 0.9);
+
+        if (currentStep % 2 === 0) {
+          const chord = track.chords[(currentStep / 2) % track.chords.length];
+          playChord(chord, now, (stepMs / 1000) * 1.8);
         }
 
-        function cerrarVisorModal() {
-            document.getElementById("modalVisor").style.display = "none";
-        }
+        currentStep++;
+      };
 
-        // Al hacer clic, hace visibles las obras ocultas y retira el botón
-        const btnVerMas = document.getElementById('btnVerMas');
-        if (btnVerMas) {
-            btnVerMas.addEventListener('click', () => {
-                document.querySelectorAll('.obra-extra').forEach(obra => {
-                    obra.style.display = 'flex';
-                });
-                btnVerMas.parentElement.style.display = 'none';
-            });
+      const track = TRACKS[parseInt(document.getElementById("track-select").value, 10)];
+      const intervalMs = (60 / track.bpm / 4) * 1000;
+      schedule();
+      stepTimer = setInterval(schedule, intervalMs);
+    }
+
+    function stopSequencer() {
+      isAudioPlaying = false;
+      if (stepTimer) clearInterval(stepTimer);
+      stepTimer = null;
+      updateAudioBtn();
+    }
+
+    function updateAudioBtn() {
+      const btn = document.getElementById("btn-audio-toggle");
+      btn.textContent = isAudioPlaying ? "🔊 Música: ON" : "🔇 Música: OFF";
+      btn.classList.toggle("active", isAudioPlaying);
+    }
+
+    document.getElementById("btn-audio-toggle").addEventListener("click", () => {
+      if (isAudioPlaying) stopSequencer();
+      else startSequencer();
+    });
+
+    document.getElementById("track-select").addEventListener("change", () => {
+      if (isAudioPlaying) startSequencer();
+    });
+
+    document.getElementById("vol-slider").addEventListener("input", (e) => {
+      if (masterGain && audioCtx) {
+        masterGain.gain.setValueAtTime(parseFloat(e.target.value), audioCtx.currentTime);
+      }
+    });
+
+    const CORRIDOR_LENGTH = 300;
+    const CORRIDOR_HALF_W = 6.2;
+    const CORRIDOR_H = 6.8;
+    const PAIRS_COUNT = 25;
+
+    const container = document.getElementById("canvas-container");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x020206);
+    scene.fog = new THREE.FogExp2(0x020206, 0.0085);
+
+    const camera = new THREE.PerspectiveCamera(64, window.innerWidth / window.innerHeight, 0.1, 360);
+    camera.position.set(0, 2.35, -3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.24;
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0x1a2442, 1.5);
+    scene.add(ambientLight);
+
+    const floorGeo = new THREE.PlaneGeometry(CORRIDOR_HALF_W * 2.4, CORRIDOR_LENGTH + 30);
+    const floorMat = new THREE.MeshStandardMaterial({
+      color: 0x05060c,
+      metalness: 0.94,
+      roughness: 0.12
+    });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.set(0, 0, -CORRIDOR_LENGTH / 2);
+    scene.add(floor);
+
+    const stripGeo = new THREE.PlaneGeometry(0.08, CORRIDOR_LENGTH + 20);
+    const floorStrips = [];
+    [-CORRIDOR_HALF_W + 0.45, CORRIDOR_HALF_W - 0.45].forEach(xPos => {
+      const stripMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+      const strip = new THREE.Mesh(stripGeo, stripMat);
+      strip.rotation.x = -Math.PI / 2;
+      strip.position.set(xPos, 0.01, -CORRIDOR_LENGTH / 2);
+      scene.add(strip);
+      floorStrips.push(strip);
+    });
+
+    const blackWallMat = new THREE.MeshStandardMaterial({
+      color: 0x030408,
+      metalness: 0.35,
+      roughness: 0.75
+    });
+
+    const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(CORRIDOR_LENGTH + 30, CORRIDOR_H), blackWallMat);
+    leftWall.rotation.y = Math.PI / 2;
+    leftWall.position.set(-CORRIDOR_HALF_W, CORRIDOR_H / 2, -CORRIDOR_LENGTH / 2);
+    scene.add(leftWall);
+
+    const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(CORRIDOR_LENGTH + 30, CORRIDOR_H), blackWallMat);
+    rightWall.rotation.y = -Math.PI / 2;
+    rightWall.position.set(CORRIDOR_HALF_W, CORRIDOR_H / 2, -CORRIDOR_LENGTH / 2);
+    scene.add(rightWall);
+
+    const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(CORRIDOR_HALF_W * 2.4, CORRIDOR_LENGTH + 30), blackWallMat);
+    ceiling.rotation.x = Math.PI / 2;
+    ceiling.position.set(0, CORRIDOR_H, -CORRIDOR_LENGTH / 2);
+    scene.add(ceiling);
+
+    const ceilingArches = [];
+    const ARCH_COUNT = 60;
+    const archTopGeo = new THREE.BoxGeometry(CORRIDOR_HALF_W * 1.92, 0.14, 0.22);
+    const archSideGeo = new THREE.BoxGeometry(0.14, CORRIDOR_H - 0.4, 0.22);
+
+    for (let i = 0; i < ARCH_COUNT; i++) {
+      const zPos = -4 - (i * (CORRIDOR_LENGTH / ARCH_COUNT));
+      const hue = (i / ARCH_COUNT);
+      const mat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color().setHSL(hue, 0.95, 0.55)
+      });
+
+      const topBar = new THREE.Mesh(archTopGeo, mat);
+      topBar.position.set(0, CORRIDOR_H - 0.15, zPos);
+      scene.add(topBar);
+
+      const leftBar = new THREE.Mesh(archSideGeo, mat);
+      leftBar.position.set(-CORRIDOR_HALF_W + 0.12, CORRIDOR_H / 2, zPos);
+      scene.add(leftBar);
+
+      const rightBar = new THREE.Mesh(archSideGeo, mat);
+      rightBar.position.set(CORRIDOR_HALF_W - 0.12, CORRIDOR_H / 2, zPos);
+      scene.add(rightBar);
+
+      ceilingArches.push({ mat, baseHue: hue, index: i, z: zPos });
+    }
+
+    const runnerLights = [];
+    for (let i = 0; i < 4; i++) {
+      const pl = new THREE.PointLight(0x00f0ff, 2.4, 42);
+      pl.position.set(0, CORRIDOR_H - 0.6, -15 - i * 25);
+      scene.add(pl);
+      runnerLights.push(pl);
+    }
+
+    const ledScreens = [];
+    const clickableMeshes = [];
+
+    async function renderArtworkToCanvas(canvas, artwork, renderToken) {
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.fillStyle = "#060811";
+      ctx.fillRect(0, 0, w, h);
+
+      const footerH = 110;
+      const pad = 26;
+      const areaW = w - pad * 2;
+      const areaH = h - footerH - pad * 1.5;
+
+      const drawFooter = () => {
+        ctx.fillStyle = "#090c18";
+        ctx.fillRect(0, h - footerH, w, footerH);
+
+        ctx.fillStyle = "#00f0ff";
+        ctx.fillRect(0, h - footerH, w, 4);
+
+        ctx.fillStyle = "#00f0ff";
+        ctx.font = "bold 34px 'Segoe UI', system-ui, sans-serif";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.fillText(artwork.year, 34, h - footerH / 2);
+
+        ctx.fillStyle = "rgba(255,255,255,0.22)";
+        ctx.fillRect(142, h - footerH + 28, 3, footerH - 56);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "600 30px 'Segoe UI', system-ui, sans-serif";
+        let titleText = artwork.title;
+        while (ctx.measureText(titleText).width > w - 195 && titleText.length > 8) {
+          titleText = titleText.slice(0, -4) + "...";
         }
-    </script>
+        ctx.fillText(titleText, 166, h - footerH / 2);
+      };
+
+      try {
+        const img = await getDecodedImage(artwork.src);
+        if (canvas._renderToken !== renderToken) return;
+
+        const ratio = Math.min(areaW / img.width, areaH / img.height);
+        const dw = img.width * ratio;
+        const dh = img.height * ratio;
+        const dx = pad + (areaW - dw) / 2;
+        const dy = pad + (areaH - dh) / 2;
+
+        ctx.fillStyle = "#03040a";
+        ctx.fillRect(pad, pad, areaW, areaH);
+        ctx.drawImage(img, dx, dy, dw, dh);
+        drawFooter();
+        if (canvas._texture) canvas._texture.needsUpdate = true;
+      } catch (err) {
+        drawFooter();
+        if (canvas._texture) canvas._texture.needsUpdate = true;
+      }
+    }
+
+    function createLEDScreen(width, height, x, y, z, rotY, slotIndex) {
+      const group = new THREE.Group();
+      group.position.set(x, y, z);
+      group.rotation.y = rotY;
+
+      const frameGeo = new THREE.BoxGeometry(width + 0.34, height + 0.34, 0.22);
+      const frameMat = new THREE.MeshStandardMaterial({
+        color: 0x0b0e1a,
+        metalness: 0.85,
+        roughness: 0.25
+      });
+      const frame = new THREE.Mesh(frameGeo, frameMat);
+      group.add(frame);
+
+      const rimGeo = new THREE.BoxGeometry(width + 0.42, height + 0.42, 0.14);
+      const rimMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+      const rim = new THREE.Mesh(rimGeo, rimMat);
+      rim.position.z = -0.02;
+      group.add(rim);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 1024;
+      canvas.height = 768;
+      canvas._renderToken = 0;
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.minFilter = THREE.LinearFilter;
+      canvas._texture = texture;
+
+      const screenGeo = new THREE.PlaneGeometry(width, height);
+      const screenMat = new THREE.MeshBasicMaterial({ map: texture });
+      const screenMesh = new THREE.Mesh(screenGeo, screenMat);
+      screenMesh.position.z = 0.12;
+      group.add(screenMesh);
+
+      scene.add(group);
+
+      const screenObj = {
+        group,
+        mesh: screenMesh,
+        rimMat,
+        canvas,
+        texture,
+        slotIndex,
+        artwork: null,
+        z
+      };
+
+      screenMesh.userData.screenObj = screenObj;
+      clickableMeshes.push(screenMesh);
+      ledScreens.push(screenObj);
+    }
+
+    const spacing = (CORRIDOR_LENGTH - 14) / PAIRS_COUNT;
+    for (let i = 0; i < PAIRS_COUNT; i++) {
+      const zPos = -10 - i * spacing;
+      createLEDScreen(6.6, 4.7, -CORRIDOR_HALF_W + 0.24, 3.15, zPos, Math.PI / 2, i * 2);
+      createLEDScreen(6.6, 4.7, CORRIDOR_HALF_W - 0.24, 3.15, zPos, -Math.PI / 2, i * 2 + 1);
+    }
+
+    createLEDScreen(9.6, 5.6, 0, 3.3, -CORRIDOR_LENGTH + 1.5, 0, PAIRS_COUNT * 2);
+
+    let cycleOffset = 0;
+
+    function assignArtworkToScreen(screenObj, artIndex) {
+      if (!filteredArtworks.length) return;
+      const art = filteredArtworks[artIndex % filteredArtworks.length];
+      if (screenObj.artwork === art) return;
+      screenObj.artwork = art;
+      screenObj.canvas._renderToken++;
+      renderArtworkToCanvas(screenObj.canvas, art, screenObj.canvas._renderToken);
+    }
+
+    function refreshAllScreens(force = false) {
+      if (!filteredArtworks.length) return;
+      ledScreens.forEach((scr, idx) => {
+        if (force) scr.artwork = null;
+        assignArtworkToScreen(scr, idx + cycleOffset);
+      });
+    }
+
+    let autoWalk = true;
+    let autoCycle = true;
+    let yaw = 0;
+    let pitch = 0;
+    let isDragging = false;
+    let prevMouse = { x: 0, y: 0 };
+    const keys = {};
+
+    window.addEventListener("keydown", (e) => { keys[e.code] = true; });
+    window.addEventListener("keyup", (e) => { keys[e.code] = false; });
+
+    renderer.domElement.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      prevMouse = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener("mouseup", () => { isDragging = false; });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - prevMouse.x;
+      const dy = e.clientY - prevMouse.y;
+      prevMouse = { x: e.clientX, y: e.clientY };
+      yaw -= dx * 0.0032;
+      pitch = Math.max(-0.55, Math.min(0.55, pitch - dy * 0.0025));
+    });
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    let downPos = { x: 0, y: 0 };
+
+    renderer.domElement.addEventListener("pointerdown", (e) => {
+      downPos = { x: e.clientX, y: e.clientY };
+    });
+
+    renderer.domElement.addEventListener("pointerup", (e) => {
+      const dist = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
+      if (dist > 6) return;
+
+      pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+
+      const hits = raycaster.intersectObjects(clickableMeshes, false);
+      if (hits.length > 0) {
+        const scr = hits[0].object.userData.screenObj;
+        if (scr && scr.artwork) {
+          document.getElementById("modal-img").src = scr.artwork.src;
+          document.getElementById("modal-year").textContent = scr.artwork.year;
+          document.getElementById("modal-title").textContent = scr.artwork.title;
+          document.getElementById("artwork-modal").classList.add("open");
+        }
+      }
+    });
+
+    document.getElementById("btn-close-modal").addEventListener("click", () => {
+      document.getElementById("artwork-modal").classList.remove("open");
+    });
+
+    document.getElementById("artwork-modal").addEventListener("click", (e) => {
+      if (e.target.id === "artwork-modal") {
+        document.getElementById("artwork-modal").classList.remove("open");
+      }
+    });
+
+    document.getElementById("btn-auto-walk").addEventListener("click", (e) => {
+      autoWalk = !autoWalk;
+      e.currentTarget.textContent = autoWalk ? "🚶 Paseo Auto: ON" : "🚶 Paseo Auto: OFF";
+      e.currentTarget.classList.toggle("active", autoWalk);
+    });
+
+    document.getElementById("btn-auto-cycle").addEventListener("click", (e) => {
+      autoCycle = !autoCycle;
+      e.currentTarget.textContent = autoCycle ? "🔄 Rotación Obras: ON" : "🔄 Rotación Obras: OFF";
+      e.currentTarget.classList.toggle("active", autoCycle);
+    });
+
+    document.getElementById("btn-clean-view").addEventListener("click", (e) => {
+      document.body.classList.toggle("clean-mode");
+      const isClean = document.body.classList.contains("clean-mode");
+      e.currentTarget.textContent = isClean ? "🎛️ Mostrar Controles" : "👁️ Vista Limpia";
+    });
+
+    function startExperience() {
+      document.getElementById("intro-overlay").classList.add("hidden");
+      startSequencer();
+    }
+
+    document.getElementById("btn-start-demo").addEventListener("click", startExperience);
+
+    let lastTime = performance.now();
+    let waveIndex = 0;
+    let waveAccumulator = 0;
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      const speedMult = parseFloat(document.getElementById("speed-slider").value);
+
+      let bassEnergy = 0.25;
+      let midEnergy = 0.25;
+      let highEnergy = 0.25;
+
+      if (analyser && isAudioPlaying && freqData) {
+        analyser.getByteFrequencyData(freqData);
+        let b = 0, m = 0, h = 0;
+        for (let i = 0; i < 10; i++) b += freqData[i];
+        for (let i = 10; i < 32; i++) m += freqData[i];
+        for (let i = 32; i < 60; i++) h += freqData[i];
+        bassEnergy = (b / (10 * 255));
+        midEnergy = (m / (22 * 255));
+        highEnergy = (h / (28 * 255));
+      } else {
+        const t = now * 0.003;
+        bassEnergy = 0.35 + 0.25 * Math.sin(t * 2.2);
+        midEnergy = 0.35 + 0.25 * Math.cos(t * 1.7);
+        highEnergy = 0.35 + 0.25 * Math.sin(t * 3.1);
+      }
+
+      const moveSpeed = 7.5 * speedMult;
+      if (keys["KeyW"] || keys["ArrowUp"]) {
+        camera.position.z -= moveSpeed * dt * 1.8;
+      } else if (keys["KeyS"] || keys["ArrowDown"]) {
+        camera.position.z += moveSpeed * dt * 1.8;
+      } else if (autoWalk && !document.getElementById("artwork-modal").classList.contains("open")) {
+        camera.position.z -= moveSpeed * dt;
+      }
+
+      if (keys["KeyA"] || keys["ArrowLeft"]) yaw += 1.4 * dt;
+      if (keys["KeyD"] || keys["ArrowRight"]) yaw -= 1.4 * dt;
+
+      if (camera.position.z < -CORRIDOR_LENGTH + 14) {
+        camera.position.z = -3;
+        cycleOffset += ledScreens.length;
+        refreshAllScreens(false);
+      }
+      if (camera.position.z > -2) camera.position.z = -2;
+
+      camera.rotation.order = "YXZ";
+      camera.rotation.y = yaw;
+      camera.rotation.x = pitch;
+
+      const currentMeters = Math.min(300, Math.max(0, Math.round(Math.abs(camera.position.z + 2))));
+      document.getElementById("hud-meters").textContent = `${currentMeters} m / 300 m`;
+      document.getElementById("corridor-fill").style.height = `${(currentMeters / 300) * 100}%`;
+
+      if (autoCycle && filteredArtworks.length > ledScreens.length) {
+        waveAccumulator += dt * (0.8 + bassEnergy * 2.4) * speedMult;
+        if (waveAccumulator >= 0.38) {
+          waveAccumulator = 0;
+          const targetScr = ledScreens[waveIndex % ledScreens.length];
+          const nextArtIdx = cycleOffset + ledScreens.length + waveIndex;
+          assignArtworkToScreen(targetScr, nextArtIdx);
+
+          targetScr.rimMat.color.setHSL((now * 0.0005 + waveIndex * 0.08) % 1, 1, 0.62);
+          waveIndex++;
+        }
+      }
+
+      const timeShift = now * 0.00022;
+      for (let i = 0; i < ceilingArches.length; i++) {
+        const arch = ceilingArches[i];
+        const wave = Math.sin(i * 0.35 - now * 0.006);
+        const hue = (arch.baseHue + timeShift + midEnergy * 0.18) % 1;
+        const lightness = Math.min(0.75, 0.28 + bassEnergy * 0.42 + (wave > 0.65 ? highEnergy * 0.22 : 0));
+        arch.mat.color.setHSL(hue, 0.96, lightness);
+      }
+
+      const floorHue = (timeShift * 1.5 + bassEnergy * 0.2) % 1;
+      floorStrips.forEach(s => s.material.color.setHSL(floorHue, 0.95, 0.45 + bassEnergy * 0.25));
+
+      runnerLights.forEach((pl, idx) => {
+        pl.position.z = camera.position.z - 8 - idx * 24;
+        pl.color.setHSL((floorHue + idx * 0.22) % 1, 0.95, 0.55);
+        pl.intensity = 1.6 + bassEnergy * 3.0;
+      });
+
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    initBaseCollection();
+    requestAnimationFrame(animate);
+  </script>
 </body>
 
 </html>
